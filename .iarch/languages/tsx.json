@@ -1,0 +1,125 @@
+{
+  "language": "tsx",
+  "displayName": "TypeScript JSX (React)",
+  "fileExtensions": [".tsx"],
+
+  "parsingPatterns": {
+    "namespace": "^\\s*(?:export\\s+)?namespace\\s+(\\w+)",
+    "import": "^import\\s+(?:type\\s+)?(?:{[^}]+}|\\*\\s+as\\s+\\w+|\\w+)\\s+from\\s+['\"](?<module>[^'\"]+)['\"]",
+    "typeDeclaration": "(?:export\\s+)?(?:default\\s+)?(?:abstract\\s+)?(class|interface|enum|type)\\s+(\\w+)(?:<[^>]+>)?(?:\\s+(?:extends|implements)\\s+([\\w,\\s<>]+))?\\s*[{=]",
+    "typeKeywords": ["class", "interface", "enum", "type"],
+    "methodDeclaration": "^\\s*(?:public\\s+|private\\s+|protected\\s+)?(?:static\\s+)?(?:async\\s+)?(?:abstract\\s+)?(?:readonly\\s+)?(\\w+)\\s*(?:<[^>]+>)?\\s*\\([^)]*\\)(?:\\s*:\\s*[^{;]+)?\\s*[{;]",
+    "fieldDeclaration": "^\\s+(?:public\\s+|private\\s+|protected\\s+)?(?:static\\s+)?(?:readonly\\s+)?(\\w+)(?:\\?)?\\s*:\\s*([^=;]+)(?:[=;])",
+    "instantiation": "new\\s+(\\w+)(?:<[^>]+>)?\\s*\\(",
+    "commentSingleLine": "//(.*)$",
+    "commentMultiLine": "/\\*(.*?)\\*/",
+    "commentDocumentation": "/\\*\\*(.*?)\\*/"
+  },
+
+  "plainImportBehavior": "importModule",
+
+  "layerDetection": {
+    "layers": {
+      "Internal": {
+        "pathPatterns": [
+          "\\\\__tests__\\\\",
+          "\\\\__mocks__\\\\"
+        ],
+        "namingPatterns": [
+          ".*Internal$",
+          "__.*"
+        ],
+        "importPatterns": []
+      },
+
+      "Shared": {
+        "pathPatterns": [
+          "\\\\shared\\\\"
+        ],
+        "namingPatterns": [
+          ".*Shared$"
+        ],
+        "importPatterns": [
+          "shared/.*"
+        ]
+      },
+
+      "DevTools": {
+        "pathPatterns": [
+          "react-devtools"
+        ],
+        "namingPatterns": [
+          ".*DevTools.*"
+        ],
+        "importPatterns": []
+      },
+
+      "Reconciler": {
+        "pathPatterns": [
+          "react-reconciler"
+        ],
+        "namingPatterns": [
+          ".*Reconciler.*"
+        ],
+        "importPatterns": []
+      },
+
+      "Bindings": {
+        "pathPatterns": [
+          "react-dom-bindings"
+        ],
+        "namingPatterns": [
+          ".*Binding.*"
+        ],
+        "importPatterns": []
+      },
+
+      "PublicAPI": {
+        "pathPatterns": [
+          "packages\\\\react\\\\src\\\\React",
+          "packages\\\\react-dom\\\\src\\\\client"
+        ],
+        "namingPatterns": [
+          "^React$"
+        ],
+        "importPatterns": []
+      }
+    }
+  },
+
+  "fieldExtractionPatterns": [
+    {
+      "name": "typed_field",
+      "description": "Matches TypeScript field with type annotation",
+      "pattern": "^\\s+(?:public\\s+|private\\s+|protected\\s+)?(?:static\\s+)?(?:readonly\\s+)?(\\w+)(?:\\?)?\\s*:\\s*([^=;]+)",
+      "typeGroup": 2,
+      "nameGroup": 1,
+      "isProperty": false
+    }
+  ],
+
+  "transformationRules": {
+    "importTemplate": "import { {namespace} } from '{module}';",
+    "importInsertLocation": "after_last_import",
+    "importRemovalPattern": "^\\s*import.*{namespace}.*$"
+  },
+
+  "formattingRules": {
+    "indentSize": 2,
+    "increaseIndentTriggers": ["{"],
+    "decreaseIndentTriggers": ["}"],
+    "decreaseBeforeLine": true
+  },
+
+  "syntaxValidation": {
+    "balancedPairs": [
+      { "open": "{", "close": "}" },
+      { "open": "(", "close": ")" },
+      { "open": "[", "close": "]" },
+      { "open": "<", "close": ">" }
+    ],
+    "invalidPatterns": [";;"]
+  },
+
+  "commentStyles": ["//", "/*", "*/", "/**"]
+}

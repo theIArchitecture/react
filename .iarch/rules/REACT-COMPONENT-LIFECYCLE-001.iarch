@@ -1,0 +1,120 @@
+# React Component Lifecycle Rule - Tightened Version
+# Focuses on application code, excludes React internals and tests
+# Enforces modern lifecycle methods for React 18+
+
+RULE "REACT-LIFECYCLE-APPLICATION" : IHealerArchitecture
+  ID: "REACT-COMPONENT-LIFECYCLE-001"
+  DESCRIPTION: "Unsafe lifecycle method in React application - breaks concurrent features"
+  SEVERITY: Error
+  CATEGORY: "React_Application_Architecture"
+  APPLIES_TO: ["javascript", "typescript", "jsx", "tsx"]
+
+  ARCHITECTURAL_CONTEXT:
+    PROJECT_TYPE: "REACT_APPLICATION"
+    COMPLIANCE_REQUIREMENTS: ["React_18_Plus", "Concurrent_Mode", "StrictMode"]
+    ORGANIZATION_STANDARDS: ["React_Best_Practices", "Modern_Patterns"]
+    TECHNOLOGY_STACK: ["react", "javascript", "typescript"]
+    SECURITY_LEVEL: "Production_Application"
+
+  EDUCATION:
+    DOCS_URL: "https://react.dev/reference/react/Component#unsafe-lifecycle-methods"
+    BUSINESS_IMPACT: "Legacy lifecycles break React 18 concurrent rendering in production"
+    QUICK_FIX: "Replace componentWillMount with componentDidMount, use useEffect hooks"
+
+  ARCHITECTURAL_LAYERS:
+    SAFE_LIFECYCLES: ["componentDidMount", "componentDidUpdate", "componentWillUnmount"]
+    UNSAFE_LIFECYCLES: ["componentWillMount", "componentWillReceiveProps", "componentWillUpdate"]
+    MODERN_PATTERNS: ["useEffect", "useState"]
+
+  DETECT:
+    PATTERNS:
+      javascript:
+        # Unsafe lifecycle methods
+        - WILL_MOUNT: "componentWillMount\\s*\\(\\s*\\)\\s*\\{"
+        - WILL_RECEIVE_PROPS: "componentWillReceiveProps\\s*\\(\\s*nextProps\\s*\\)"
+        - WILL_UPDATE: "componentWillUpdate\\s*\\([^)]*\\)\\s*\\{"
+
+        # UNSAFE_ prefixed versions
+        - UNSAFE_MOUNT: "UNSAFE_componentWillMount"
+        - UNSAFE_PROPS: "UNSAFE_componentWillReceiveProps"
+        - UNSAFE_UPDATE: "UNSAFE_componentWillUpdate"
+
+      typescript:
+        # TypeScript versions
+        - TS_WILL_MOUNT: "componentWillMount\\s*\\(\\s*\\)\\s*:\\s*void"
+        - TS_WILL_RECEIVE: "componentWillReceiveProps\\s*\\(.*:\\s*\\w+"
+        - TS_WILL_UPDATE: "componentWillUpdate\\s*\\(.*:\\s*\\w+"
+
+  VIOLATIONS:
+    - "{{SILO:PROJECT_TYPE}}: componentWillMount breaks {{SILO:COMPLIANCE_REQUIREMENTS}} concurrent rendering"
+    - "{{SILO:PROJECT_TYPE}}: componentWillReceiveProps unsafe in {{SILO:COMPLIANCE_REQUIREMENTS}}"
+    - "{{SILO:PROJECT_TYPE}}: componentWillUpdate causes race conditions"
+
+  FIXES:
+    javascript:
+      - REPLACE: "componentWillMount() {"
+      - WITH: "componentDidMount() {"
+      - TEACHING: "componentDidMount is safe for {{SILO:COMPLIANCE_REQUIREMENTS}}"
+
+      - REPLACE: "componentWillReceiveProps(nextProps) {"
+      - WITH: "componentDidUpdate(prevProps, prevState) {\n  if (this.props !== prevProps) {"
+      - TEACHING: "componentDidUpdate safe for React 18+ concurrent mode"
+
+      - REPLACE: "UNSAFE_componentWillMount"
+      - WITH: "componentDidMount"
+      - TEACHING: "Remove UNSAFE_ prefix and use safe lifecycle"
+
+    typescript:
+      - REPLACE: "componentWillMount(): void {"
+      - WITH: "componentDidMount(): void {"
+      - TEACHING: "Type-safe componentDidMount for {{SILO:PROJECT_TYPE}}"
+    META_ARCHITECTURE:
+      HEALING_PRIORITY: 1
+      BREAKING_CHANGE: true
+      BUSINESS_IMPACT: "Unsafe lifecycles crash in React 18 concurrent mode"
+      AUTO_HEAL_SUCCESS_RATE: "80%"
+      GOVERNANCE_LEVEL: "REACT_MODERNIZATION_ENFORCEMENT"
+
+  FILE_INCLUSIONS:
+    # Only application source
+    - "/src/.*\\.(js|jsx|ts|tsx)$"
+    - "/app/.*\\.(js|jsx|ts|tsx)$"
+    - "/components/.*\\.(js|jsx|ts|tsx)$"
+
+  FILE_EXCLUSIONS:
+    # Exclude React library internals
+    - "/node_modules/react/"
+    - "/packages/react/"
+
+    # Exclude tests
+    - "/\\.test\\.(js|jsx|ts|tsx)$"
+    - "/\\.spec\\.(js|jsx|ts|tsx)$"
+    - "/__tests__/"
+
+    # Exclude examples
+    - "/examples/"
+    - "/demos/"
+
+  WHITELISTED_PATTERNS:
+    - "componentDidMount"
+    - "componentDidUpdate"
+    - "componentWillUnmount"
+    - "useEffect"
+    - "useState"
+
+  PARTIAL_HEALING:
+    javascript:
+      - ACTION: "Replace unsafe lifecycles with safe alternatives"
+      - LIMITATION: "Complex prop logic may need manual review"
+      - DOWNGRADE_TO: "WARNING"
+      - EDUCATIONAL_NOTE: "Consider migrating to hooks for {{SILO:COMPLIANCE_REQUIREMENTS}}"
+    META_ARCHITECTURE:
+      HEALING_PRIORITY: 7
+      AUTO_HEAL_SUCCESS_RATE: "100%"
+
+  IDENTIFIER: "REACT-COMPONENT-LIFECYCLE-001"
+  IS_VALID: true
+  CODE_TYPE: "Architecture"
+  CURRENT_STATE: "Active"
+
+END RULE

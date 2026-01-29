@@ -1,0 +1,104 @@
+{
+  "language": "jsx",
+  "displayName": "JSX (React)",
+  "fileExtensions": [".jsx"],
+
+  "parsingPatterns": {
+    "namespace": "",
+    "import": "^(?:import\\s+(?:(?<symbols>[\\w\\s,{}*]+)\\s+from\\s+)?['\"](?<module>[^'\"]+)['\"]|(?:const|let|var)\\s+(?<symbols>[\\w\\s,{}]+)\\s*=\\s*require\\(['\"](?<module>[^'\"]+)['\"]\\))",
+    "typeDeclaration": "(?:export\\s+)?(?:default\\s+)?(class|function)\\s+(?!_interopRequire|_getRequire)(\\w+)",
+    "typeKeywords": ["class", "function"],
+    "methodDeclaration": "^\\s*(?:async\\s+)?(?:static\\s+)?(?:\\*\\s*)?(\\w+)\\s*\\([^)]*\\)\\s*\\{",
+    "fieldDeclaration": "^\\s+(?:this\\.)?(\\w+)\\s*[=:]",
+    "instantiation": "new\\s+(\\w+)\\s*\\(",
+    "commentSingleLine": "//(.*)$",
+    "commentMultiLine": "/\\*(.*?)\\*/",
+    "commentDocumentation": "/\\*\\*(.*?)\\*/"
+  },
+
+  "plainImportBehavior": "importModule",
+
+  "layerDetection": {
+    "layers": {
+      "Internal": {
+        "pathPatterns": [
+          "\\\\__tests__\\\\",
+          "\\\\__mocks__\\\\"
+        ],
+        "namingPatterns": [
+          ".*Internal$",
+          "__.*"
+        ],
+        "importPatterns": []
+      },
+
+      "Shared": {
+        "pathPatterns": [
+          "\\\\shared\\\\"
+        ],
+        "namingPatterns": [
+          ".*Shared$"
+        ],
+        "importPatterns": [
+          "shared/.*"
+        ]
+      },
+
+      "DevTools": {
+        "pathPatterns": [
+          "react-devtools"
+        ],
+        "namingPatterns": [
+          ".*DevTools.*"
+        ],
+        "importPatterns": []
+      },
+
+      "PublicAPI": {
+        "pathPatterns": [
+          "packages\\\\react\\\\src\\\\React",
+          "packages\\\\react-dom\\\\src\\\\client"
+        ],
+        "namingPatterns": [
+          "^React$"
+        ],
+        "importPatterns": []
+      }
+    }
+  },
+
+  "fieldExtractionPatterns": [
+    {
+      "name": "class_field",
+      "description": "Matches class field declarations",
+      "pattern": "^\\s+(\\w+)\\s*=",
+      "typeGroup": 0,
+      "nameGroup": 1,
+      "isProperty": false
+    }
+  ],
+
+  "transformationRules": {
+    "importTemplate": "import {namespace} from '{module}';",
+    "importInsertLocation": "after_last_import",
+    "importRemovalPattern": "^\\s*import.*{namespace}.*$"
+  },
+
+  "formattingRules": {
+    "indentSize": 2,
+    "increaseIndentTriggers": ["{"],
+    "decreaseIndentTriggers": ["}"],
+    "decreaseBeforeLine": true
+  },
+
+  "syntaxValidation": {
+    "balancedPairs": [
+      { "open": "{", "close": "}" },
+      { "open": "(", "close": ")" },
+      { "open": "[", "close": "]" }
+    ],
+    "invalidPatterns": [";;"]
+  },
+
+  "commentStyles": ["//", "/*", "*/", "/**"]
+}

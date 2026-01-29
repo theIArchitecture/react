@@ -1,0 +1,158 @@
+# React Production Error Codes Rule - Production Ready
+# Based on Meta's actual ESLint rule: prod-error-codes.js
+# Enforces error code management for bundle optimization
+# Ensures all error messages have corresponding production error codes
+
+RULE "REACT-PROD-ERROR-CODES-VIOLATION" : IHealerArchitecture
+  ID: "REACT-PROD-ERROR-CODES-001"
+  DESCRIPTION: "Error message without production error code - breaks React bundle size optimization"
+  SEVERITY: Warning
+  CATEGORY: "React_BundleOptimization"
+  APPLIES_TO: ["javascript", "typescript", "jsx", "tsx"]
+
+  ARCHITECTURAL_CONTEXT:
+    PROJECT_TYPE: "REACT_APPLICATION"
+    COMPLIANCE_REQUIREMENTS: ["Bundle_Size_Optimization", "Production_Debugging", "Error_Tracking"]
+    ORGANIZATION_STANDARDS: ["React_Core_Team", "Meta_Frontend_Standards", "Bundle_Optimization"]
+    TECHNOLOGY_STACK: ["javascript", "typescript", "react", "webpack", "babel"]
+    SECURITY_LEVEL: "Production_Frontend"
+
+  EDUCATION:
+    DOCS_URL: "https://github.com/facebook/react/blob/main/scripts/error-codes/README.md"
+    BUSINESS_IMPACT: "Missing error codes prevent {{SILO:PROJECT_TYPE}} bundle optimization worth millions in performance - production errors become impossible to debug"
+    QUICK_FIX: "Add error to codes.json and use formatProdErrorMessage() with assigned code for {{SILO:SECURITY_LEVEL}}"
+
+  ARCHITECTURAL_LAYERS:
+    REACT_ERROR_SYSTEM: ["Error boundaries", "Error messages", "Error codes"]
+    REACT_BUNDLE_OPTIMIZATION: ["Production builds", "Code splitting", "Tree shaking"]
+    REACT_DEVELOPMENT_MODE: ["__DEV__ checks", "Development warnings", "Hot reloading"]
+
+  DETECT:
+    PATTERNS:
+      javascript:
+        # Long error strings without __DEV__ check
+        - ERROR_LITERAL_LONG: "throw new Error\\(['\"`][^'\"`,]{20,}['\"`]\\)(?!.*__DEV__)"
+        - ERROR_LITERAL_MEDIUM: "throw new Error\\(['\"`][^'\"`,]{10,}['\"`]\\)(?!.*formatProdErrorMessage)"
+        
+        # Console errors without production handling
+        - CONSOLE_ERROR_LITERAL: "console\\.error\\(['\"`][^'\"`,]{15,}['\"`]\\)(?!.*__DEV__)"
+        - CONSOLE_WARN_LITERAL: "console\\.warn\\(['\"`][^'\"`,]{15,}['\"`]\\)(?!.*__DEV__)"
+      
+        # Invariant with long message
+        - INVARIANT_LITERAL: "invariant\\([^,]+,\\s*['\"`][^'\"`,]{15,}['\"`]\\)(?!.*__DEV__)"
+        
+        # Warning without production code
+        - WARNING_LITERAL: "warning\\(['\"`][^'\"`,]{15,}['\"`]\\)(?!.*__DEV__)"
+
+      typescript:
+        # TypeScript error strings
+        - TS_ERROR_LITERAL: "throw new Error\\(['\"`][^'\"`,]{15,}['\"`]\\)(?!.*__DEV__)"
+        - TS_CONSOLE_ERROR: "console\\.error\\(['\"`][^'\"`,]{15,}['\"`]\\)(?!.*__DEV__)"
+        - TS_INVARIANT: "invariant\\([^,]+,\\s*['\"`][^'\"`,]{15,}['\"`]\\)(?!.*__DEV__)"
+
+      jsx:
+        # JSX error patterns
+        - JSX_ERROR_LITERAL: "throw new Error\\(['\"`][^'\"`,]{15,}['\"`]\\)(?!.*__DEV__)"
+        - JSX_CONSOLE_ERROR: "console\\.error\\(['\"`][^'\"`,]{15,}['\"`]\\)(?!.*__DEV__)"
+
+  VIOLATIONS:
+    - "{{SILO:PROJECT_TYPE}}: Long error message needs code in codes.json for {{SILO:COMPLIANCE_REQUIREMENTS}}"
+    - "{{SILO:PROJECT_TYPE}}: Console error needs __DEV__ check for bundle optimization"
+    - "{{SILO:PROJECT_TYPE}}: Invariant message needs production error code"
+    - "{{SILO:PROJECT_TYPE}}: Warning message needs __DEV__ wrapper for {{SILO:SECURITY_LEVEL}}"
+
+  FIXES:
+    javascript:
+      - REPLACE: "throw new Error('${1}');"
+      - WITH: "throw new Error(__DEV__ ? '${1}' : formatProdErrorMessage(getErrorCode('${1}')));"
+      - TEACHING: "Use __DEV__ check for bundle optimization in {{SILO:COMPLIANCE_REQUIREMENTS}} - add '${1}' to codes.json"
+
+      - REPLACE: "console.error('${1}');"
+      - WITH: "console.error(__DEV__ ? '${1}' : formatProdErrorMessage(getErrorCode('${1}')));"
+      - TEACHING: "Wrap console.error with __DEV__ for {{SILO:PROJECT_TYPE}} bundle optimization"
+
+      - REPLACE: "invariant(condition, '${1}');"
+      - WITH: "invariant(condition, __DEV__ ? '${1}' : formatProdErrorMessage(getErrorCode('${1}')));"
+      - TEACHING: "Add __DEV__ check to invariant for {{SILO:COMPLIANCE_REQUIREMENTS}}"
+
+      - REPLACE: "warning('${1}');"
+      - WITH: "warning(__DEV__ ? '${1}' : formatProdErrorMessage(getErrorCode('${1}')));"
+      - TEACHING: "Wrap warning with __DEV__ for {{SILO:PROJECT_TYPE}} production builds"
+
+    typescript:
+      - REPLACE: "throw new Error('${1}');"
+      - WITH: "throw new Error(__DEV__ ? '${1}' : formatProdErrorMessage(getErrorCode('${1}')));"
+      - TEACHING: "TypeScript errors need __DEV__ wrapping for {{SILO:COMPLIANCE_REQUIREMENTS}}"
+
+      - REPLACE: "console.error('${1}');"
+      - WITH: "console.error(__DEV__ ? '${1}' : formatProdErrorMessage(getErrorCode('${1}')));"
+      - TEACHING: "TypeScript console.error needs __DEV__ for {{SILO:PROJECT_TYPE}}"
+    META_ARCHITECTURE:
+      HEALING_PRIORITY: 2
+      BREAKING_CHANGE: false
+      BUSINESS_IMPACT: "Bundle optimization saves millions in performance for {{SILO:PROJECT_TYPE}}"
+      AUTO_HEAL_SUCCESS_RATE: "80%"
+      RECURSIVE_DEPTH: 2
+      GOVERNANCE_LEVEL: "REACT_BUNDLE_OPTIMIZATION_ENFORCEMENT"
+
+  EXAMPLES:
+    VIOLATION:
+      javascript: |
+        // ❌ VIOLATION: Long error message without production code
+        function validateProps(props) {
+          if (!props.children) {
+            throw new Error('React component requires children prop to render content properly');
+          }
+          
+          if (props.onClick && typeof props.onClick !== 'function') {
+            console.error('React component onClick prop must be a function');
+          }
+          
+          invariant(props.key, 'React component must have unique key prop');
+        }
+
+    CORRECT:
+      javascript: |
+        // ✅ CORRECT: Error messages with production codes
+        function validateProps(props) {
+          if (!props.children) {
+            throw new Error(__DEV__ ? 'React component requires children prop to render content properly' : formatProdErrorMessage(123));
+          }
+          
+          if (props.onClick && typeof props.onClick !== 'function') {
+            console.error(__DEV__ ? 'React component onClick prop must be a function' : formatProdErrorMessage(124));
+          }
+          
+          invariant(props.key, __DEV__ ? 'React component must have unique key prop' : formatProdErrorMessage(125));
+        }
+
+  WHITELISTED_PATTERNS:
+    - "formatProdErrorMessage"
+    - "__DEV__\\s*\\?"
+    - "getErrorCode\\("
+    - "error-decoder\\.html"
+    - "codes\\.json"
+
+  PARTIAL_HEALING:
+    javascript:
+      - ACTION: "Wrap errors with __DEV__ check and formatProdErrorMessage"
+      - LIMITATION: "Cannot assign error codes - must be added to codes.json manually"
+      - DOWNGRADE_TO: "WARNING"
+      - EDUCATIONAL_NOTE: "Add error to codes.json and update build process for {{SILO:PROJECT_TYPE}}"
+    META_ARCHITECTURE:
+      HEALING_PRIORITY: 7
+      AUTO_HEAL_SUCCESS_RATE: "100%"
+
+  SELF_GOVERNANCE:
+    VALIDATES_SELF: true
+    RECURSIVE_DEPTH: 2
+    META_VALIDATION: "This rule enforces {{SILO:COMPLIANCE_REQUIREMENTS}} for {{SILO:PROJECT_TYPE}} error handling"
+    PROOF_OF_COMPLIANCE: "Rule implements IHealerArchitecture interface and validates React error code patterns"
+    COMPLIANCE_CHECK: "All detection patterns target long error messages, all fixes provide __DEV__ wrappers"
+
+  IDENTIFIER: "REACT-PROD-ERROR-CODES-001"
+  IS_VALID: true
+  CODE_TYPE: "Architecture"
+  CURRENT_STATE: "Active"
+
+END RULE

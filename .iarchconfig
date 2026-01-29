@@ -1,0 +1,46 @@
+{
+  "version": "1.0",
+  "defaultLayer": "Base",
+  "layerHierarchy": {
+    "Base": {
+      "inheritsFrom": []
+    },
+    "Shared": {
+      "inheritsFrom": ["Base"]
+    },
+    "DevTools": {
+      "inheritsFrom": ["Base", "Shared"]
+    },
+    "Internal": {
+      "inheritsFrom": ["Base", "Shared"]
+    },
+    "Bindings": {
+      "inheritsFrom": ["Base", "Shared", "Internal"]
+    },
+    "Reconciler": {
+      "inheritsFrom": ["Base", "Shared", "Internal"]
+    },
+    "PublicAPI": {
+      "inheritsFrom": ["Base", "Shared", "Internal", "Reconciler", "Bindings", "DevTools"]
+    }
+  },
+  "engineConfig": {
+    "parallel_threads": 9,
+    "files_per_batch": 50,
+    "progressive_output_threshold": 200,
+    "ignorePatterns": [
+      ".git",
+      ".iarch",
+      "build\\\\",
+      "node_modules\\\\",
+      "dist\\\\",
+      "coverage\\\\",
+      "docs\\\\",
+      "__pycache__",
+      "__compiled__",
+      "__snapshots__",
+      "*.pyc",
+      "*.map"
+    ]
+  }
+}

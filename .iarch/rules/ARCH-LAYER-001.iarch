@@ -1,0 +1,35 @@
+# Layer Violation Detection Rule
+# Detects violations of architectural layer boundaries in React codebase
+# Enforces separation between PublicAPI, Reconciler, Bindings, Shared, and Internal layers
+
+RULE "LAYER-VIOLATION-DETECTION" : IMetaArchitecture
+  ID: "ARCH-LAYER-001"
+  DESCRIPTION: "Layer violation detected - dependencies flow in the wrong direction, violating React's architectural boundaries"
+  SEVERITY: Fatal
+  CATEGORY: "Architecture_Quality"
+  APPLIES_TO: ["javascript", "typescript", "tsx", "jsx"]
+
+  PLUGIN:
+    ID: "architecture-validator"
+    SCOPE: "tree"
+    CONFIG:
+      validator: "LayerViolation"
+      hierarchy: "ReactArchitecture"
+
+  EDUCATION:
+    DOCS_URL: "https://react.dev/learn/understanding-your-ui-as-a-tree"
+    WHY_IT_MATTERS: "React's layered architecture separates public APIs from internal reconciler logic and platform bindings. Layer violations create tight coupling between abstraction levels, making the framework difficult to maintain and optimize."
+    BUSINESS_IMPACT: "Cross-layer violations prevent independent evolution of the reconciler, renderers, and public APIs. Breaking changes in internal layers can cascade to public APIs, affecting millions of React developers."
+    QUICK_FIX: "Use proper API boundaries - public code should import from 'react' or 'react-dom', not directly access reconciler or internal implementation. Create proper abstractions in intermediate layers."
+
+  ARCHITECTURAL_CONTEXT:
+    PROJECT_TYPE: "UI_Framework"
+    ARCHITECTURE_PATTERN: "Layered_Pluggable_Renderers"
+    DESIGN_PRINCIPLES: ["API_Stability", "Renderer_Independence", "Upward_Dependencies"]
+
+  VIOLATIONS:
+    - "Layer violation: {{SOURCE_LAYER}} should not depend on {{TARGET_LAYER}}"
+    - "Dependency inversion required: {{SOURCE_LAYER}} → {{TARGET_LAYER}} violates the dependency rule"
+    - "Architectural boundary breach: Public API depends on internal implementation"
+
+END_RULE

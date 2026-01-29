@@ -1,0 +1,167 @@
+{
+  "language": "javascript",
+  "displayName": "JavaScript (React)",
+  "fileExtensions": [".js", ".mjs"],
+
+  "parsingPatterns": {
+    "namespace": "",
+    "import": "^import\\s+(?:type\\s+)?(?:{[^}]+}|\\*\\s+as\\s+\\w+|\\w+)\\s+from\\s+['\"](?<module>[^'\"]+)['\"]",
+    "typeDeclaration": "(?:export\\s+)?(?:default\\s+)?(class|function)\\s+(?!_interopRequire|_getRequire)(\\w+)",
+    "typeKeywords": ["class", "function"],
+    "methodDeclaration": "(?:async\\s+)?(?:static\\s+)?(?:\\*\\s*)?(\\w+)\\s*\\([^)]*\\)\\s*(?::\\s*[^{]+)?\\s*\\{",
+    "fieldDeclaration": "(?:this\\.)?(\\w+)\\s*[=:]",
+    "instantiation": "new\\s+(\\w+)\\s*\\(",
+    "commentSingleLine": "//(.*)$",
+    "commentMultiLine": "/\\*(.*?)\\*/",
+    "commentDocumentation": "/\\*\\*(.*?)\\*/"
+  },
+
+  "plainImportBehavior": "importModule",
+
+  "layerDetection": {
+    "layers": {
+      "Internal": {
+        "pathPatterns": [
+          "\\\\__tests__\\\\",
+          "\\\\__mocks__\\\\",
+          "\\\\__fixtures__\\\\",
+          "\\\\forks\\\\",
+          "\\\\inline\\\\"
+        ],
+        "namingPatterns": [
+          ".*Internal$",
+          ".*Impl$",
+          "__.*"
+        ],
+        "importPatterns": [
+          ".*/internal/.*",
+          ".*/__tests__/.*"
+        ]
+      },
+
+      "Shared": {
+        "pathPatterns": [
+          "\\\\shared\\\\",
+          "packages\\\\shared\\\\"
+        ],
+        "namingPatterns": [
+          ".*Shared$",
+          ".*Utils$",
+          ".*Helper.*"
+        ],
+        "importPatterns": [
+          "shared/.*",
+          ".*/shared/.*"
+        ]
+      },
+
+      "DevTools": {
+        "pathPatterns": [
+          "react-devtools",
+          "\\\\devtools\\\\"
+        ],
+        "namingPatterns": [
+          ".*DevTools.*",
+          ".*Inspector.*"
+        ],
+        "importPatterns": [
+          "react-devtools.*"
+        ]
+      },
+
+      "Reconciler": {
+        "pathPatterns": [
+          "react-reconciler",
+          "\\\\reconciler\\\\"
+        ],
+        "namingPatterns": [
+          ".*Reconciler.*",
+          ".*Fiber.*",
+          ".*Scheduler.*"
+        ],
+        "importPatterns": [
+          "react-reconciler.*"
+        ]
+      },
+
+      "Bindings": {
+        "pathPatterns": [
+          "react-dom-bindings",
+          "react-native-renderer",
+          "\\\\bindings\\\\"
+        ],
+        "namingPatterns": [
+          ".*Binding.*",
+          ".*Renderer.*",
+          ".*Host.*"
+        ],
+        "importPatterns": [
+          ".*-bindings.*",
+          ".*-renderer.*"
+        ]
+      },
+
+      "PublicAPI": {
+        "pathPatterns": [
+          "packages\\\\react\\\\src\\\\React",
+          "packages\\\\react\\\\index",
+          "packages\\\\react-dom\\\\src\\\\client",
+          "packages\\\\react-dom\\\\index"
+        ],
+        "namingPatterns": [
+          "^React$",
+          "^ReactDOM$",
+          "^Component$",
+          "^createElement$"
+        ],
+        "importPatterns": [
+          "^react$",
+          "^react-dom$"
+        ]
+      }
+    }
+  },
+
+  "fieldExtractionPatterns": [
+    {
+      "name": "class_field",
+      "description": "Matches class field declarations",
+      "pattern": "^\\s+(\\w+)\\s*=",
+      "typeGroup": 0,
+      "nameGroup": 1,
+      "isProperty": false
+    },
+    {
+      "name": "this_assignment",
+      "description": "Matches this.field = value",
+      "pattern": "\\bthis\\.(\\w+)\\s*=",
+      "typeGroup": 0,
+      "nameGroup": 1,
+      "isProperty": false
+    }
+  ],
+
+  "transformationRules": {
+    "importTemplate": "import {namespace} from '{module}';",
+    "importInsertLocation": "after_last_import",
+    "importRemovalPattern": "^\\s*import.*['\"].*{namespace}.*['\"].*$"
+  },
+
+  "formattingRules": {
+    "indentSize": 2,
+    "increaseIndentTriggers": ["{"],
+    "decreaseIndentTriggers": ["}"],
+    "decreaseBeforeLine": true
+  },
+
+  "syntaxValidation": {
+    "balancedPairs": [
+      { "open": "{", "close": "}" },
+      { "open": "(", "close": ")" },
+      { "open": "[", "close": "]" }
+    ],
+    "invalidPatterns": [";;"]
+  },
+
+  "commentStyles": ["//", "/*", "*/", "/**"]
+}
