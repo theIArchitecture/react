@@ -1,104 +1,59 @@
 {
   "language": "jsx",
-  "displayName": "JSX (React)",
-  "fileExtensions": [".jsx"],
-
-  "parsingPatterns": {
-    "namespace": "",
-    "import": "^(?:import\\s+(?:(?<symbols>[\\w\\s,{}*]+)\\s+from\\s+)?['\"](?<module>[^'\"]+)['\"]|(?:const|let|var)\\s+(?<symbols>[\\w\\s,{}]+)\\s*=\\s*require\\(['\"](?<module>[^'\"]+)['\"]\\))",
-    "typeDeclaration": "(?:export\\s+)?(?:default\\s+)?(class|function)\\s+(?!_interopRequire|_getRequire)(\\w+)",
-    "typeKeywords": ["class", "function"],
-    "methodDeclaration": "^\\s*(?:async\\s+)?(?:static\\s+)?(?:\\*\\s*)?(\\w+)\\s*\\([^)]*\\)\\s*\\{",
-    "fieldDeclaration": "^\\s+(?:this\\.)?(\\w+)\\s*[=:]",
-    "instantiation": "new\\s+(\\w+)\\s*\\(",
-    "commentSingleLine": "//(.*)$",
-    "commentMultiLine": "/\\*(.*?)\\*/",
-    "commentDocumentation": "/\\*\\*(.*?)\\*/"
-  },
-
-  "plainImportBehavior": "importModule",
-
-  "layerDetection": {
+  "display_name": "JSX (React)",
+  "file_extensions": [".jsx"],
+  "layer_detection": {
     "layers": {
-      "Internal": {
-        "pathPatterns": [
-          "\\\\__tests__\\\\",
-          "\\\\__mocks__\\\\"
-        ],
-        "namingPatterns": [
-          ".*Internal$",
-          "__.*"
-        ],
-        "importPatterns": []
+      "PublicAPI": {
+        "path_patterns": ["packages/react/src", "packages/react/index"]
       },
-
-      "Shared": {
-        "pathPatterns": [
-          "\\\\shared\\\\"
-        ],
-        "namingPatterns": [
-          ".*Shared$"
-        ],
-        "importPatterns": [
-          "shared/.*"
+      "Reconciler": {
+        "path_patterns": ["packages/react-reconciler/src"]
+      },
+      "Bindings": {
+        "path_patterns": [
+          "packages/react-dom/src",
+          "packages/react-native-renderer/src",
+          "packages/react-art/src",
+          "packages/react-test-renderer/src",
+          "packages/react-noop-renderer/src",
+          "packages/use-subscription/src"
         ]
       },
-
-      "DevTools": {
-        "pathPatterns": [
-          "react-devtools"
-        ],
-        "namingPatterns": [
-          ".*DevTools.*"
-        ],
-        "importPatterns": []
+      "Internal": {
+        "path_patterns": [
+          "packages/react-server/src",
+          "packages/react-client/src",
+          "packages/react-fetch/src",
+          "packages/react-cache/src"
+        ]
       },
-
-      "PublicAPI": {
-        "pathPatterns": [
-          "packages\\\\react\\\\src\\\\React",
-          "packages\\\\react-dom\\\\src\\\\client"
-        ],
-        "namingPatterns": [
-          "^React$"
-        ],
-        "importPatterns": []
+      "DevTools": {
+        "path_patterns": [
+          "packages/react-devtools",
+          "packages/react-devtools-core",
+          "packages/react-devtools-extensions",
+          "packages/react-devtools-inline",
+          "packages/react-devtools-shared",
+          "packages/react-devtools-timeline"
+        ]
+      },
+      "Shared": {
+        "path_patterns": [
+          "packages/shared/src",
+          "packages/react-is/src",
+          "packages/scheduler/src"
+        ]
       }
     }
   },
-
-  "fieldExtractionPatterns": [
-    {
-      "name": "class_field",
-      "description": "Matches class field declarations",
-      "pattern": "^\\s+(\\w+)\\s*=",
-      "typeGroup": 0,
-      "nameGroup": 1,
-      "isProperty": false
-    }
-  ],
-
-  "transformationRules": {
-    "importTemplate": "import {namespace} from '{module}';",
-    "importInsertLocation": "after_last_import",
-    "importRemovalPattern": "^\\s*import.*{namespace}.*$"
+  "parsing_patterns": {
+    "scope_from_path": "packages/([^/]+)/",
+    "import": "^\\s*import\\s+(?:\\{(?<symbols>[^}]+)\\}|\\*\\s+as\\s+(?<alias>\\w+)|(?<alias>\\w+))\\s+from\\s+['\"](?<module>[^'\"]+)['\"]",
+    "type_declaration": "(?:export\\s+)?(?:default\\s+)?(class|function)\\s+(\\w+)(?:\\s+extends\\s+([\\w\\.]+))?",
+    "type_keywords": ["class", "function"],
+    "comment_single_line": "//(.*)$",
+    "comment_multi_line": "/\\*(.*?)\\*/"
   },
-
-  "formattingRules": {
-    "indentSize": 2,
-    "increaseIndentTriggers": ["{"],
-    "decreaseIndentTriggers": ["}"],
-    "decreaseBeforeLine": true
-  },
-
-  "syntaxValidation": {
-    "balancedPairs": [
-      { "open": "{", "close": "}" },
-      { "open": "(", "close": ")" },
-      { "open": "[", "close": "]" }
-    ],
-    "invalidPatterns": [";;"]
-  },
-
-  "commentStyles": ["//", "/*", "*/", "/**"]
+  "plain_import_behavior": "skip"
 }

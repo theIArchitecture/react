@@ -1,148 +1,75 @@
 {
   "language": "typescript",
-  "displayName": "TypeScript (React)",
-  "fileExtensions": [".ts", ".mts", ".cts"],
-
-  "parsingPatterns": {
-    "namespace": "^\\s*(?:export\\s+)?namespace\\s+(\\w+)",
-    "import": "^import\\s+(?:type\\s+)?(?:{[^}]+}|\\*\\s+as\\s+\\w+|\\w+)\\s+from\\s+['\"](?<module>[^'\"]+)['\"]",
-    "typeDeclaration": "(?:export\\s+)?(?:default\\s+)?(?:abstract\\s+)?(class|interface|enum|type)\\s+(\\w+)(?:<[^>]+>)?(?:\\s+(?:extends|implements)\\s+([\\w,\\s<>]+))?\\s*[{=]",
-    "typeKeywords": ["class", "interface", "enum", "type"],
-    "methodDeclaration": "^\\s*(?:public\\s+|private\\s+|protected\\s+)?(?:static\\s+)?(?:async\\s+)?(?:abstract\\s+)?(?:readonly\\s+)?(\\w+)\\s*(?:<[^>]+>)?\\s*\\([^)]*\\)(?:\\s*:\\s*[^{;]+)?\\s*[{;]",
-    "fieldDeclaration": "^\\s+(?:public\\s+|private\\s+|protected\\s+)?(?:static\\s+)?(?:readonly\\s+)?(\\w+)(?:\\?)?\\s*:\\s*([^=;]+)(?:[=;])",
-    "instantiation": "new\\s+(\\w+)(?:<[^>]+>)?\\s*\\(",
-    "commentSingleLine": "//(.*)$",
-    "commentMultiLine": "/\\*(.*?)\\*/",
-    "commentDocumentation": "/\\*\\*(.*?)\\*/"
-  },
-
-  "plainImportBehavior": "importModule",
-
-  "layerDetection": {
+  "display_name": "TypeScript",
+  "file_extensions": [".ts", ".mts", ".cts"],
+  "layer_detection": {
     "layers": {
-      "Internal": {
-        "pathPatterns": [
-          "\\\\__tests__\\\\",
-          "\\\\__mocks__\\\\",
-          "\\\\forks\\\\",
-          "\\\\.internal\\\\",
-          "\\\\types\\\\global",
-          "\\\\types\\\\estree"
-        ],
-        "namingPatterns": [
-          ".*Internal$",
-          ".*Impl$",
-          "__.*"
-        ],
-        "importPatterns": [
-          ".*/internal/.*"
-        ]
-      },
-
-      "Shared": {
-        "pathPatterns": [
-          "\\\\shared\\\\",
-          "packages\\\\shared\\\\"
-        ],
-        "namingPatterns": [
-          ".*Shared$",
-          ".*Utils$"
-        ],
-        "importPatterns": [
-          "shared/.*"
-        ]
-      },
-
-      "DevTools": {
-        "pathPatterns": [
-          "react-devtools",
-          "\\\\devtools\\\\"
-        ],
-        "namingPatterns": [
-          ".*DevTools.*"
-        ],
-        "importPatterns": [
-          "react-devtools.*"
-        ]
-      },
-
-      "Reconciler": {
-        "pathPatterns": [
-          "react-reconciler"
-        ],
-        "namingPatterns": [
-          ".*Reconciler.*",
-          ".*Fiber.*"
-        ],
-        "importPatterns": [
-          "react-reconciler.*"
-        ]
-      },
-
-      "Bindings": {
-        "pathPatterns": [
-          "react-dom-bindings",
-          "react-native-renderer"
-        ],
-        "namingPatterns": [
-          ".*Binding.*",
-          ".*Renderer.*"
-        ],
-        "importPatterns": [
-          ".*-bindings.*"
-        ]
-      },
-
       "PublicAPI": {
-        "pathPatterns": [
-          "packages\\\\react\\\\src\\\\React",
-          "packages\\\\react-dom\\\\src\\\\client"
-        ],
-        "namingPatterns": [
-          "^React$",
-          "^ReactDOM$"
-        ],
-        "importPatterns": [
-          "^react$",
-          "^react-dom$"
+        "path_patterns": ["packages/react/src", "packages/react/index"]
+      },
+      "Reconciler": {
+        "path_patterns": ["packages/react-reconciler/src"]
+      },
+      "Bindings": {
+        "path_patterns": [
+          "packages/react-dom/src",
+          "packages/react-native-renderer/src",
+          "packages/react-art/src",
+          "packages/react-test-renderer/src",
+          "packages/react-noop-renderer/src",
+          "packages/use-subscription/src"
+        ]
+      },
+      "Internal": {
+        "path_patterns": [
+          "packages/react-server/src",
+          "packages/react-client/src",
+          "packages/react-fetch/src",
+          "packages/react-cache/src"
+        ]
+      },
+      "DevTools": {
+        "path_patterns": [
+          "packages/react-devtools",
+          "packages/react-devtools-core",
+          "packages/react-devtools-extensions",
+          "packages/react-devtools-inline",
+          "packages/react-devtools-shared",
+          "packages/react-devtools-timeline"
+        ]
+      },
+      "Shared": {
+        "path_patterns": [
+          "packages/shared/src",
+          "packages/react-is/src",
+          "packages/scheduler/src"
         ]
       }
     }
   },
+  "parsing_patterns": {
+    "namespace": "^\\s*(?:export\\s+)?namespace\\s+([\\w\\.]+)",
+    "scope_from_path": "packages/([^/]+)/",
+    "import": "^\\s*import\\s+(?:\\{(?<symbols>[^}]+)\\}|\\*\\s+as\\s+(?<alias>\\w+)|(?<alias>\\w+))\\s+from\\s+['\"](?<module>[^'\"]+)['\"]",
+    "type_declaration": "(?:export\\s+)?(?:default\\s+)?(?:abstract\\s+)?(class|interface|type|enum)\\s+(\\w+)(?:\\s*<[^>]+>)?(?:\\s+extends\\s+([\\w\\.,\\s<>]+))?(?:\\s+implements\\s+([\\w\\.,\\s<>]+))?",
+    "type_keywords": ["class", "interface", "type", "enum"],
+    "method_declaration": "(?:public\\s+|private\\s+|protected\\s+)?(?:static\\s+)?(?:async\\s+)?(\\w+)\\s*\\(([^)]*)\\)\\s*(?::\\s*([^{]+))?\\s*\\{",
+    "instantiation": "new\\s+([\\w\\.]+)(?:<[^>]+>)?\\s*\\(",
+    "comment_single_line": "//(.*)$",
+    "comment_multi_line": "/\\*(.*?)\\*/",
+    "comment_documentation": "/\\*\\*(.*)\\*/"
+  },
 
-  "fieldExtractionPatterns": [
+  "plain_import_behavior": "skip",
+
+  "field_extraction_patterns": [
     {
-      "name": "typed_field",
-      "description": "Matches TypeScript field with type annotation",
-      "pattern": "^\\s+(?:public\\s+|private\\s+|protected\\s+)?(?:static\\s+)?(?:readonly\\s+)?(\\w+)(?:\\?)?\\s*:\\s*([^=;]+)",
-      "typeGroup": 2,
-      "nameGroup": 1,
-      "isProperty": false
+      "name": "property_declaration",
+      "description": "Matches class property declarations",
+      "pattern": "(?:public\\s+|private\\s+|protected\\s+)?(?:readonly\\s+)?(?:static\\s+)?(\\w+(?:<[\\w\\s,<>]+>)?)(?:\\s*[?!])?\\s*(?::\\s*(\\w+(?:<[\\w\\s,<>]+>)?))?\\s*(?:=|;)",
+      "type_group": 2,
+      "name_group": 1,
+      "is_property": true
     }
-  ],
-
-  "transformationRules": {
-    "importTemplate": "import { {namespace} } from '{module}';",
-    "importInsertLocation": "after_last_import",
-    "importRemovalPattern": "^\\s*import.*{namespace}.*$"
-  },
-
-  "formattingRules": {
-    "indentSize": 2,
-    "increaseIndentTriggers": ["{"],
-    "decreaseIndentTriggers": ["}"],
-    "decreaseBeforeLine": true
-  },
-
-  "syntaxValidation": {
-    "balancedPairs": [
-      { "open": "{", "close": "}" },
-      { "open": "(", "close": ")" },
-      { "open": "[", "close": "]" },
-      { "open": "<", "close": ">" }
-    ],
-    "invalidPatterns": [";;"]
-  },
-
-  "commentStyles": ["//", "/*", "*/", "/**"]
+  ]
 }
