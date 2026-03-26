@@ -10,10 +10,9 @@ RULE "TEMPORAL-COUPLING-DETECTION" : IMetaArchitecture
   APPLIES_TO: ["csharp", "java", "python", "typescript", "javascript"]
 
   PLUGIN:
-    ID: "architecture-validator"
+    ID: "temporal-coupling-validator"
     SCOPE: "tree"
     CONFIG:
-      validator: "TemporalCoupling"
       coupling_threshold: "0.9"
       min_occurrences: "5"
 

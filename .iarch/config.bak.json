@@ -1,6 +1,6 @@
 {
   "discovery-root": ".",
-  "bundled-defaults-path": "../dist",
+  "bundled-defaults-path": "~/.iarch",
   "version": "1.0",
   "default-layer": "Base",
   "governance": {
@@ -12,8 +12,7 @@
     "dbscan-min-pts": 3,
     "analysis-seed": 42,
     "min-cluster-purity": 0.6,
-    "duplicate-threshold": 0.95,
-    "voting-confidence-threshold": 0.25
+    "duplicate-threshold": 0.95
   },
   "layer-hierarchy": {
     "Base": { "inherits-from": [] },

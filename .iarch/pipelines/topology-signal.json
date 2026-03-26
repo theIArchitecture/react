@@ -1,0 +1,14 @@
+{
+  "name": "Governance - Topology Signal",
+  "description": "Prove the topology signal: build graph, embed type nodes, detect anomalous clusters, score entropy. Milestone 1 of the governance intelligence system.",
+  "processors": [
+    "iarch-init",
+	"file-parser",
+    "@graphing/dependency-graph-processors",
+    "topology-health-check",
+    "codebase-embedding",
+    "topology-analysis",
+    "entropy-score",
+    "governance-reporter"
+  ]
+}

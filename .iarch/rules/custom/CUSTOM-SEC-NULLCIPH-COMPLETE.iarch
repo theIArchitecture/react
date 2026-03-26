@@ -1,0 +1,113 @@
+RULE "NullCipher Usage Detection" : IHealerArchitecture
+  ID: "CUSTOM-SEC-NULLCIPH"
+  DESCRIPTION: "Detects and heals NullCipher usage - provides no encryption"
+  SEVERITY: Fatal
+  CATEGORY: "Security"
+  APPLIES_TO: ["java", "csharp"]
+
+  ARCHITECTURAL_CONTEXT:
+    PROJECT_TYPE: "ENTERPRISE_APPLICATION"
+    SECURITY_LEVEL: "Production"
+    COMPLIANCE_REQUIREMENTS: ["OWASP", "Security_Best_Practices"]
+
+  # DETECTION: Uses C# Roslyn plugin
+  PLUGIN:
+    ID: "nullcipher-detector"
+    SCOPE: "file"
+    CONFIG:
+      severity: "Fatal"
+      rule_id: "CUSTOM-SEC-NULLCIPH"
+
+  VIOLATIONS:
+    - "NullCipher provides no encryption - security vulnerability"
+    - "Data appears encrypted but is transmitted/stored in plaintext"
+
+  EDUCATION:
+    WHY_IT_MATTERS: "NullCipher creates false sense of security by appearing to encrypt while doing nothing. Data is completely unprotected."
+    BUSINESS_IMPACT: "Data transmitted or stored with NullCipher is vulnerable to interception and theft. Can lead to data breaches and compliance failures."
+    QUICK_FIX: "Replace with Cipher.getInstance('AES/GCM/NoPadding') and initialize with proper keys"
+    DOCS_URL: "https://docs.oracle.com/javase/8/docs/api/javax/crypto/NullCipher.html"
+
+  # HEALING STRATEGY 1: Simple regex replacement (70% success, requires manual key setup)
+  FIXES:
+    java:
+      - REPLACE: "new NullCipher\\(\\)"
+      - WITH: "Cipher.getInstance(\"AES/GCM/NoPadding\") /* TODO: Initialize with SecretKey */"
+      - TEACHING: "Replaced NullCipher with AES-GCM. You must manually initialize with SecretKey and GCMParameterSpec."
+
+      - REPLACE: "new javax\\.crypto\\.NullCipher\\(\\)"
+      - WITH: "Cipher.getInstance(\"AES/GCM/NoPadding\") /* TODO: Initialize with SecretKey */"
+      - TEACHING: "Replaced fully-qualified NullCipher with AES-GCM"
+
+      - REPLACE: "NullCipher (\\w+) ="
+      - WITH: "Cipher \\1 ="
+      - TEACHING: "Changed NullCipher type to Cipher"
+
+    META_ARCHITECTURE:
+      HEALING_PRIORITY: 1
+      BREAKING_CHANGE: true
+      AUTO_HEAL_SUCCESS_RATE: "70% - Replaces instantiation but requires manual key/IV setup"
+
+  # HEALING STRATEGY 2: Plugin-based healing (adds imports, more thorough)
+  FIXES:
+    java:
+      - PLUGIN: "nullcipher-healer"
+      - TEACHING: "Plugin replaces NullCipher and adds necessary imports (Cipher, SecretKeySpec, GCMParameterSpec). Manual key initialization still required."
+
+    META_ARCHITECTURE:
+      HEALING_PRIORITY: 5
+      BREAKING_CHANGE: true
+      AUTO_HEAL_SUCCESS_RATE: "70% - Same limitations as regex, but handles imports"
+      REQUIRES_MANUAL_STEPS: true
+
+  EXAMPLES:
+    VIOLATION:
+      java: |
+        import javax.crypto.NullCipher;
+        import javax.crypto.Cipher;
+
+        public class InsecureEncryption {
+            public void encrypt(byte[] data) {
+                // VIOLATION: Using NullCipher - no encryption!
+                Cipher cipher = new NullCipher();
+                byte[] result = cipher.doFinal(data); // Data is NOT encrypted!
+            }
+        }
+
+    CORRECT:
+      java: |
+        import javax.crypto.Cipher;
+        import javax.crypto.spec.SecretKeySpec;
+        import javax.crypto.spec.GCMParameterSpec;
+
+        public class SecureEncryption {
+            public void encrypt(byte[] data, byte[] keyBytes, byte[] ivBytes) throws Exception {
+                // CORRECT: Using AES-GCM with proper key
+                Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+                SecretKeySpec key = new SecretKeySpec(keyBytes, "AES");
+                GCMParameterSpec spec = new GCMParameterSpec(128, ivBytes);
+                cipher.init(Cipher.ENCRYPT_MODE, key, spec);
+                byte[] result = cipher.doFinal(data); // Data IS encrypted!
+            }
+        }
+
+  MANUAL_STEPS_REQUIRED:
+    - "Generate or obtain a SecretKey (16/24/32 bytes for AES-128/192/256)"
+    - "Create GCMParameterSpec with IV (12 bytes recommended) and tag length (128 bits)"
+    - "Initialize cipher with Cipher.init(Cipher.ENCRYPT_MODE, secretKey, gcmSpec)"
+    - "Store keys securely (use KeyStore, not hardcoded)"
+    - "Generate unique IV for each encryption operation"
+
+  PARTIAL_HEALING:
+    java:
+      - ACTION: "Replace NullCipher with AES-GCM stub and add TODO comments"
+      - LIMITATION: "Cannot generate keys or IV automatically - requires manual cryptographic setup"
+      - DOWNGRADE_TO: "WARNING"
+      - EDUCATIONAL_NOTE: "Automatic key generation is insecure. Manually implement proper key management."
+
+    META_ARCHITECTURE:
+      HEALING_PRIORITY: 10
+      BREAKING_CHANGE: false
+      AUTO_HEAL_SUCCESS_RATE: "50% - Adds comments and TODOs, incomplete healing"
+
+END RULE

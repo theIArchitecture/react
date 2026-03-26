@@ -10,11 +10,10 @@ RULE "DEPENDENCY-DIRECTION-ENFORCEMENT" : IMetaArchitecture
   APPLIES_TO: ["csharp", "java", "python", "typescript", "javascript"]
 
   PLUGIN:
-    ID: "architecture-validator"
+    ID: "dependency-direction-validator"
     SCOPE: "tree"
     CONFIG:
-      validator: "DependencyDirection"
-      forbidden_dependencies: "[{\"from\":\"React\",\"to\":\"ReactDOM\",\"message\":\"React core should not depend on ReactDOM renderer\"},{\"from\":\"React\",\"to\":\"ReactNative\",\"message\":\"React core should not depend on ReactNative renderer\"},{\"from\":\"ReactDOM\",\"to\":\"ReactNative\",\"message\":\"Renderers should be independent\"},{\"from\":\"*Props\",\"to\":\"*Internal*\",\"message\":\"Props types should not depend on internal implementation\"},{\"from\":\"*\",\"to\":\"*.internal.*\",\"message\":\"Public types should not depend on internal implementation details\"}]"
+      forbidden_dependencies: "[{\"from\":\"react\",\"to\":\"react-dom\",\"message\":\"React core should not depend on ReactDOM renderer\"},{\"from\":\"react\",\"to\":\"react-native-renderer\",\"message\":\"React core should not depend on ReactNative renderer\"},{\"from\":\"react-dom\",\"to\":\"react-native-renderer\",\"message\":\"Renderers should be independent\"},{\"from\":\"react\",\"to\":\"react-dom-bindings\",\"message\":\"React core should not depend on DOM bindings\"}]"
 
   EDUCATION:
     DOCS_URL: "https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html"

@@ -9,10 +9,9 @@ RULE "PUBLIC-API-SURFACE-CONTROL" : IMetaArchitecture
   APPLIES_TO: ["csharp", "java", "python", "typescript", "javascript"]
 
   PLUGIN:
-    ID: "architecture-validator"
+    ID: "public-api-surface-validator"
     SCOPE: "tree"
     CONFIG:
-      validator: "PublicApiSurface"
       allowed_public_namespaces: "[\"React\",\"React.*\",\"ReactDOM\",\"ReactDOM.*\"]"
       forbidden_public_namespaces: "[\"*.internal.*\",\"*Internal*\",\"*_internal*\",\"*Impl\"]"
       message: "Public types should not be exposed in Internal namespaces - these are implementation details"

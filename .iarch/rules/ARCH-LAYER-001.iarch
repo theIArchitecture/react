@@ -10,11 +10,8 @@ RULE "LAYER-VIOLATION-DETECTION" : IMetaArchitecture
   APPLIES_TO: ["javascript", "typescript", "tsx", "jsx"]
 
   PLUGIN:
-    ID: "architecture-validator"
+    ID: "layer-violation-validator"
     SCOPE: "tree"
-    CONFIG:
-      validator: "LayerViolation"
-      hierarchy: "ReactArchitecture"
 
   EDUCATION:
     DOCS_URL: "https://react.dev/learn/understanding-your-ui-as-a-tree"

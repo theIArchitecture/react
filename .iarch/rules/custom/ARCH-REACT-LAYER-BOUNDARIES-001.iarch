@@ -1,0 +1,28 @@
+RULE "React Layer Boundary Violations" : IArchitecture
+  ID: "ARCH-REACT-LAYER-BOUNDARIES-001"
+  DESCRIPTION: "Detects types from architecturally separate React layers clustering together semantically. Public API packages (react, react-dom) should not directly depend on internal implementation layers (Reconciler, Internal, Bindings) except through defined abstractions."
+  SEVERITY: Warning
+  CATEGORY: "Architecture Quality"
+  APPLIES_TO: ["typescript", "javascript"]
+
+  ARCHITECTURAL_CONTEXT:
+    PROJECT_TYPE: "UI_LIBRARY"
+    DESIGN_PRINCIPLES: ["Props Abstraction", "Renderer Independence", "Minimal API Surface"]
+    NOTE: "Proposed by IArchitecture Governance Intelligence (AUTO-LAYER-001, cycle 7, 2026-03-24). Cluster b4e32dbe — 491 types, purity 0.63, cohesion 0.81, confidence 28% (geometric signal only)."
+
+  PLUGIN:
+    ID: "architecture-rules"
+    SCOPE: "codebase"
+
+  VIOLATIONS:
+    - "PublicAPI layer depends directly on Reconciler or Internal implementation — use defined abstraction boundary"
+    - "Cross-layer semantic coupling detected: compiler/tooling packages mixed with runtime packages"
+    - "Layer boundary breach: {{SOURCE_LAYER}} → {{TARGET_LAYER}} violates React's renderer-independence principle"
+
+  EDUCATION:
+    WHY_IT_MATTERS: "React's architecture enforces renderer independence — react package should be a thin API surface over reconciler internals. When tooling, compiler, and runtime packages share the same semantic space, the boundary erodes and changes to internals risk breaking public contracts."
+    BUSINESS_IMPACT: "Tight coupling between layers makes it harder to evolve the reconciler independently (e.g. concurrent features, Fiber changes) without risking regressions in the public API surface."
+    QUICK_FIX: "Public code should import from 'react' or 'react-dom', not directly access reconciler or internal implementation. Compiler/tooling packages (babel-plugin-react-compiler, eslint-plugin-react-*) should treat the public API as their boundary."
+    DOCS_URL: "https://react.dev/reference/react"
+
+END RULE
