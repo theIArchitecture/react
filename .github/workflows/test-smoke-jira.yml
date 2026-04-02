@@ -1,0 +1,33 @@
+name: Smoke Test — Jira
+
+# Verifies: Jira connectivity. Creates one test ticket labelled iarch-smoke-test.
+# Uses hub-level TICKETING_* secrets (same as governance-cycle).
+
+on:
+  workflow_dispatch:
+
+jobs:
+  smoke-jira:
+    runs-on: ${{ fromJSON(vars.RUNNER_WINDOWS) }}
+
+    env:
+      TICKET_BASE_URL:    ${{ vars.TICKETING_BASE_URL }}
+      TICKET_USER_EMAIL:  ${{ secrets.TICKETING_EMAIL }}
+      TICKET_API_TOKEN:   ${{ secrets.TICKETING_API_TOKEN }}
+      TICKET_PROJECT_KEY: ${{ vars.TICKETING_PROJECT }}
+
+    steps:
+      - name: Checkout IArchHub
+        uses: actions/checkout@v4
+
+      - name: Run Jira smoke
+        run: |
+          .\binaries\IArch.exe --pipeline smoke-jira --source-path .
+        shell: powershell
+
+      - name: Summary
+        if: always()
+        run: |
+          $status = if ($LASTEXITCODE -eq 0) { "PASS" } else { "FAIL (exit $LASTEXITCODE)" }
+          "## Smoke Test — Jira`n`n**Result:** $status`n`nCheck your Jira project for a ticket labelled ``iarch-smoke-test``." >> $env:GITHUB_STEP_SUMMARY
+        shell: powershell

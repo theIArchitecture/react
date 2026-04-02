@@ -1,0 +1,51 @@
+name: Smoke Test — Cache
+
+# Verifies: file cache write + read across two pipeline invocations in the same job.
+#
+# Step 1 (smoke-cache-write): smoke-data-generator creates a payload and
+#   smoke-data-cache-saver writes it to .iarch/cache/smoke-test.*
+# Step 2 (smoke-cache-read): smoke-data-cache-loader reads the file back and
+#   smoke-data-verifier asserts smoke-data is present in context.
+#
+# Both steps share the same workspace (same file system), proving that data
+# written in one pipeline invocation persists to the next.
+# No secrets required.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  smoke-cache:
+    runs-on: ${{ fromJSON(vars.RUNNER_WINDOWS) }}
+
+    steps:
+      - name: Checkout IArchHub
+        uses: actions/checkout@v4
+
+      - name: Write smoke cache
+        run: |
+          .\binaries\IArch.exe --pipeline smoke-cache-write --source-path .
+          if ($LASTEXITCODE -ne 0) { throw "smoke-cache-write failed (exit $LASTEXITCODE)" }
+        shell: powershell
+
+      - name: Read smoke cache
+        run: |
+          .\binaries\IArch.exe --pipeline smoke-cache-read --source-path .
+          if ($LASTEXITCODE -ne 0) { throw "smoke-cache-read failed (exit $LASTEXITCODE)" }
+        shell: powershell
+
+      - name: Summary
+        if: always()
+        run: |
+          $writeOk = Test-Path ".iarch/cache/smoke-test*"
+          $status   = if ($LASTEXITCODE -eq 0) { "PASS" } else { "FAIL (exit $LASTEXITCODE)" }
+          @"
+          ## Smoke Test — Cache
+
+          **Result:** $status
+
+          | Check | Result |
+          |-------|--------|
+          | Cache file on disk | $(if ($writeOk) { 'yes' } else { 'not found' }) |
+          "@ >> $env:GITHUB_STEP_SUMMARY
+        shell: powershell
