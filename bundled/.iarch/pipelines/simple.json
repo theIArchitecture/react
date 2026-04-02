@@ -1,0 +1,7 @@
+{
+  "name": "Simple Test Pipeline",
+  "processors": ["context-dump"],
+  "config": {
+    "pipeline-file-key": "from-pipeline-file"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./IArchitecture.ViolationMarker.dll",
+  "processors": [
+    {
+      "id": "violation-marker",
+      "name": "Violation Marker",
+      "entry-point": "IArchitecture.ViolationMarker.ViolationMarkerProcessor",
+      "requires": ["violations", "parsed-config"],
+      "optional-requires": ["parsed-files", "file-content", "file-path"],
+      "provides": ["remedies"],
+      "ide-hidden": true
+    }
+  ]
+}

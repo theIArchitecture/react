@@ -1,0 +1,98 @@
+{
+  "$schema": "../schemas/language-definition.schema.json",
+  "language": "csharp",
+  "display_name": "C# (AWS SDK Configuration)",
+  "file_extensions": [".cs", ".csx"],
+
+  "layer_detection": {
+    "layers": {
+      "Model": {
+        "path_patterns": ["model", "transfer", "entities", "dto"],
+        "base_class_patterns": ["ModelBase", "BaseModel", "RequestBase", "ResponseBase"],
+        "interface_patterns": ["IModel", "IRequest", "IResponse"],
+        "naming_patterns": ["Request$", "Response$", "Model$", ".*Model.*"],
+        "import_patterns": ["using.*\\.Model", "using.*\\.Transfer", "using.*\\.Entities"]
+      },
+
+      "Internal": {
+        "path_patterns": ["internal", "util", "utilities", "helpers"],
+        "base_class_patterns": ["InternalBase", "UtilityBase"],
+        "interface_patterns": ["IInternal"],
+        "naming_patterns": ["Util$", "Helper$", "Internal.*"],
+        "import_patterns": ["using.*\\.Internal", "using.*\\.Util"]
+      },
+
+      "Client": {
+        "path_patterns": ["services", "client", "clients"],
+        "base_class_patterns": ["AmazonServiceClient", "ClientBase", "ServiceClient"],
+        "interface_patterns": ["IAmazonService", "IClient"],
+        "naming_patterns": ["Client$", ".*Client", ".*Service$"],
+        "import_patterns": ["using.*\\.Services", "using Amazon\\..*"]
+      }
+    }
+  },
+
+  "syntax_patterns": {
+    "class_declaration": "class\\s+(\\w+)\\s*(?::\\s*([^{,\\r\\n]+))?",
+    "import_statement": "using\\s+(?:static\\s+)?([^;\\s]+);",
+    "interface_implementation": ":\\s*[^{]*\\b(I\\w+Architecture|I\\w+)\\b",
+    "method_declaration": "(public|private|protected|internal|static)\\s+(?:async\\s+)?(?:Task<[^>]+>|Task|\\w+)\\s+(\\w+)\\s*\\("
+  },
+
+  "field_extraction_patterns": [
+    {
+      "name": "field_declaration",
+      "description": "Matches field declarations like: private Type _field;",
+      "pattern": "(?:public\\s+|private\\s+|protected\\s+|internal\\s+)?(?:static\\s+)?(?:readonly\\s+)?(?:const\\s+)?(\\w+(?:<[\\w\\s,<>]+>)?)\\s+(_?\\w+)\\s*(?:;|=|{)",
+      "type_group": 1,
+      "name_group": 2,
+      "is_property": false
+    },
+    {
+      "name": "property_declaration",
+      "description": "Matches property declarations like: public Type Property { get; set; }",
+      "pattern": "(?:public\\s+|private\\s+|protected\\s+|internal\\s+)?(?:static\\s+)?(?:readonly\\s+)?(\\w+(?:<[\\w\\s,<>]+>)?)\\s+(\\w+)\\s*\\{",
+      "type_group": 1,
+      "name_group": 2,
+      "is_property": true
+    }
+  ],
+
+  "parsing_patterns": {
+    "namespace": "^\\s*namespace\\s+([\\w\\.]+)",
+    "import": "^\\s*using\\s+(?<modifier>static\\s+)?(?<module>[\\w\\.]+)\\s*;",
+    "type_declaration": "(?:public\\s+|private\\s+|protected\\s+|internal\\s+)?(?:static\\s+)?(?:sealed\\s+)?(?:abstract\\s+)?(class|interface|enum|struct|record)\\s+(\\w+)(?:\\s*<[^>]+>)?(?:\\s*:\\s*([^{]+))?",
+    "type_keywords": ["class", "interface", "enum", "struct", "record"],
+    "method_declaration": "(?:public\\s+|private\\s+|protected\\s+|internal\\s+)?(?:static\\s+)?(?:virtual\\s+)?(?:override\\s+)?(?:async\\s+)?(\\w+(?:<[\\w\\s,<>]+>)?)\\s+(\\w+)\\s*\\(([^)]*)\\)",
+    "instantiation": "new\\s+([\\w\\.]+)(?:<[^>]+>)?\\s*\\(",
+    "comment_single_line": "//(.*)$",
+    "comment_multi_line": "/\\*(.*?)\\*/",
+    "comment_documentation": "///(.*)$"
+  },
+
+  "plain_import_behavior": "skip",
+
+  "transformation_rules": {
+    "import_template": "using {namespace};",
+    "import_insert_location": "after_last_import",
+    "import_removal_pattern": "^\\s*using\\s+{namespace}\\s*;\\s*$"
+  },
+
+  "formatting_rules": {
+    "indent_size": 4,
+    "increase_indent_triggers": ["{"],
+    "decrease_indent_triggers": ["}"],
+    "decrease_before_line": true
+  },
+
+  "syntax_validation": {
+    "balanced_pairs": [
+      { "open": "{", "close": "}" },
+      { "open": "(", "close": ")" },
+      { "open": "[", "close": "]" }
+    ],
+    "invalid_patterns": [";;", "using\\s+[^;]*$"]
+  },
+
+  "comment_styles": ["//", "/*", "*/", "///", "/**"]
+}

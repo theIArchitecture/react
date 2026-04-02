@@ -1,0 +1,35 @@
+# Shared Kernel Detection Rule
+# Detects modules that are depended on by too many other modules (hidden coupling risk)
+# Based on DDD Shared Kernel pattern - identifies over-shared modules that create tight coupling
+
+RULE "SHARED-KERNEL-DETECTION" : IMetaArchitecture
+  ID: "ARCH-SHARED-KERNEL-001"
+  DESCRIPTION: "Module is depended on by too many other modules - creates hidden coupling (shared kernel violation)"
+  SEVERITY: Warning
+  CATEGORY: "Architecture_Quality"
+  APPLIES_TO: ["csharp", "java", "python", "typescript", "javascript"]
+
+  PLUGIN:
+    ID: "shared-kernel-validator"
+    SCOPE: "tree"
+    CONFIG:
+      max_shared_dependents: "15"
+      exclude_namespaces: "[\"System.*\",\"Microsoft.*\",\"Amazon.Runtime.*\",\"Amazon.Util.*\",\"*.Tests\",\"*.TestHelpers\"]"
+
+  EDUCATION:
+    DOCS_URL: "https://martinfowler.com/bliki/SharedKernel.html"
+    WHY_IT_MATTERS: "This rule matters because it helps prevent hidden coupling between modules, which can lead to tightly coupled systems that are difficult to maintain and scale. By following this rule, developers can create loosely coupled modules that are easier to test, modify, and evolve over time. This can lead to faster development cycles, improved code quality, and reduced technical debt"
+    BUSINESS_IMPACT: "Violating this rule can lead to increased costs and delays as it requires additional effort to resolve dependencies and ensure that all dependent modules are updated accordingly. It also increases the risk of errors and bugs in the system, which can negatively impact productivity and reputation"
+    QUICK_FIX: "Split the over-shared module into smaller, more focused modules. Apply the Single Responsibility Principle - each module should have one clear purpose. Consider using dependency inversion to reduce direct dependencies. If the module truly needs to be shared, document it explicitly as a shared kernel and establish clear ownership and change management processes."
+
+  ARCHITECTURAL_CONTEXT:
+    PROJECT_TYPE: "Generic"
+    ARCHITECTURE_PATTERN: "Language_Agnostic"
+    DESIGN_PRINCIPLES: ["Module_Independence", "Low_Coupling", "Explicit_Shared_Dependencies"]
+
+  VIOLATIONS:
+    - "Shared kernel detected: {{NAMESPACE}} is depended on by {{DEPENDENT_COUNT}} modules (max: {{MAX_DEPENDENTS}})"
+    - "Over-shared module: {{NAMESPACE}} creates hidden coupling across {{DEPENDENT_COUNT}} dependent modules"
+    - "Hidden coupling risk: {{NAMESPACE}} exceeded shared kernel threshold ({{DEPENDENT_COUNT}} > {{MAX_DEPENDENTS}})"
+
+END_RULE

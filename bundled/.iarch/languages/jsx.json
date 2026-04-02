@@ -1,0 +1,25 @@
+{
+  "language": "jsx",
+  "display_name": "JSX (React)",
+  "file_extensions": [".jsx"],
+  "layer_detection": {
+    "layers": {
+      "Components": {
+        "namespace_patterns": [".*\\.components?$", ".*\\.ui$"],
+        "import_patterns": [".*component.*", ".*ui.*"]
+      },
+      "Containers": {
+        "namespace_patterns": [".*\\.containers?$", ".*\\.pages?$"],
+        "import_patterns": [".*container.*", ".*page.*"]
+      },
+      "Services": {
+        "namespace_patterns": [".*\\.services?$", ".*\\.api$"],
+        "import_patterns": [".*service.*", ".*api.*"]
+      },
+      "Utils": {
+        "namespace_patterns": [".*\\.utils?$", ".*\\.helpers?$"],
+        "import_patterns": [".*util.*", ".*helper.*"]
+      }
+    }
+  }
+}

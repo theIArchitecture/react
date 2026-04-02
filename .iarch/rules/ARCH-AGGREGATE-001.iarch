@@ -13,8 +13,8 @@ RULE "AGGREGATE-BOUNDARY-ENFORCEMENT" : IMetaArchitecture
     ID: "aggregate-boundary-validator"
     SCOPE: "tree"
     CONFIG:
-      aggregate_roots: "[\"react-dom\",\"react-reconciler\",\"react-native-renderer\"]"
-      aggregate_members: "[\"react-dom-bindings\",\"react-server\",\"react-client\"]"
+      aggregate_roots: "[\"Reconciler\",\"Scheduler\",\"Renderer\",\"ReactDOM\"]"
+      aggregate_members: "[\"*Internal\",\"*Impl\",\"*.internal.*\",\"*_internal*\"]"
 
   EDUCATION:
     DOCS_URL: "https://martinfowler.com/bliki/DDD_Aggregate.html"

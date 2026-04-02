@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./IArchitecture.MetadataAggregator.dll",
+  "processors": [
+    {
+      "id": "metadata-aggregator",
+      "name": "Metadata Aggregator",
+      "entry-point": "IArchitecture.Processors.MetadataAggregator.MetadataAggregatorProcessor",
+      "requires": ["filtered-files"],
+      "optional-requires": ["violation-index", "remedies", "source-metadata", "project-root", "init-config"],
+      "provides": ["source-metadata"],
+      "ide-hidden": true
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+name: .iarch Configuration Change Trigger
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - '**/.iarch/**'  # Only trigger on .iarch changes
+
+permissions:
+  contents: read
+
+jobs:
+  trigger-iarch-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Get changed .iarch files and determine scope
+        id: changed-iarch
+        run: |
+          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD | grep '\.iarch/')
+
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "No .iarch files changed - skipping"
+            echo "has_iarch_changes=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo "Changed .iarch files:"
+          echo "$CHANGED_FILES"
+
+          CHANGED_PATH=$(echo "$CHANGED_FILES" | head -n 1)
+          SCOPE_DIR=$(echo "$CHANGED_PATH" | sed 's/\/\.iarch\/.*//')
+
+          echo "Scope directory: $SCOPE_DIR"
+
+          echo "has_iarch_changes=true" >> $GITHUB_OUTPUT
+          echo "changed_path=$CHANGED_PATH" >> $GITHUB_OUTPUT
+          echo "scope_dir=$SCOPE_DIR" >> $GITHUB_OUTPUT
+
+      - name: Trigger IArchHub scoped scan workflow
+        if: steps.changed-iarch.outputs.has_iarch_changes == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.IARCHITECTURE_PAT }}
+          script: |
+            await github.rest.repos.createDispatchEvent({
+              owner: 'theIArchitecture',
+              repo: 'IArchHub',
+              event_type: 'iarch_config_changed',
+              client_payload: {
+                customer:           context.payload.repository.name,
+                ref:                context.ref,
+                commit_sha:         context.sha,
+                changed_iarch_path: `${{ steps.changed-iarch.outputs.changed_path }}`,
+                scope_dir:          `${{ steps.changed-iarch.outputs.scope_dir }}`
+              }
+            });
+            console.log('iarch_config_changed event dispatched to IArchHub');

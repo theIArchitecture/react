@@ -1,0 +1,12 @@
+{
+  "name": "@metadata-update",
+  "description": "Composable sub-pipeline: compute fresh DashboardData from a full scan and persist to IArchHub. Drop at the end of any full-scan pipeline. Requires filtered-files in context; violation-index and remedies are optional.",
+  "processors": [
+    "source-metadata-cache-loader",
+    "metadata-aggregator",
+    "source-metadata-cache-saver"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

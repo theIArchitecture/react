@@ -1,0 +1,30 @@
+RULE "META-ARCHITECTURE-VALIDATION"
+  ID: "META-VALIDATOR-001"
+  DESCRIPTION: "Validates .iarch rule files for structural correctness and spec compliance using efficient O(n) parsing"
+  SEVERITY: Fatal
+  CATEGORY: "Meta_Architecture"
+  APPLIES_TO: ["iarch"]
+
+  PLUGIN:
+    ID: "meta-validator"
+    CONFIG:
+      validate_required_sections: true
+      validate_patterns_structure: true
+      validate_meta_nesting: true
+      validate_empty_sections: true
+
+  EDUCATION:
+    DOCS_URL: "https://docs.iarchitecture.com/language-specification"
+    WHY_IT_MATTERS: ".iarch files must be structurally valid for proper pipeline operation. Invalid structure causes parser failures."
+    BUSINESS_IMPACT: "Invalid .iarch files block validation workflows and prevent architectural enforcement"
+    QUICK_FIX: "Follow .iarch language specification - ensure required sections exist and are nested properly"
+
+  VIOLATIONS:
+    - "Required section missing (RULE, ID, DESCRIPTION, DETECT/PLUGIN, VIOLATIONS, END RULE)"
+    - "DETECT missing PATTERNS: subsection"
+    - "META_ARCHITECTURE at top-level (must be in FIXES or PARTIAL_HEALING)"
+    - "Empty section (DETECT or VIOLATIONS must have content)"
+    - "DETECT and PLUGIN both present (mutually exclusive)"
+    - "PATTERNS: not directly under DETECT:"
+
+END RULE

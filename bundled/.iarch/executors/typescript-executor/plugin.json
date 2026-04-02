@@ -1,0 +1,10 @@
+{
+  "id": "typescript-executor",
+  "type": "executor",
+  "fileExtensions": [".ts"],
+  "command": "ts-node",
+  "args": ["{processorPath}"],
+  "protocol": "stdin-stdout-json",
+  "timeout": 30000,
+  "description": "Executes TypeScript plugins via ts-node with stdin/stdout JSON protocol"
+}

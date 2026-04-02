@@ -1,0 +1,34 @@
+# Cross-Boundary Type Enforcement Rule
+# Ensures types crossing service/module boundaries use proper contract types (DTOs, Contracts)
+# Prevents internal domain types from leaking across boundaries
+
+RULE "CROSS-BOUNDARY-TYPE-ENFORCEMENT" : IMetaArchitecture
+  ID: "ARCH-CROSS-BOUNDARY-001"
+  DESCRIPTION: "Type crossing boundary does not use required contract namespace - internal types leaking across boundaries"
+  SEVERITY: Error
+  CATEGORY: "Architecture_Quality"
+  APPLIES_TO: ["csharp", "java", "python", "typescript", "javascript"]
+
+  PLUGIN:
+    ID: "cross-boundary-type-validator"
+    SCOPE: "tree"
+    CONFIG:
+      boundary_rules: "[{\"from\":\"*.ServiceA.*\",\"to\":\"*.ServiceB.*\",\"required_type_namespace\":\"*.Contracts.*\",\"message\":\"Cross-service calls must use contract types\"},{\"from\":\"*.Application.*\",\"to\":\"*.Infrastructure.*\",\"required_type_namespace\":\"*.Contracts.*\",\"message\":\"Application-to-infrastructure calls must use contract types\"}]"
+
+  EDUCATION:
+    DOCS_URL: "https://docs.microsoft.com/en-us/dotnet/architecture/microservices/architect-microservice-container-applications/communication-in-microservice-architecture"
+    WHY_IT_MATTERS: "When internal domain types cross service or module boundaries, changes to internal implementation details break consumers. Contract types (DTOs, shared contracts) create a stable API surface that can evolve independently from internal models."
+    BUSINESS_IMPACT: "Leaking internal types across boundaries creates tight coupling between services. Any internal refactoring forces changes in all consuming services, increasing deployment risk and coordination overhead."
+    QUICK_FIX: "Create a contract/DTO type in a shared contracts namespace and map the internal type to it at the boundary. Use AutoMapper or manual mapping. The contract type should contain only the data needed by the consumer, not the full internal model."
+
+  ARCHITECTURAL_CONTEXT:
+    PROJECT_TYPE: "Generic"
+    ARCHITECTURE_PATTERN: "Language_Agnostic"
+    DESIGN_PRINCIPLES: ["Contract_First", "Boundary_Types", "Loose_Coupling"]
+
+  VIOLATIONS:
+    - "Type crossing boundary from {{SOURCE_NAMESPACE}} to {{TARGET_NAMESPACE}} must use contract types in {{REQUIRED_NAMESPACE}}"
+    - "Internal type leaked across boundary: {{SOURCE_NAMESPACE}} -> {{TARGET_NAMESPACE}} (expected contract namespace: {{REQUIRED_NAMESPACE}})"
+    - "Boundary type violation: {{SOURCE_NAMESPACE}} references {{TARGET_NAMESPACE}} without using {{REQUIRED_NAMESPACE}}"
+
+END_RULE

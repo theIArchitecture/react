@@ -1,0 +1,34 @@
+# Dependency Stability Metric Rule (Robert C. Martin)
+# Ensures stable modules don't depend on unstable ones (architecture resilience)
+# Uses Robert C. Martin's stability metric: Stability = Fan-Out / (Fan-In + Fan-Out)
+
+RULE "DEPENDENCY-STABILITY-ENFORCEMENT" : IMetaArchitecture
+  ID: "ARCH-STABILITY-001"
+  DESCRIPTION: "Stable module depends on less stable module - violates Stable Dependencies Principle"
+  SEVERITY: Warning
+  CATEGORY: "Architecture_Quality"
+  APPLIES_TO: ["csharp", "java", "python", "typescript", "javascript"]
+
+  PLUGIN:
+    ID: "dependency-stability-validator"
+    SCOPE: "tree"
+    CONFIG:
+      tolerance: "0.1"
+
+  EDUCATION:
+    DOCS_URL: "https://en.wikipedia.org/wiki/Stable_Dependencies_Principle"
+    WHY_IT_MATTERS: "This rule is important because it helps ensure that changes to a module do not have unintended side effects on other modules in the system. When a stable module depends on a less stable module, any changes made to the less stable module may require changes to the stable module as well, which can lead to cascading failures throughout the system. This rule prevents this scenario by ensuring that the stability of a module is not compromised by its dependencies"
+    BUSINESS_IMPACT: "Violating this rule can lead to increased costs and risks in the short term by requiring additional maintenance and updates to less stable modules, as well as potential legal or regulatory issues related to compliance. In the long term, it can also negatively impact productivity and reputation of the organization"
+    QUICK_FIX: "Invert the dependency using the Dependency Inversion Principle - create an abstraction (interface) in the stable module and have the unstable module implement it. Alternatively, refactor to make the unstable module more stable by reducing its dependencies, or move shared functionality to a more stable module. Use dependency injection to break direct dependencies."
+
+  ARCHITECTURAL_CONTEXT:
+    PROJECT_TYPE: "Generic"
+    ARCHITECTURE_PATTERN: "Language_Agnostic"
+    DESIGN_PRINCIPLES: ["Stable_Dependencies", "Module_Independence", "Architectural_Resilience"]
+
+  VIOLATIONS:
+    - "Stable module '{{SOURCE_NAMESPACE}}' (stability: {{SOURCE_STABILITY}}) depends on less stable module '{{TARGET_NAMESPACE}}' (stability: {{TARGET_STABILITY}})"
+    - "Stable Dependencies Principle violation: {{SOURCE_NAMESPACE}} → {{TARGET_NAMESPACE}}"
+    - "Architectural fragility: Stable module depends on unstable module ({{SOURCE_STABILITY}} < {{TARGET_STABILITY}})"
+
+END_RULE

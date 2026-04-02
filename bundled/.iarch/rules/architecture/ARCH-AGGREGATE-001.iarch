@@ -1,0 +1,35 @@
+# DDD Aggregate Boundary Enforcement Rule
+# Ensures aggregate members are only accessed through their aggregate root
+# Prevents external code from bypassing the root and directly accessing internal entities
+
+RULE "AGGREGATE-BOUNDARY-ENFORCEMENT" : IMetaArchitecture
+  ID: "ARCH-AGGREGATE-001"
+  DESCRIPTION: "Direct access to aggregate member detected - must go through aggregate root"
+  SEVERITY: Error
+  CATEGORY: "Architecture_Quality"
+  APPLIES_TO: ["csharp", "java", "python", "typescript", "javascript"]
+
+  PLUGIN:
+    ID: "aggregate-boundary-validator"
+    SCOPE: "tree"
+    CONFIG:
+      aggregate_roots: "[\"*AggregateRoot\", \"*Aggregate\"]"
+      aggregate_members: "[\"*Entity\", \"*ValueObject\"]"
+
+  EDUCATION:
+    DOCS_URL: "https://martinfowler.com/bliki/DDD_Aggregate.html"
+    WHY_IT_MATTERS: "In Domain-Driven Design, aggregates define consistency boundaries. The aggregate root is the only entry point for external access. Bypassing the root to directly reference internal entities breaks invariant enforcement, leading to invalid state and subtle bugs."
+    BUSINESS_IMPACT: "Broken aggregate boundaries allow invalid state transitions that bypass business rules. This causes data corruption, inconsistent behavior, and hard-to-trace bugs in domain logic."
+    QUICK_FIX: "Access the aggregate member through its aggregate root instead of referencing it directly. Add a method or property on the root that exposes the needed behavior or data. If the member needs to be accessed independently, it may belong in its own aggregate."
+
+  ARCHITECTURAL_CONTEXT:
+    PROJECT_TYPE: "Generic"
+    ARCHITECTURE_PATTERN: "Domain_Driven_Design"
+    DESIGN_PRINCIPLES: ["Aggregate_Boundaries", "Encapsulation", "Consistency_Boundary"]
+
+  VIOLATIONS:
+    - "Direct access to aggregate member '{{TARGET_TYPE}}' - must go through aggregate root '{{AGGREGATE_ROOT}}'"
+    - "Aggregate boundary violation: {{SOURCE_NAMESPACE}} directly references {{TARGET_NAMESPACE}} (expected root: {{AGGREGATE_ROOT}})"
+    - "DDD aggregate bypass: external code accesses {{TARGET_TYPE}} without going through its root"
+
+END_RULE

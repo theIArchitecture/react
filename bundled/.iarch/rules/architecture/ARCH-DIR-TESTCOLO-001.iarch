@@ -1,0 +1,34 @@
+# Test Directory Co-Location Rule
+# Ensures test directories are properly co-located with source directories
+
+RULE "TEST-DIRECTORY-CO-LOCATION" : IMetaArchitecture
+  ID: "ARCH-DIR-TESTCOLO-001"
+  DESCRIPTION: "Test directory co-location violation - tests should be co-located with source"
+  SEVERITY: Warning
+  CATEGORY: "Architecture_Quality"
+  APPLIES_TO: ["csharp", "java", "python", "typescript", "javascript", "go"]
+
+  PLUGIN:
+    ID: "test-directory-colocation-validator"
+    SCOPE: "tree"
+    CONFIG:
+      source_dir: "src"
+      test_dir: "tests"
+
+  EDUCATION:
+    DOCS_URL: "https://en.wikipedia.org/wiki/Test-driven_development"
+    WHY_IT_MATTERS: "Co-locating tests with source code makes it easier to find and maintain tests. When source and tests are separated, developers may forget to update tests or struggle to locate the corresponding test files."
+    BUSINESS_IMPACT: "Poor test organization leads to incomplete test coverage and slower development cycles. Well-organized test structures improve code quality and reduce regression risk."
+    QUICK_FIX: "Ensure test directories are co-located with source directories at the same level. For example, if source is in 'src/', tests should be in 'tests/' at the same parent level."
+
+  ARCHITECTURAL_CONTEXT:
+    PROJECT_TYPE: "Generic"
+    ARCHITECTURE_PATTERN: "Language_Agnostic"
+    DESIGN_PRINCIPLES: ["Testability", "Maintainability", "Organization"]
+
+  VIOLATIONS:
+    - "Source directory '{{SOURCE_DIR}}' found but no co-located '{{TEST_DIR}}' directory. Tests should be co-located with source."
+    - "Test directory '{{TEST_DIR}}' found but no co-located '{{SOURCE_DIR}}' directory. Tests should be co-located with source."
+    - "Test co-location violation: Source and test directories must be at the same level"
+
+END_RULE

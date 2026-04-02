@@ -1,0 +1,25 @@
+{
+  "language": "go",
+  "display_name": "Go",
+  "file_extensions": [".go"],
+  "layer_detection": {
+    "layers": {
+      "Repository": {
+        "namespace_patterns": [".*/repositories?$", ".*/data$", ".*/dal$"],
+        "import_patterns": [".*repository.*", ".*dal.*", ".*data.*"]
+      },
+      "Domain": {
+        "namespace_patterns": [".*/domain$", ".*/models?$", ".*/entities$"],
+        "import_patterns": [".*domain.*", ".*model.*", ".*entity.*"]
+      },
+      "Service": {
+        "namespace_patterns": [".*/services?$", ".*/application$"],
+        "import_patterns": [".*service.*", ".*application.*"]
+      },
+      "Handler": {
+        "namespace_patterns": [".*/handlers?$", ".*/api$", ".*/http$"],
+        "import_patterns": [".*handler.*", ".*api.*", ".*http.*"]
+      }
+    }
+  }
+}

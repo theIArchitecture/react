@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./IArchitecture.Processors.IArchInitProc.dll",
+  "processors": [
+    {
+      "id": "iarch-init",
+      "name": "IArchitecture Init",
+      "description": "Initializes IArchitecture context by loading language definitions and parsing .iarch rule files using scopedConfig.",
+      "entry-point": "IArchitecture.Processors.IArchInitProc.IArchInitProc",
+      "requires": ["init-config"],
+      "provides": ["parsed-config"],
+      "ide-hidden": true,
+      "ide-required": true
+    }
+  ]
+}

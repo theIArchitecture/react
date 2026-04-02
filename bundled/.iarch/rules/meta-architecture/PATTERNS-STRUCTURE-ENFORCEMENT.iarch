@@ -1,0 +1,53 @@
+RULE "PATTERNS-STRUCTURE-ENFORCEMENT" : IValidationArchitecture
+  ID: "META-PATTERNS-001"
+  DESCRIPTION: "Enforce that .iarch rules use the correct PATTERNS structure within DETECT sections"
+  SEVERITY: Fatal
+  CATEGORY: "Meta_Architecture"
+  APPLIES_TO: ["iarch"]
+  
+  EDUCATION:
+    DOCS_URL: "https://docs.iarchitecture.com/language-specification#detect-section"
+    WHY_IT_MATTERS: "The PATTERNS structure ensures consistent rule parsing and enables proper language-specific pattern organization"
+    BUSINESS_IMPACT: "Prevents parsing failures and ensures all rules follow the standardized .iarch language specification"
+    QUICK_FIX: "Add PATTERNS: subsection under DETECT: and move language sections under it"
+    
+  DETECT:
+    PATTERNS:
+      iarch:
+        # Detect old format DETECT sections without PATTERNS subsection
+        - OLD_DETECT_FORMAT: "DETECT:\\s*\\n\\s*[a-z]+:"
+        - MISSING_PATTERNS_SUBSECTION: "DETECT:\\s*\\n(?!\\s*PATTERNS:)"
+        - LANGUAGE_DIRECTLY_UNDER_DETECT: "DETECT:\\s*\\n\\s*[a-z]+:\\s*\\n\\s*-\\s+\\w+:"
+        - PATTERNS_NOT_FIRST: "DETECT:\\s*\\n(?!\\s*PATTERNS:)\\s*[^\\n]*\\n\\s*PATTERNS:"
+        
+  VIOLATIONS:
+    - "Meta-Architecture: DETECT section must use PATTERNS: subsection structure"
+    - "Meta-Architecture: Language sections must be under PATTERNS: not directly under DETECT:"
+    - "Meta-Architecture: Pattern definitions must follow the standardized .iarch language specification"
+    
+  FIXES:
+    iarch:
+      - REPLACE: "DETECT:\\s*\\n\\s*([a-z]+:)"
+      - WITH: "DETECT:\\n    PATTERNS:\\n      $1"
+      - TEACHING: "Convert old DETECT format to new PATTERNS structure for .iarch language compliance"
+    META_ARCHITECTURE:
+      HEALING_PRIORITY: 1
+      BREAKING_CHANGE: false
+      BUSINESS_IMPACT: "Ensures all .iarch rules follow the standardized language specification"
+      AUTO_HEAL_SUCCESS_RATE: "95% - Simple structural transformation"
+
+  EXAMPLES:
+    VIOLATION:
+      iarch: |
+        DETECT:
+          csharp:
+            - PATTERN_NAME: "pattern_regex"
+            
+    CORRECT:
+      iarch: |
+        DETECT:
+          PATTERNS:
+            csharp:
+              - PATTERN_NAME: "pattern_regex"
+
+END RULE

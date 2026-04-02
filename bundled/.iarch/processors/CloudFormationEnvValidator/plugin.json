@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./cloudformation_env_validator.py",
+  "processors": [
+    {
+      "id": "cloudformation-env-validator",
+      "name": "CloudFormation Environment Variable Validator",
+      "requires": ["neighborhoods", "parsed-config"],
+      "provides": ["violations"]
+    }
+  ]
+}

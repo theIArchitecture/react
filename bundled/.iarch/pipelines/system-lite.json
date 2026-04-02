@@ -1,0 +1,15 @@
+{
+  "name": "System Lite - IDE Open/Change",
+  "processors": [
+    "@Caching/cache-config",
+    "iarch-init",
+    "file-filter",
+    "dependency-graph-evaluator",
+    "file-parser",
+    "violation-cache-loader",
+    "violation-filter"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

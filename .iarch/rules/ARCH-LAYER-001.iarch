@@ -12,6 +12,8 @@ RULE "LAYER-VIOLATION-DETECTION" : IMetaArchitecture
   PLUGIN:
     ID: "layer-violation-validator"
     SCOPE: "tree"
+    CONFIG:
+      hierarchy: "ReactArchitecture"
 
   EDUCATION:
     DOCS_URL: "https://react.dev/learn/understanding-your-ui-as-a-tree"

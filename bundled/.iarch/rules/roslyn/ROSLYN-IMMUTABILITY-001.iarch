@@ -1,0 +1,36 @@
+# Immutability at Boundaries Rule
+# Ensures types crossing module boundaries are immutable (prevents accidental state mutation)
+# Critical for thread-safety, functional programming patterns, and preventing bugs
+
+RULE "IMMUTABILITY-AT-BOUNDARIES" : IMetaArchitecture
+  ID: "ROSLYN-IMMUTABILITY-001"
+  DESCRIPTION: "Public API type has mutable properties - types crossing boundaries should be immutable"
+  SEVERITY: Error
+  CATEGORY: "Architecture_Quality"
+  APPLIES_TO: ["csharp"]
+
+  PLUGIN:
+    ID: "immutability-validator"
+    SCOPE: "tree"
+    CONFIG:
+      validator: "Immutability"
+      target_namespace_patterns: "[\"Amazon.*.Model\",\"Amazon.Runtime.Model\",\"Amazon.*.Transfer\",\"*.PublicAPI.*\",\"*.SDK.*\",\"*.Contracts.*\",\"*.DTOs.*\"]"
+      custom_message: "Public API types must be immutable (readonly properties, no public setters)"
+
+  EDUCATION:
+    DOCS_URL: "https://en.wikipedia.org/wiki/Immutable_object"
+    WHY_IT_MATTERS: "This rule is important because it ensures that data types used across multiple components are consistent and predictable. When a type has mutable properties, changes to one instance can affect other instances that were not intended to be affected. This can lead to unintended side effects, bugs, and errors in the codebase. By making sure that all public API types are immutable, we prevent these issues from occurring"
+    BUSINESS_IMPACT: "Violating this rule can result in a significant increase in development and maintenance costs due to the need for additional code changes and testing efforts to ensure data consistency and integrity across different boundaries. Additionally, the risk of inconsistent data can impact business productivity and reputation, leading to financial losses and damage to the company's brand"
+    QUICK_FIX: "Make properties readonly or use 'init' accessors (C# 9+). Remove public setters and use constructor initialization or object initializers. For complex types, consider using records (C# 9+) or value objects. If mutation is truly needed, use a builder pattern or separate mutable/internal types from immutable/public types."
+
+  ARCHITECTURAL_CONTEXT:
+    PROJECT_TYPE: "Generic"
+    ARCHITECTURE_PATTERN: "Language_Agnostic"
+    DESIGN_PRINCIPLES: ["Model_Immutability", "Thread_Safety", "API_Contract_Stability"]
+
+  VIOLATIONS:
+    - "Public type '{{TYPE_NAME}}' in namespace '{{NAMESPACE}}' has mutable properties: {{MUTABLE_PROPERTIES}}"
+    - "Immutability violation: {{TYPE_NAME}} crosses boundaries but has mutable state"
+    - "Boundary violation: {{TYPE_NAME}} in {{NAMESPACE}} should be immutable (no public setters)"
+
+END_RULE

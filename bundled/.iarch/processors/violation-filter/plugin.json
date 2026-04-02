@@ -1,0 +1,25 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./IArchitecture.ViolationFilter.dll",
+  "processors": [
+    {
+      "id": "violation-filter",
+      "name": "Violation Filter",
+      "entry-point": "IArchitecture.Processors.ViolationFilter.ViolationFilterProcessor",
+      "requires": [ "violations", "init-config" ],
+      "optional-requires": [ "parsed-config", "project-root" ],
+      "provides": [ "violations" ],
+      "ide-hidden": true,
+      "ide-required": true
+    },
+    {
+      "id": "violation-console-writer",
+      "name": "Violation Console Writer",
+      "entry-point": "IArchitecture.Processors.ViolationConsoleWriterProcessor.ViolationConsoleWriterProcessor",
+      "requires": [ "pipeline-sink" ],
+      "optional-requires": [ "violations", "init-config" ],
+      "provides": [  ],
+      "ide-hidden": true
+    }
+  ]
+}

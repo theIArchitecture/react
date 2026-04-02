@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./reporter.py",
+  "processors": [
+    {
+      "id": "markdown-reporter",
+      "name": "Markdown Report Generator",
+      "requires": ["pipeline-sink"],
+      "ide-hidden": true,
+      "optional-requires": ["findings", "violations", "parsed-file-count", "dependency-graph-stats"],
+      "provides": ["markdown-reporter-message"]
+    }
+  ]
+}

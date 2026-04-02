@@ -1,0 +1,33 @@
+# Circular Dependency Detection Rule
+# Detects circular dependencies at the file level across the entire codebase
+# Uses graph analysis to find dependency cycles
+
+RULE "CIRCULAR-DEPENDENCY-DETECTION" : IMetaArchitecture
+  ID: "ARCH-CIRCULAR-001"
+  DESCRIPTION: "Circular dependencies detected between files - creates tight coupling and maintenance issues"
+  SEVERITY: Fatal
+  CATEGORY: "Architecture_Quality"
+  APPLIES_TO: ["csharp", "java", "python", "typescript", "javascript"]
+
+  PLUGIN:
+    ID: "circular-dependency-validator"
+    SCOPE: "tree"
+    CONFIG:
+      severity_threshold: "Warning"
+
+  EDUCATION:
+    DOCS_URL: "https://en.wikipedia.org/wiki/Circular_dependency"
+    WHY_IT_MATTERS: "Circular dependencies create tight coupling, making code difficult to test, maintain, and refactor. They indicate design flaws that should be resolved."
+    BUSINESS_IMPACT: "Circular dependencies increase technical debt and slow down development velocity. Refactoring becomes exponentially harder as the codebase grows."
+    QUICK_FIX: "Break the cycle by introducing interfaces, dependency inversion, or extracting shared functionality into a separate module"
+
+  ARCHITECTURAL_CONTEXT:
+    PROJECT_TYPE: "Generic"
+    ARCHITECTURE_PATTERN: "Language_Agnostic"
+    DESIGN_PRINCIPLES: ["Acyclic_Dependencies", "Low_Coupling", "Dependency_Hygiene"]
+
+  VIOLATIONS:
+    - "Circular dependency cycle detected: {{FILE_PATH}} participates in a dependency cycle"
+    - "Cross-layer circular dependency: Violates architectural boundaries"
+
+END_RULE

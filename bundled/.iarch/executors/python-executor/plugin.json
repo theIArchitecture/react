@@ -1,0 +1,10 @@
+{
+  "id": "python-executor",
+  "type": "executor",
+  "fileExtensions": [".py"],
+  "command": "python",
+  "args": ["{processorPath}"],
+  "protocol": "stdin-stdout-json",
+  "timeout": 30000,
+  "description": "Executes Python plugins via stdin/stdout JSON protocol"
+}

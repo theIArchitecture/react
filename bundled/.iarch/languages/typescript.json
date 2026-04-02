@@ -1,0 +1,58 @@
+{
+  "language": "typescript",
+  "display_name": "TypeScript",
+  "file_extensions": [".ts", ".mts", ".cts"],
+  "layer_detection": {
+    "layers": {
+      "Controller": {
+        "path_patterns": ["controllers", "routes", "api"],
+        "naming_patterns": [".*controller.*", ".*route.*"],
+        "import_patterns": [".*controllers.*", ".*routes.*", ".*api.*"]
+      },
+      "Service": {
+        "path_patterns": ["services", "business"],
+        "naming_patterns": [".*service.*", ".*handler.*"],
+        "import_patterns": [".*services.*", ".*business.*"]
+      },
+      "Repository": {
+        "path_patterns": ["repositories", "data", "dao"],
+        "naming_patterns": [".*repository.*", ".*dao.*"],
+        "import_patterns": [".*repositories.*", ".*data.*"]
+      },
+      "Model": {
+        "path_patterns": ["models", "entities", "domain"],
+        "naming_patterns": [".*model.*", ".*entity.*"],
+        "import_patterns": [".*models.*", ".*entities.*"]
+      },
+      "Utility": {
+        "path_patterns": ["utils", "helpers", "common"],
+        "naming_patterns": [".*util.*", ".*helper.*"],
+        "import_patterns": [".*utils.*", ".*helpers.*"]
+      }
+    }
+  },
+  "parsing_patterns": {
+    "namespace": "^\\s*(?:export\\s+)?namespace\\s+([\\w\\.]+)",
+    "import": "^\\s*import\\s+(?:\\{(?<symbols>[^}]+)\\}|\\*\\s+as\\s+(?<alias>\\w+)|(?<alias>\\w+))\\s+from\\s+['\"](?<module>[^'\"]+)['\"]",
+    "type_declaration": "(?:export\\s+)?(?:default\\s+)?(?:abstract\\s+)?(class|interface|type|enum)\\s+(\\w+)(?:\\s*<[^>]+>)?(?:\\s+extends\\s+([\\w\\.,\\s<>]+))?(?:\\s+implements\\s+([\\w\\.,\\s<>]+))?",
+    "type_keywords": ["class", "interface", "type", "enum"],
+    "method_declaration": "(?:public\\s+|private\\s+|protected\\s+)?(?:static\\s+)?(?:async\\s+)?(\\w+)\\s*\\(([^)]*)\\)\\s*(?::\\s*([^{]+))?\\s*\\{",
+    "instantiation": "new\\s+([\\w\\.]+)(?:<[^>]+>)?\\s*\\(",
+    "comment_single_line": "//(.*)$",
+    "comment_multi_line": "/\\*(.*?)\\*/",
+    "comment_documentation": "/\\*\\*(.*)\\*/"
+  },
+
+  "plain_import_behavior": "skip",
+
+  "field_extraction_patterns": [
+    {
+      "name": "property_declaration",
+      "description": "Matches class property declarations",
+      "pattern": "(?:public\\s+|private\\s+|protected\\s+)?(?:readonly\\s+)?(?:static\\s+)?(\\w+(?:<[\\w\\s,<>]+>)?)(?:\\s*[?!])?\\s*(?::\\s*(\\w+(?:<[\\w\\s,<>]+>)?))?\\s*(?:=|;)",
+      "type_group": 2,
+      "name_group": 1,
+      "is_property": true
+    }
+  ]
+}

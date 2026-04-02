@@ -1,0 +1,35 @@
+{
+  "name": "Caching only - cache load/save",
+  "processors": [
+    "@Caching/cache-config",
+    "cache-loader",
+    "cache-saver",
+    "stats-cache-loader",
+    "stats-cache-saver",
+    "violation-cache-loader",
+    "violation-cache-saver",
+    "source-metadata-cache-loader",
+    "source-metadata-cache-saver",
+    "governance-ledger-cache-loader",
+    "governance-ledger-cache-saver",
+    "entropy-history-cache-loader",
+    "entropy-history-cache-saver",
+    "governance-stats-cache-loader",
+    "governance-stats-cache-saver",
+    "dashboard-html-cache-loader",
+    "dashboard-html-cache-saver",
+    "dashboard-json-cache-loader",
+    "dashboard-json-cache-saver",
+    "governance-html-cache-loader",
+    "governance-html-cache-saver",
+    "governance-efficacy-html-cache-loader",
+    "governance-efficacy-html-cache-saver",
+    "governance-voting-html-cache-loader",
+    "governance-voting-html-cache-saver",
+    "governance-ledger-html-cache-loader",
+    "governance-ledger-html-cache-saver"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

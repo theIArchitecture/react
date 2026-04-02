@@ -1,0 +1,16 @@
+{
+  "name": "System Lite - IDE Open/Change",
+  "processors": [
+    "iarch-init",
+    "file-filter",
+    "dependency-graph-evaluator",
+    "file-parser",
+    "violation-cache-loader",
+    "violation-cache-extractor",
+    "violation-filter",
+    "@messaging/slack-processors"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

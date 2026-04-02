@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./metadata-processor.ps1",
+  "processors": [
+    {
+      "id": "metadata-updater",
+      "name": "IArch Metadata Updater",
+      "entry-point": "Invoke-UpdateMetadata",
+      "requires": ["violations"],
+      "optional-requires": [],
+      "provides": ["metadata-updated"],
+      "ide-hidden": true
+    }
+  ]
+}

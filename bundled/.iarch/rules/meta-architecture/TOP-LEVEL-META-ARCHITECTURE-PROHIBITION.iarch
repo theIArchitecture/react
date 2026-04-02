@@ -1,0 +1,112 @@
+# IArchitecture Meta-Architecture Top-Level META_ARCHITECTURE Prohibition Rule
+# This rule ensures META_ARCHITECTURE blocks only appear nested within FIXES or PARTIAL_HEALING sections
+# Top-level META_ARCHITECTURE violates the multi-FIXES architecture pattern
+
+// @architecture: IMetaArchitecture
+
+RULE "TOP-LEVEL-META-ARCHITECTURE-PROHIBITION" : IMetaArchitecture
+  ID: "META-ARCH-003"
+  DESCRIPTION: "META_ARCHITECTURE must only appear within FIXES or PARTIAL_HEALING blocks, never at the rule level"
+  SEVERITY: Fatal
+  CATEGORY: Meta-Architecture
+  APPLIES_TO: ["iarch"]
+
+  EDUCATION:
+    DOCS_URL: "https://docs.iarchitecture.com/meta-architecture/multi-fixes-architecture"
+    WHY_IT_MATTERS: "META_ARCHITECTURE contains strategy-specific configuration that belongs to individual healing strategies (FIXES/PARTIAL_HEALING), not the rule as a whole"
+    BUSINESS_IMPACT: "Top-level META_ARCHITECTURE prevents proper multi-strategy healing prioritization and breaks the healing engine's strategy selection logic"
+    EXAMPLES_PATH: "./examples/meta-architecture-placement.md"
+    QUICK_FIX: "Move META_ARCHITECTURE blocks inside their corresponding FIXES or PARTIAL_HEALING sections"
+
+  LAYERS:
+    META_RULES: [".iarch", "meta-architecture", "structure-validation"]
+    HEALING_STRATEGIES: ["FIXES", "PARTIAL_HEALING", "META_ARCHITECTURE", "nested-configuration"]
+    VALIDATION: ["structural-rules", "block-placement", "hierarchy-enforcement"]
+
+  DETECT:
+    PATTERNS:
+      iarch:
+        # Detect top-level META_ARCHITECTURE (not within FIXES or PARTIAL_HEALING)
+        # This regex looks for META_ARCHITECTURE at the same indentation level as other rule properties
+        - TOP_LEVEL_META: "^(\\s{0,2})META_ARCHITECTURE:"
+        # More specific: META_ARCHITECTURE that comes after rule properties but before END RULE
+        - RULE_LEVEL_META: "RULE\\s+\"[^\"]+\"[\\s\\S]*?^\\s{0,2}META_ARCHITECTURE:[\\s\\S]*?END\\s+RULE"
+        # Check if META_ARCHITECTURE is NOT preceded by FIXES or PARTIAL_HEALING
+        - ORPHAN_META: "(?<!FIXES:[\\s\\S]{0,500})(?<!PARTIAL_HEALING:[\\s\\S]{0,500})^\\s{0,2}META_ARCHITECTURE:"
+
+  VIOLATIONS:
+    - "Meta-Architecture: Top-level META_ARCHITECTURE detected - must be nested within FIXES or PARTIAL_HEALING blocks"
+    - "Meta-Architecture: Rule-level META_ARCHITECTURE violates multi-FIXES architecture specification"
+    - "Meta-Architecture: Orphaned META_ARCHITECTURE block - not associated with any healing strategy"
+
+  FIXES:
+    iarch:
+      - ACTION: "Move META_ARCHITECTURE into the appropriate FIXES or PARTIAL_HEALING block"
+      - TEACHING: "META_ARCHITECTURE is strategy-specific configuration that must be nested within its healing strategy block (FIXES or PARTIAL_HEALING)"
+      - MANUAL_REVIEW: "Determine which healing strategy this META_ARCHITECTURE belongs to before moving"
+    META_ARCHITECTURE:
+      HEALING_PRIORITY: 1
+      AUTO_HEAL_SUCCESS_RATE: "30% - Requires understanding which strategy the configuration belongs to"
+      BREAKING_CHANGE: false
+
+  EXAMPLES:
+    VIOLATION:
+      iarch: |
+        # ❌ VIOLATION: Top-level META_ARCHITECTURE
+        RULE "EXAMPLE-VIOLATION"
+          ID: "EXAMPLE-001"
+          DESCRIPTION: "Example with incorrect META_ARCHITECTURE placement"
+
+          FIXES:
+            csharp:
+              - REPLACE: "old"
+              - WITH: "new"
+
+          # ← FATAL: This META_ARCHITECTURE is at the rule level!
+          META_ARCHITECTURE:
+            HEALING_PRIORITY: 1
+            AUTO_HEAL_SUCCESS_RATE: "95%"
+
+        END RULE
+
+    CORRECT:
+      iarch: |
+        # ✅ CORRECT: META_ARCHITECTURE nested within FIXES
+        RULE "EXAMPLE-CORRECT"
+          ID: "EXAMPLE-001"
+          DESCRIPTION: "Example with correct META_ARCHITECTURE placement"
+
+          FIXES:
+            csharp:
+              - REPLACE: "old"
+              - WITH: "new"
+            # ← CORRECT: META_ARCHITECTURE nested within FIXES block
+            META_ARCHITECTURE:
+              HEALING_PRIORITY: 1
+              AUTO_HEAL_SUCCESS_RATE: "95%"
+
+        END RULE
+
+  # INTERFACE METHOD IMPLEMENTATIONS for IMetaArchitecture:
+
+  # GetMetaArchitecturalPrinciple(): string
+  META_ARCHITECTURAL_PRINCIPLE: "META_ARCHITECTURE blocks must be nested within healing strategy blocks (FIXES/PARTIAL_HEALING) as they contain strategy-specific configuration"
+
+  # GetMetaArchitecturePriority(): int (must be 1-3)
+  META_ARCHITECTURE_PRIORITY: 2
+
+  # GetMaxRecursionDepth(): int
+  MAX_RECURSION_DEPTH: 2
+
+  # CanFixStructuralIssues(): bool
+  CAN_FIX_STRUCTURAL_ISSUES: false
+
+  SELF_GOVERNANCE:
+    VALIDATES_SELF: true
+    RECURSIVE_DEPTH: 2
+    META_VALIDATION: "This rule validates META_ARCHITECTURE placement in all .iarch files"
+    PROOF_OF_COMPLIANCE: "This rule has no top-level META_ARCHITECTURE - only within FIXES block"
+    GOVERNANCE_LEVEL: "STRUCTURAL_VALIDATION"
+    COMPILATION_PHASE: "PASS_1_META_ARCHITECTURE"
+
+END RULE

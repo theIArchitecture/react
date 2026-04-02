@@ -1,0 +1,37 @@
+# Coupling Metrics Enforcement Rule
+# Detects modules with excessive coupling (high fan-in or fan-out)
+# Fan-Out: Number of modules this module depends on (high = fragile, hard to maintain)
+# Fan-In: Number of modules depending on this module (high = changes break many things)
+
+RULE "COUPLING-METRICS-ENFORCEMENT" : IMetaArchitecture
+  ID: "ARCH-COUPLING-001"
+  DESCRIPTION: "Module coupling exceeds configured thresholds - fan-in or fan-out too high"
+  SEVERITY: Warning
+  CATEGORY: "Architecture_Quality"
+  APPLIES_TO: ["csharp", "java", "python", "typescript", "javascript"]
+
+  PLUGIN:
+    ID: "coupling-metrics-validator"
+    SCOPE: "tree"
+    CONFIG:
+      max_fan_out: "10"
+      max_fan_in: "20"
+      exclude_namespaces: "[\"*.Tests\",\"*.TestHelpers\",\"*.TestUtilities\"]"
+
+  EDUCATION:
+    DOCS_URL: "https://en.wikipedia.org/wiki/Coupling_(computer_programming)"
+    WHY_IT_MATTERS: "Module coupling refers to the degree of interdependence between modules in a software system. When module coupling is too high, it can make it difficult to modify or maintain individual components without affecting other parts of the system. This rule detects when module coupling exceeds configured thresholds, which can indicate that there are too many dependencies between modules and/or that there are too many modules interacting with each other. This can lead to complex, hard-to-understand codebases that are difficult to maintain and extend over time. By reducing the level of module coupling, developers can create more modular and flexible systems that are easier to understand and modify"
+    BUSINESS_IMPACT: "Violations of this rule can lead to increased costs due to additional maintenance and support required for the affected modules, as well as potential risks to productivity and reputation if the violation is not addressed in a timely manner. Additionally, compliance issues may arise if the violation results in a system that does not meet regulatory or industry standards"
+    QUICK_FIX: "Reduce coupling by applying SOLID principles: extract interfaces, use dependency injection, split large modules into smaller focused ones, and apply the Single Responsibility Principle. For high fan-out: break the module into smaller, more focused modules. For high fan-in: consider if the module is doing too much and split responsibilities"
+
+  ARCHITECTURAL_CONTEXT:
+    PROJECT_TYPE: "Generic"
+    ARCHITECTURE_PATTERN: "Language_Agnostic"
+    DESIGN_PRINCIPLES: ["Low_Coupling", "Module_Independence", "Single_Responsibility", "Module_Cohesion"]
+
+  VIOLATIONS:
+    - "Module {{NAMESPACE}} exceeds coupling threshold: Fan-{{TYPE}} = {{ACTUAL_VALUE}} (max: {{THRESHOLD}})"
+    - "High coupling detected: {{NAMESPACE}} has {{ACTUAL_VALUE}} {{TYPE}} dependencies"
+    - "Coupling violation: {{NAMESPACE}} exceeds {{TYPE}} limit of {{THRESHOLD}} (actual: {{ACTUAL_VALUE}})"
+
+END_RULE

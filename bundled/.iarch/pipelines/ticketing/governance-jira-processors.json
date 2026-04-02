@@ -1,0 +1,10 @@
+{
+  "name": "Jira Tickets - Governance Proposals",
+  "processors": [
+    "write-governance-ticket-requests",
+    "jira-processor"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

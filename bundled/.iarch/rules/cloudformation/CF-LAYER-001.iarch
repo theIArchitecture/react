@@ -1,0 +1,22 @@
+RULE "CF-DIRECT-DB-ACCESS-OUTSIDE-DATA-LAYER" : IMetaArchitecture
+  ID: "CF-LAYER-001"
+  DESCRIPTION: "A class outside the Data or Repository layer opens a database connection directly — all database access must be routed through the data access layer"
+  SEVERITY: Fatal
+  CATEGORY: "CloudFormation_LayerBoundary"
+  APPLIES_TO: ["csharp"]
+
+  PLUGIN:
+    ID: "cloudformation-layer-validator"
+    SCOPE: "tree"
+
+  EDUCATION:
+    WHY_IT_MATTERS: "IAM policy and network security groups are scoped to permit direct database access only from the data access layer. A controller or service that opens a connection directly also bypasses that security boundary — not just the architectural one."
+    BUSINESS_IMPACT: "Direct database access from controllers or services tightly couples business logic to infrastructure, makes the code untestable, and undermines the security boundaries established in the CloudFormation stack."
+    QUICK_FIX: "Move database access to a class in a .Data or .Repository namespace. Inject the repository via constructor and call its methods instead of opening a connection directly."
+
+  ARCHITECTURAL_CONTEXT:
+    PROJECT_TYPE: "Generic"
+    ARCHITECTURE_PATTERN: "Layered_Architecture"
+    DESIGN_PRINCIPLES: ["Separation_Of_Concerns", "Repository_Pattern", "Defense_In_Depth"]
+
+END_RULE

@@ -1,0 +1,33 @@
+# File Count Limits Rule
+# Enforces maximum file count per directory to prevent bloated directories
+
+RULE "FILE-COUNT-LIMITS" : IMetaArchitecture
+  ID: "ARCH-DIR-FILECOUNT-001"
+  DESCRIPTION: "Directory contains too many files - exceeds maximum file count limit"
+  SEVERITY: Warning
+  CATEGORY: "Architecture_Quality"
+  APPLIES_TO: ["csharp", "java", "python", "typescript", "javascript", "go"]
+
+  PLUGIN:
+    ID: "file-count-limits-validator"
+    SCOPE: "tree"
+    CONFIG:
+      max_files: "50"
+
+  EDUCATION:
+    DOCS_URL: "https://en.wikipedia.org/wiki/Code_organization"
+    WHY_IT_MATTERS: "Directories with too many files become difficult to navigate and maintain. Splitting large directories into logical subdirectories improves code organization and makes it easier for developers to find and understand code."
+    BUSINESS_IMPACT: "Bloated directories slow down development velocity as developers spend more time searching for files. Well-organized directory structures reduce onboarding time and maintenance costs."
+    QUICK_FIX: "Split the directory into logical subdirectories based on functionality, feature, or module. Consider grouping related files together and creating a clear hierarchy."
+
+  ARCHITECTURAL_CONTEXT:
+    PROJECT_TYPE: "Generic"
+    ARCHITECTURE_PATTERN: "Language_Agnostic"
+    DESIGN_PRINCIPLES: ["Separation_of_Concerns", "Modularity", "Maintainability"]
+
+  VIOLATIONS:
+    - "Directory contains {{FILE_COUNT}} files, exceeding maximum of {{MAX_FILES}}. Consider splitting into subdirectories."
+    - "Too many files in directory: {{FILE_COUNT}} (max: {{MAX_FILES}})"
+    - "Directory structure violation: File count limit exceeded"
+
+END_RULE

@@ -1,0 +1,229 @@
+{
+  "$schema": "./concept-adapter.schema.json",
+  "name": "Cryptography Concepts",
+  "version": "1.0.0",
+  "domain": "security",
+  "description": "Cross-language mappings for cryptographic operations and security patterns",
+  
+  "concepts": {
+    "MD5_HASH_CREATION": {
+      "description": "Creating an MD5 hash instance - cryptographically broken, should not be used for security",
+      "risk": "high",
+      "cwe": "CWE-328",
+      "languageMappings": {
+        "csharp": {
+          "patterns": [
+            "new\\s+MD5CryptoServiceProvider\\s*\\(",
+            "MD5\\.Create\\s*\\(",
+            "HashAlgorithm\\.Create\\s*\\(\\s*[\"']MD5[\"']\\s*\\)"
+          ],
+          "imports": ["System.Security.Cryptography"],
+          "replacement": {
+            "pattern": "SHA256.Create()",
+            "imports": ["System.Security.Cryptography"]
+          }
+        },
+        "java": {
+          "patterns": [
+            "MessageDigest\\.getInstance\\s*\\(\\s*[\"']MD5[\"']\\s*\\)",
+            "DigestUtils\\.md5\\s*\\(",
+            "DigestUtils\\.getMd5Digest\\s*\\("
+          ],
+          "imports": ["java.security.MessageDigest", "org.apache.commons.codec.digest.DigestUtils"],
+          "replacement": {
+            "pattern": "MessageDigest.getInstance(\"SHA-256\")",
+            "imports": ["java.security.MessageDigest"]
+          }
+        },
+        "python": {
+          "patterns": [
+            "hashlib\\.md5\\s*\\(",
+            "MD5\\.new\\s*\\(",
+            "Crypto\\.Hash\\.MD5\\.new\\s*\\("
+          ],
+          "imports": ["hashlib", "Crypto.Hash.MD5"],
+          "replacement": {
+            "pattern": "hashlib.sha256()",
+            "imports": ["hashlib"]
+          }
+        },
+        "typescript": {
+          "patterns": [
+            "createHash\\s*\\(\\s*[\"']md5[\"']\\s*\\)",
+            "crypto\\.createHash\\s*\\(\\s*[\"']md5[\"']\\s*\\)"
+          ],
+          "imports": ["crypto"],
+          "replacement": {
+            "pattern": "crypto.createHash('sha256')",
+            "imports": ["crypto"]
+          }
+        },
+        "javascript": {
+          "patterns": [
+            "createHash\\s*\\(\\s*[\"']md5[\"']\\s*\\)",
+            "crypto\\.createHash\\s*\\(\\s*[\"']md5[\"']\\s*\\)",
+            "CryptoJS\\.MD5\\s*\\("
+          ],
+          "imports": ["crypto", "crypto-js"],
+          "replacement": {
+            "pattern": "crypto.createHash('sha256')",
+            "imports": ["crypto"]
+          }
+        },
+        "go": {
+          "patterns": [
+            "md5\\.New\\s*\\(",
+            "md5\\.Sum\\s*\\("
+          ],
+          "imports": ["crypto/md5"],
+          "replacement": {
+            "pattern": "sha256.New()",
+            "imports": ["crypto/sha256"]
+          }
+        }
+      },
+      "recommendedConcept": "SHA256_HASH_CREATION"
+    },
+    
+    "SHA1_HASH_CREATION": {
+      "description": "Creating a SHA-1 hash instance - cryptographically weak, avoid for security purposes",
+      "risk": "medium",
+      "cwe": "CWE-328",
+      "languageMappings": {
+        "csharp": {
+          "patterns": [
+            "new\\s+SHA1CryptoServiceProvider\\s*\\(",
+            "SHA1\\.Create\\s*\\(",
+            "HashAlgorithm\\.Create\\s*\\(\\s*[\"']SHA1[\"']\\s*\\)"
+          ],
+          "imports": ["System.Security.Cryptography"]
+        },
+        "java": {
+          "patterns": [
+            "MessageDigest\\.getInstance\\s*\\(\\s*[\"']SHA-?1[\"']\\s*\\)"
+          ],
+          "imports": ["java.security.MessageDigest"]
+        },
+        "python": {
+          "patterns": [
+            "hashlib\\.sha1\\s*\\("
+          ],
+          "imports": ["hashlib"]
+        },
+        "go": {
+          "patterns": [
+            "sha1\\.New\\s*\\(",
+            "sha1\\.Sum\\s*\\("
+          ],
+          "imports": ["crypto/sha1"]
+        }
+      },
+      "recommendedConcept": "SHA256_HASH_CREATION"
+    },
+    
+    "SHA256_HASH_CREATION": {
+      "description": "Creating a SHA-256 hash instance - cryptographically secure",
+      "risk": "none",
+      "languageMappings": {
+        "csharp": {
+          "patterns": [
+            "SHA256\\.Create\\s*\\(",
+            "new\\s+SHA256Managed\\s*\\(",
+            "new\\s+SHA256CryptoServiceProvider\\s*\\("
+          ],
+          "imports": ["System.Security.Cryptography"]
+        },
+        "java": {
+          "patterns": [
+            "MessageDigest\\.getInstance\\s*\\(\\s*[\"']SHA-256[\"']\\s*\\)"
+          ],
+          "imports": ["java.security.MessageDigest"]
+        },
+        "python": {
+          "patterns": [
+            "hashlib\\.sha256\\s*\\("
+          ],
+          "imports": ["hashlib"]
+        },
+        "typescript": {
+          "patterns": [
+            "createHash\\s*\\(\\s*[\"']sha256[\"']\\s*\\)"
+          ],
+          "imports": ["crypto"]
+        },
+        "go": {
+          "patterns": [
+            "sha256\\.New\\s*\\(",
+            "sha256\\.Sum256\\s*\\("
+          ],
+          "imports": ["crypto/sha256"]
+        }
+      }
+    },
+    
+    "WEAK_RANDOM_NUMBER": {
+      "description": "Using non-cryptographic random number generators for security purposes",
+      "risk": "high",
+      "cwe": "CWE-330",
+      "languageMappings": {
+        "csharp": {
+          "patterns": [
+            "new\\s+Random\\s*\\(",
+            "Random\\.Shared"
+          ],
+          "imports": [],
+          "replacement": {
+            "pattern": "RandomNumberGenerator.GetBytes()",
+            "imports": ["System.Security.Cryptography"]
+          }
+        },
+        "java": {
+          "patterns": [
+            "new\\s+Random\\s*\\(",
+            "Math\\.random\\s*\\("
+          ],
+          "imports": ["java.util.Random"],
+          "replacement": {
+            "pattern": "SecureRandom.getInstanceStrong()",
+            "imports": ["java.security.SecureRandom"]
+          }
+        },
+        "python": {
+          "patterns": [
+            "random\\.random\\s*\\(",
+            "random\\.randint\\s*\\(",
+            "random\\.choice\\s*\\("
+          ],
+          "imports": ["random"],
+          "replacement": {
+            "pattern": "secrets.token_bytes()",
+            "imports": ["secrets"]
+          }
+        },
+        "javascript": {
+          "patterns": [
+            "Math\\.random\\s*\\("
+          ],
+          "imports": [],
+          "replacement": {
+            "pattern": "crypto.getRandomValues()",
+            "imports": ["crypto"]
+          }
+        },
+        "go": {
+          "patterns": [
+            "rand\\.Int\\s*\\(",
+            "rand\\.Intn\\s*\\(",
+            "math/rand"
+          ],
+          "imports": ["math/rand"],
+          "replacement": {
+            "pattern": "crypto/rand.Read()",
+            "imports": ["crypto/rand"]
+          }
+        }
+      },
+      "recommendedConcept": "SECURE_RANDOM_NUMBER"
+    }
+  }
+}

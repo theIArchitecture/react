@@ -1,0 +1,36 @@
+# Interface Segregation Principle Enforcement Rule
+# Detects "fat interfaces" with too many methods, indicating potential ISP violations
+# Note: Full ISP analysis (detecting unused methods) requires Roslyn semantic analysis
+
+RULE "INTERFACE-SEGREGATION-ENFORCEMENT" : IMetaArchitecture
+  ID: "ROSLYN-INTERFACE-SEGREGATION-001"
+  DESCRIPTION: "Interface has too many methods - may violate Interface Segregation Principle"
+  SEVERITY: Warning
+  CATEGORY: "Architecture_Quality"
+  APPLIES_TO: ["csharp"]
+
+  PLUGIN:
+    ID: "interface-segregation-validator"
+    SCOPE: "tree"
+    CONFIG:
+      validator: "InterfaceSegregation"
+      max_methods: "10"
+      exclude_interface_patterns: "[\"IDisposable\",\"IComparable*\",\"IEnumerable*\",\"ICollection*\",\"IList*\"]"
+
+  EDUCATION:
+    DOCS_URL: "https://en.wikipedia.org/wiki/Interface_segregation_principle"
+    WHY_IT_MATTERS: "This rule matters because it helps ensure that interfaces are well-designed and easy to use by enforcing the Interface Segregation Principle (ISP). By having too many methods in an interface, it can lead to tight coupling between classes that implement the interface, making changes more difficult and increasing the risk of breaking existing code. Additionally, this rule helps reduce code duplication and makes it easier to maintain and extend the software over time"
+    BUSINESS_IMPACT: "The Interface has too many methods, which may violate the Interface Segregation Principle (ISP). This rule can lead to a higher maintenance cost and increase the risk of bugs and errors in the codebase. Additionally, it can also lead to compliance issues with legacy systems or frameworks that do not follow the ISP. Furthermore, this rule can negatively impact productivity as developers must spend more time understanding and implementing the interface"
+    QUICK_FIX: "Split the interface into smaller, more focused interfaces. Group related methods together and create separate interfaces for different concerns. Use interface inheritance or composition to combine interfaces when needed. This allows clients to depend only on the interfaces they actually use."
+
+  ARCHITECTURAL_CONTEXT:
+    PROJECT_TYPE: "Generic"
+    ARCHITECTURE_PATTERN: "Language_Agnostic"
+    DESIGN_PRINCIPLES: ["Interface_Segregation", "Client_Specific_Interfaces", "Service_Abstraction"]
+
+  VIOLATIONS:
+    - "Interface '{{INTERFACE_NAME}}' has {{METHOD_COUNT}} methods (max: {{MAX_METHODS}}) - consider splitting into smaller interfaces"
+    - "Fat interface detected: {{INTERFACE_NAME}} violates Interface Segregation Principle"
+    - "ISP violation: {{INTERFACE_NAME}} in namespace {{NAMESPACE}} has too many methods ({{METHOD_COUNT}} > {{MAX_METHODS}})"
+
+END_RULE

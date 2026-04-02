@@ -1,0 +1,10 @@
+{
+  "name": "Jira Tickets - General Violations",
+  "processors": [
+    "write-ticket-requests",
+    "jira-processor"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

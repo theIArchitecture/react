@@ -13,7 +13,7 @@ RULE "CROSS-BOUNDARY-TYPE-ENFORCEMENT" : IMetaArchitecture
     ID: "cross-boundary-type-validator"
     SCOPE: "tree"
     CONFIG:
-      boundary_rules: "[{\"from\":\"react-dom\",\"to\":\"react-native-renderer\",\"required_type_namespace\":\"__never__\",\"message\":\"DOM renderer should not access native renderer directly\"},{\"from\":\"react-native-renderer\",\"to\":\"react-dom\",\"required_type_namespace\":\"__never__\",\"message\":\"Native renderer should not access DOM renderer directly\"},{\"from\":\"react\",\"to\":\"react-server\",\"required_type_namespace\":\"__never__\",\"message\":\"React core should not access server implementation directly\"},{\"from\":\"react-devtools*\",\"to\":\"react-server*\",\"required_type_namespace\":\"__never__\",\"message\":\"DevTools should not access server internals directly\"}]"
+      boundary_patterns: "[{\"from\":\"React\",\"to\":\"ReactReconciler.*\",\"required_type_namespace\":\"*Props\",\"message\":\"React should use Props types when accessing Reconciler\"},{\"from\":\"ReactDOM\",\"to\":\"ReactReconciler.*\",\"required_type_namespace\":\"*Props\",\"message\":\"ReactDOM should use Props types when accessing Reconciler\"},{\"from\":\"*\",\"to\":\"*.internal.*\",\"required_type_namespace\":\"React.*\",\"message\":\"Cross-boundary access to internal should use public React API\"}]"
 
   EDUCATION:
     DOCS_URL: "https://martinfowler.com/bliki/BoundedContext.html"

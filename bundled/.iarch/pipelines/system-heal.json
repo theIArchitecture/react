@@ -1,0 +1,12 @@
+{
+  "name": "Heal - LS Single File",
+  "processors": [
+    "@system-lite",
+    "iarch-pattern-healer",
+    "claude-healer",
+    "annotation-marker"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "id": "powershell-executor",
+  "type": "executor",
+  "fileExtensions": [".ps1"],
+  "command": "pwsh",
+  "args": ["-NoProfile", "-Command", ". '{processorPath}'; {entryPoint}"],
+  "protocol": "stdin-stdout-json",
+  "timeout": 30000,
+  "fallbackCommand": "powershell",
+  "description": "Executes PowerShell plugins via pwsh with stdin/stdout JSON protocol. Uses dot-source + direct function call — no dispatch switch needed in the script."
+}

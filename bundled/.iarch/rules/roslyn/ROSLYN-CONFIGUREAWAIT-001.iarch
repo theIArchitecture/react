@@ -1,0 +1,40 @@
+# Roslyn ConfigureAwait Detector Test Rule
+# Detects missing .ConfigureAwait(false) in library code
+
+RULE "Library code should use .ConfigureAwait(false) to avoid deadlocks" : IValidationArchitecture
+  ID: "ROSLYN-CONFIGUREAWAIT-001"
+  DESCRIPTION: "Detects await expressions without .ConfigureAwait(false) in library code. This prevents deadlocks in consuming applications with synchronization contexts (UI apps, legacy ASP.NET)."
+  SEVERITY: Warning
+  CATEGORY: "Code Quality"
+  APPLIES_TO: ["csharp"]
+
+  ARCHITECTURAL_CONTEXT:
+    CATEGORY: "Code Quality"
+    LAYER: "Base"
+    SOURCE: "Roslyn Semantic Analysis"
+    PACK: "roslyn-quality-rules"
+
+  PLUGIN:
+    ID: "configure-await-validator"
+    SCOPE: "tree"
+    CONFIG:
+      validator: "ConfigureAwait"
+      mode: "validate"
+      exclude_namespace_patterns: "[\"*.Tests\", \"*.App\", \"*.Program\", \"*Program\"]"
+
+  VIOLATIONS:
+    - "Missing .ConfigureAwait(false) on await expression. Library code should use ConfigureAwait(false) to avoid deadlocks in consuming applications."
+
+  EDUCATION:
+    WHY_IT_MATTERS: "In library code, awaiting without ConfigureAwait(false) can cause deadlocks when consumed by applications with synchronization contexts (WPF, WinForms, legacy ASP.NET). ASP.NET Core apps don't have this issue."
+    BUSINESS_IMPACT: "Prevents application hang/deadlock issues that are difficult to diagnose and reproduce."
+    QUICK_FIX: "Add .ConfigureAwait(false) to all await expressions in library code"
+    DOCS_URL: "https://devblogs.microsoft.com/dotnet/configureawait-faq/"
+
+  META_ARCHITECTURE:
+    HEALING_PRIORITY: 3
+    BREAKING_CHANGE: false
+    EXTRACTED_FROM: "Best Practices"
+    AUTO_HEALING: true
+
+END RULE

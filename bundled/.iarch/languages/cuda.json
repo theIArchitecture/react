@@ -1,0 +1,21 @@
+{
+  "language": "cuda",
+  "display_name": "CUDA",
+  "file_extensions": [".cu", ".cuh"],
+  "layer_detection": {
+    "layers": {
+      "Kernel": {
+        "namespace_patterns": [".*kernels?$", ".*device$"],
+        "import_patterns": [".*kernel.*", ".*device.*"]
+      },
+      "Host": {
+        "namespace_patterns": [".*host$", ".*cpu$"],
+        "import_patterns": [".*host.*", ".*cpu.*"]
+      },
+      "Utils": {
+        "namespace_patterns": [".*utils?$", ".*helpers?$"],
+        "import_patterns": [".*util.*", ".*helper.*"]
+      }
+    }
+  }
+}

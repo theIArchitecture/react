@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./context_dump.py",
+  "processors": [
+    {
+      "id": "context-dump",
+      "name": "Context Dump",
+      "requires": ["pipeline-sink"],
+      "optional-requires": [ "dependency-graph", "dependency-graph.metadata", "dependency-graph.transformed", "dependency-graph-stats" ],
+      "provides": ["context-dump.message"],
+      "ide-hidden": true
+    }
+  ]
+}

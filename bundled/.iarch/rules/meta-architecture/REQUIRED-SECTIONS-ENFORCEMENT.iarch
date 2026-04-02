@@ -1,0 +1,92 @@
+RULE "REQUIRED-SECTIONS-ENFORCEMENT" : IValidationArchitecture
+  ID: "META-REQUIRED-SECTIONS-001"
+  DESCRIPTION: "Enforce that .iarch rules have all required sections (DETECT, VIOLATIONS)"
+  SEVERITY: Fatal
+  CATEGORY: "Meta_Architecture"
+  APPLIES_TO: ["iarch"]
+
+  EDUCATION:
+    DOCS_URL: "https://docs.iarchitecture.com/language-specification#required-sections"
+    WHY_IT_MATTERS: "DETECT and VIOLATIONS sections are required for the .iarch parser to validate the rule structure and generate proper validation output"
+    BUSINESS_IMPACT: "Rules without required sections will fail to parse, causing validation failures and blocking the entire pipeline"
+    QUICK_FIX: "Add missing DETECT: and VIOLATIONS: sections to your .iarch rule according to the language specification"
+
+  DETECT:
+    PATTERNS:
+      iarch:
+        # Check for missing DETECT section
+        - MISSING_DETECT: "^RULE\\s+[\"'][^\"']+[\"'].*?(?:END RULE|$)(?!.*DETECT:)"
+
+        # Check for missing VIOLATIONS section
+        - MISSING_VIOLATIONS: "^RULE\\s+[\"'][^\"']+[\"'].*?(?:END RULE|$)(?!.*VIOLATIONS:)"
+
+        # Check for empty DETECT section (no patterns defined)
+        - EMPTY_DETECT: "DETECT:\\s*(?:\\n\\s*)?(?:VIOLATIONS:|FIXES:|EXAMPLES:|END RULE)"
+
+        # Check for empty VIOLATIONS section
+        - EMPTY_VIOLATIONS: "VIOLATIONS:\\s*(?:\\n\\s*)?(?:FIXES:|EXAMPLES:|END RULE)"
+
+  VIOLATIONS:
+    - "Meta-Architecture: DETECT section is required but missing - rule cannot validate without detection patterns"
+    - "Meta-Architecture: VIOLATIONS section is required but missing - rule cannot report violations without violation messages"
+    - "Meta-Architecture: DETECT section is empty - must define at least one pattern for validation"
+    - "Meta-Architecture: VIOLATIONS section is empty - must define at least one violation message"
+
+  FIXES:
+    iarch:
+      - REPLACE: "END RULE"
+      - WITH: "  DETECT:\n    PATTERNS:\n      # Add your language patterns here\n      # Example: csharp:\n      #   - PATTERN_NAME: \"regex_pattern\"\n  \n  VIOLATIONS:\n    - \"Description of what this violation means\"\n\nEND RULE"
+      - TEACHING: "Add required DETECT and VIOLATIONS sections before END RULE"
+    META_ARCHITECTURE:
+      HEALING_PRIORITY: 1
+      BREAKING_CHANGE: true
+      BUSINESS_IMPACT: "Prevents parser failures and ensures all .iarch rules are valid"
+      AUTO_HEAL_SUCCESS_RATE: "80% - Can add section structure, but patterns must be filled manually"
+
+  EXAMPLES:
+    VIOLATION:
+      iarch: |
+        # ❌ VIOLATION: Missing DETECT and VIOLATIONS sections
+        RULE "Test Rule" : IBaseArchitecture
+          ID: "TEST-001"
+          DESCRIPTION: "Test rule"
+          SEVERITY: Error
+          CATEGORY: "Security"
+          APPLIES_TO: ["csharp"]
+
+          EDUCATION:
+            DOCS_URL: "https://example.com"
+            BUSINESS_IMPACT: "Test"
+            QUICK_FIX: "Test"
+
+          # Missing DETECT section
+          # Missing VIOLATIONS section
+
+        END RULE
+
+    CORRECT:
+      iarch: |
+        # ✅ CORRECT: All required sections present
+        RULE "Test Rule" : IBaseArchitecture
+          ID: "TEST-001"
+          DESCRIPTION: "Test rule"
+          SEVERITY: Error
+          CATEGORY: "Security"
+          APPLIES_TO: ["csharp"]
+
+          EDUCATION:
+            DOCS_URL: "https://example.com"
+            BUSINESS_IMPACT: "Test"
+            QUICK_FIX: "Test"
+
+          DETECT:
+            PATTERNS:
+              csharp:
+                - PATTERN_NAME: "pattern_regex"
+
+          VIOLATIONS:
+            - "Description of violation"
+
+        END RULE
+
+END RULE

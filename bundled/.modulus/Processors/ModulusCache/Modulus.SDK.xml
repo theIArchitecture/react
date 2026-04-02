@@ -1,0 +1,881 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Modulus.SDK</name>
+    </assembly>
+    <members>
+        <member name="T:Modulus.SDK.Models.DiscoveredProcessor">
+            <summary>
+            Represents a discovered processor with its manifest and file system locations.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.DiscoveredProcessor.Manifest">
+            <summary>
+            The parsed processor manifest
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.DiscoveredProcessor.ManifestPath">
+            <summary>
+            Absolute path to the plugin.json manifest file
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.DiscoveredProcessor.ProcessorDirectory">
+            <summary>
+            Absolute path to the processor's directory
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.DiscoveredProcessor.ProcessorPath">
+            <summary>
+            Absolute path to the processor file
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.DiscoveredProcessor.EntryPoint">
+            <summary>
+            Entry point within the processor file (optional).
+            For DLLs: fully-qualified class name — ProcessorExecutor loads this specific class.
+                      When null, ProcessorExecutor finds first class implementing IProcessor.
+            For scripts: function name passed to the executor via {entryPoint} placeholder.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.DiscoveredProcessor.Roles">
+            <summary>
+            Gets or sets the collection of roles assigned to the distributed application group.
+            </summary>
+        </member>
+        <member name="T:Modulus.SDK.Models.DAGRole">
+            <summary>
+            Selection of roles for distributed application group (DAG) assignment.
+            </summary>
+        </member>
+        <member name="F:Modulus.SDK.Models.DAGRole.Producer">
+            <summary>
+            Processor has no dependencies and can run in the first batch.
+            </summary>
+        </member>
+        <member name="F:Modulus.SDK.Models.DAGRole.Transformer">
+            <summary>
+            Transformer has the same tags for requires and provides.
+            </summary>
+        </member>
+        <member name="F:Modulus.SDK.Models.DAGRole.Consumer">
+            <summary>
+            Consumer has tags in requires that are not in provides.
+            </summary>
+        </member>
+        <member name="F:Modulus.SDK.Models.DAGRole.Sink">
+            <summary>
+            Consumer with 'pipeline-sink' tag in requires, indicating it should run in the last batch and not be assigned to a DAG group.
+            </summary>
+        </member>
+        <member name="T:Modulus.SDK.Models.ExecutionPlan">
+            <summary>
+            The result of GetExecutionPlan: DAG structure and execution batches for a given set of processor IDs.
+            Valid = false means the pipeline cannot execute; check Errors for details.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ExecutionPlan.Valid">
+            <summary>True when the pipeline is structurally valid (no unknown IDs, no cycles, all requires satisfied).</summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ExecutionPlan.Errors">
+            <summary>Human-readable validation errors. Populated when Valid = false.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ExecutionPlan.Nodes">
+            <summary>One entry per processor in the plan, including its batch index.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ExecutionPlan.Edges">
+            <summary>Directed edges: each edge means FromId must complete before ToId can start.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ExecutionPlan.Batches">
+            <summary>
+            Execution batches in order. Each inner list is a set of processor IDs that run in parallel.
+            Batches execute sequentially; processors within a batch execute concurrently.
+            </summary>
+        </member>
+        <member name="T:Modulus.SDK.Models.ExecutionPlanNode">
+            <summary>
+            A single node in the execution plan DAG.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ExecutionPlanNode.Id">
+            <summary>Processor ID.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ExecutionPlanNode.Requires">
+            <summary>Context keys this processor requires before it can run.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ExecutionPlanNode.Provides">
+            <summary>Context keys this processor writes after it runs.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ExecutionPlanNode.OptionalRequires">
+            <summary>Context keys this processor uses if present but does not require.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ExecutionPlanNode.BatchIndex">
+            <summary>Zero-based index of the batch this processor belongs to.</summary>
+        </member>
+        <member name="T:Modulus.SDK.Models.PipelineDefinition">
+            <summary>
+            Defines a named pipeline loaded from a .json file in a pipelines/ configuration directory.
+            Lookup key is the filename without extension (case-insensitive).
+            The name field is display-only; the filename is the authoritative identifier.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.PipelineDefinition.Name">
+            <summary>
+            Human-readable display name for the pipeline.
+            Not used for lookup — filename-without-extension is the lookup key.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.PipelineDefinition.Description">
+            <summary>
+            Optional description of what this pipeline does.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.PipelineDefinition.Processors">
+            <summary>
+            Ordered list of processor IDs to execute.
+            Equivalent to ProcessingOptions.Pipeline when resolved.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.PipelineDefinition.Config">
+            <summary>
+            Base configuration for the pipeline.
+            Merged with caller's ProcessingOptions.Config, with caller values taking precedence.
+            </summary>
+        </member>
+        <member name="T:Modulus.SDK.Models.PipelineKeys">
+            <summary>
+            Reserved keys for processor requires/provides. Use these in plugin manifests so the engine applies special DAG behavior.
+            </summary>
+        </member>
+        <member name="F:Modulus.SDK.Models.PipelineKeys.Sink">
+            <summary>
+            Magic requires key: processor runs after every other node in the pipeline.
+            No processor provides it; the engine treats it as satisfied and adds edges from all other nodes to this one.
+            Use for sinks (e.g. JSON logger, markdown reporter, context dump) that must run last.
+            </summary>
+        </member>
+        <member name="F:Modulus.SDK.Models.PipelineKeys.ProcessorErrors">
+            <summary>
+            Context key where the engine injects processor failures. Never pruned so sinks and callers always see errors.
+            </summary>
+        </member>
+        <member name="F:Modulus.SDK.Models.PipelineKeys.PipelineNotifications">
+            <summary>
+            Optional context key: bag for pipeline-level notifications (warnings, status). Any processor can add to it; sinks can read it. Never pruned.
+            </summary>
+        </member>
+        <member name="T:Modulus.SDK.Models.ProcessingResult">
+            <summary>
+            Result of processing files through the Modulus pipeline
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessingResult.Success">
+            <summary>
+            Whether processing completed successfully
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessingResult.ProcessorResults">
+            <summary>
+            Results from all processors in the pipeline
+            Each processor adds its output to the Context
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessingResult.Context">
+            <summary>
+            Final context after pipeline execution
+            Contains all processor outputs (findings, metrics, caches, etc.)
+            Applications interpret Context keys based on their domain
+            Example: IArchitecture looks for Context["violations"]
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessingResult.Diagnostics">
+            <summary>
+            Processing diagnostics (errors and warnings)
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessingResult.Metadata">
+            <summary>
+            Metadata about the processing execution
+            </summary>
+        </member>
+        <member name="T:Modulus.SDK.Models.BatchProcessingResult">
+            <summary>
+            Batch processing result for multiple files
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.BatchProcessingResult.Success">
+            <summary>Whether all processing completed successfully.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.BatchProcessingResult.TotalProcessed">
+            <summary>Total number of items processed.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.BatchProcessingResult.Results">
+            <summary>Individual processing results.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.BatchProcessingResult.Diagnostics">
+            <summary>Diagnostics collected during batch processing.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.BatchProcessingResult.Metadata">
+            <summary>Metadata about the batch processing execution.</summary>
+        </member>
+        <member name="T:Modulus.SDK.Models.ProcessingDiagnostic">
+            <summary>
+            Processing diagnostic (error or warning)
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessingDiagnostic.Message">
+            <summary>Diagnostic message describing the issue.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessingDiagnostic.Exception">
+            <summary>Optional exception that caused this diagnostic.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessingDiagnostic.Severity">
+            <summary>Severity level of the diagnostic.</summary>
+        </member>
+        <member name="T:Modulus.SDK.Models.DiagnosticSeverity">
+            <summary>
+            Diagnostic severity level
+            </summary>
+        </member>
+        <member name="F:Modulus.SDK.Models.DiagnosticSeverity.Warning">
+            <summary>Non-fatal issue that should be investigated.</summary>
+        </member>
+        <member name="F:Modulus.SDK.Models.DiagnosticSeverity.Error">
+            <summary>Fatal issue that prevented successful processing.</summary>
+        </member>
+        <member name="T:Modulus.SDK.Models.ProcessingMetadata">
+            <summary>
+            Metadata about a processing execution
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessingMetadata.RunId">
+            <summary>
+            Unique id for this pipeline run (for tracing and correlation).
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessingMetadata.EngineVersion">
+            <summary>
+            Modulus engine version
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessingMetadata.Timestamp">
+            <summary>
+            Timestamp when processing started
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessingMetadata.PipelineDiagnostics">
+            <summary>
+            Pipeline diagnostics (DAG shape and per-processor timing) when
+            processing options have pipeline diagnostics enabled.
+            </summary>
+        </member>
+        <member name="T:Modulus.SDK.Models.PipelineDiagnostics">
+            <summary>
+            Pipeline run diagnostics: DAG structure and per-processor timing.
+            Populated when diagnostics are enabled in processing options.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.PipelineDiagnostics.Nodes">
+            <summary>
+            Nodes in the execution DAG (id, requires, provides).
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.PipelineDiagnostics.Edges">
+            <summary>
+            Edges in the DAG (FromId runs before ToId).
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.PipelineDiagnostics.Batches">
+            <summary>
+            Execution batches: batch index → list of processor ids run in parallel in that batch.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.PipelineDiagnostics.ProcessorTimings">
+            <summary>
+            Per-processor execution timing (order matches execution order).
+            </summary>
+        </member>
+        <member name="T:Modulus.SDK.Models.DagNodeInfo">
+            <summary>
+            A node in the pipeline DAG for diagnostics.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.DagNodeInfo.Id">
+            <summary>Processor identifier.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.DagNodeInfo.Requires">
+            <summary>Context keys required by this processor.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.DagNodeInfo.Provides">
+            <summary>Context keys provided by this processor.</summary>
+        </member>
+        <member name="T:Modulus.SDK.Models.DagEdge">
+            <summary>
+            An edge in the pipeline DAG (FromId must run before ToId).
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.DagEdge.FromId">
+            <summary>Processor that must run first.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.DagEdge.ToId">
+            <summary>Processor that depends on FromId.</summary>
+        </member>
+        <member name="T:Modulus.SDK.Models.ProcessorTiming">
+            <summary>
+            Timing for a single processor execution.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorTiming.ProcessorId">
+            <summary>Identifier of the processor that was timed.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorTiming.BatchIndex">
+            <summary>Batch index in which the processor executed.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorTiming.ElapsedMilliseconds">
+            <summary>Wall-clock execution time in milliseconds.</summary>
+        </member>
+        <member name="T:Modulus.SDK.Models.ProcessorEntry">
+            <summary>
+            Represents a single processor entry in a multi-processor manifest.
+            Allows one DLL to export multiple processors with different class names.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorEntry.Id">
+            <summary>
+            Unique processor identifier.
+            Used to reference this processor from pipelines.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorEntry.EntryPoint">
+            <summary>
+            Entry point within the processor file.
+            For DLLs: fully-qualified class name (e.g. "ArchitectureValidators.CircularDependencyValidator")
+            For scripts: function name to invoke (e.g. "Invoke-ContextProvider")
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorEntry.Name">
+            <summary>
+            Human-readable processor name (optional, defaults to Id if not provided)
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorEntry.Type">
+            <summary>
+            Processor type (defaults to Processor)
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorEntry.Requires">
+            <summary>
+            Data contracts: Keys that must exist in pipeline Context for this processor to execute.
+            Examples: ["parsed-files"], ["dependency-graph"], ["language-list"]
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorEntry.Provides">
+            <summary>
+            Data contracts: Keys this processor will add to pipeline Context.
+            Examples: ["call-graph"], ["violations"], ["metrics"]
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorEntry.OptionalRequires">
+            <summary>
+            Context keys this processor will use if present, but does not require.
+            Pipeline is valid even if no one provides them; the processor runs after any provider (for ordering).
+            Use for optional cache or other best-effort inputs.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorEntry.SupportsBatching">
+            <summary>
+            Indicates whether this processor supports batch processing.
+            Defaults to false (single-file processing).
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorEntry.ExtensionData">
+            <summary>
+            Captures any additional JSON properties not mapped to known fields.
+            Allows consumers to attach custom metadata (e.g. IDE hints, categories)
+            without requiring changes to the Modulus SDK model.
+            </summary>
+        </member>
+        <member name="T:Modulus.SDK.Models.ProcessorManifest">
+            <summary>
+            Plugin manifest loaded from plugin.json file.
+            Supports two formats:
+            1. Single-processor: Id, Name, Type at top level (backward compatible)
+            2. Multi-processor: Processors array with multiple entries (one DLL, multiple processors)
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorManifest.Id">
+            <summary>
+            Unique plugin identifier (single-processor format).
+            Used to reference this plugin from rule files or configuration.
+            Required for single-processor format, null for multi-processor format.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorManifest.Name">
+            <summary>
+            Human-readable plugin name (single-processor format).
+            Required for single-processor format, null for multi-processor format.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorManifest.Type">
+            <summary>
+            Plugin type (single-processor format).
+            Required for single-processor format, null for multi-processor format.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorManifest.EntryPoint">
+            <summary>
+            Entry point within the processor file (optional, single-processor format).
+            For DLLs: fully-qualified class name (e.g. "ArchitectureValidators.CircularDependencyValidator")
+            For scripts: function name to invoke (e.g. "Invoke-ContextProvider")
+            If not specified for DLLs, ProcessorExecutor will find first class implementing IProcessor.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorManifest.Requires">
+            <summary>
+            Data contracts: Keys that must exist in pipeline Context (single-processor format).
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorManifest.Provides">
+            <summary>
+            Data contracts: Keys this processor will add to pipeline Context (single-processor format).
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorManifest.OptionalRequires">
+            <summary>
+            Context keys this processor will use if present, but does not require.
+            Used for optional inputs (e.g. cache): the processor runs after any provider of these keys (for ordering),
+            but the pipeline is still valid if no one provides them. At runtime the processor sees context; if the key
+            is missing it may create it, if present it may transform it. Case-insensitive.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorManifest.SupportsBatching">
+            <summary>
+            Indicates whether this plugin supports batch processing (single-processor format).
+            Defaults to false (single-file processing).
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorManifest.Processors">
+            <summary>
+            Multiple processor entries (multi-processor format).
+            Allows one DLL to export multiple processors with different class names.
+            Example: One ArchitectureValidators.dll with 12 different validator classes.
+            If specified, Id/Name/Type at top level are ignored.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorManifest.Version">
+            <summary>
+            Plugin version following semantic versioning (e.g., "1.0.0")
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorManifest.ProcessorPath">
+             <summary>
+             Path to the processor file (relative to plugin.json).
+             Supported extensions:
+             - .dll: C# compiled assembly (executed via reflection)
+             - .py: Python script (executed via python process)
+             - .ts: TypeScript script (executed via ts-node)
+             - .ps1: PowerShell script (executed via pwsh process)
+            
+             This path is resolved relative to the plugin.json directory during discovery.
+             </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorManifest.Dependencies">
+            <summary>
+            Dependencies required by this plugin.
+            For DLLs: Assembly names or file paths
+            For scripts: Package names (informational - not validated)
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorManifest.ExtensionData">
+            <summary>
+            Captures any additional JSON properties not mapped to known fields.
+            Allows consumers to attach custom metadata (e.g. IDE hints, categories)
+            without requiring changes to the Modulus SDK model.
+            </summary>
+        </member>
+        <member name="T:Modulus.SDK.Models.ProcessorType">
+            <summary>
+            Types of plugins supported by Modulus.
+            Modulus is domain-agnostic - all processing is done via generic processors.
+            </summary>
+        </member>
+        <member name="F:Modulus.SDK.Models.ProcessorType.Parser">
+            <summary>
+            Parser plugin - parses file content into structured data
+            </summary>
+        </member>
+        <member name="F:Modulus.SDK.Models.ProcessorType.Processor">
+            <summary>
+            Generic processor plugin - transforms, validates, heals, enriches, filters, strips, etc.
+            Domain-specific semantics are defined by the application layer.
+            These plugins receive JSON via stdin and return JSON via stdout.
+            </summary>
+        </member>
+        <member name="F:Modulus.SDK.Models.ProcessorType.Output">
+            <summary>
+            Output plugin - delivers results to external systems (console, file, webhook, etc.)
+            </summary>
+        </member>
+        <member name="T:Modulus.SDK.Parsers.IMatch">
+            <summary>
+            A single match from a parsed structure query (e.g. a line or region).
+            Defined in Extensions so parsers like SimpleLineParser can expose line-based matches
+            without the SDK depending on a concrete structure type.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Parsers.IMatch.StartLine">
+            <summary>Starting line number of the match.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Parsers.IMatch.EndLine">
+            <summary>Ending line number of the match.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Parsers.IMatch.Text">
+            <summary>Matched text content.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Parsers.IMatch.Metadata">
+            <summary>Additional metadata associated with the match.</summary>
+        </member>
+        <member name="T:Modulus.SDK.Parsers.IParsedStructure">
+            <summary>
+            Contract for a parsed structure (e.g. line-based, AST) produced by parsers in Modulus.Storage.
+            Downstream processors that depend on "parsed-structure" in context can cast to this interface
+            when they know the pipeline uses a Storage parser (e.g. SimpleLineParser).
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Parsers.IParsedStructure.StructureType">
+            <summary>Type of parsed structure (e.g. "line-based", "ast").</summary>
+        </member>
+        <member name="P:Modulus.SDK.Parsers.IParsedStructure.FilePath">
+            <summary>Path of the file that was parsed.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Parsers.IParsedStructure.Format">
+            <summary>Format identifier for the parsed content.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Parsers.IParsedStructure.OriginalContent">
+            <summary>Original file content before parsing.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Parsers.IParsedStructure.RawData">
+            <summary>Raw parsed data (implementation-specific).</summary>
+        </member>
+        <member name="M:Modulus.SDK.Parsers.IParsedStructure.Query(System.String)">
+            <summary>Queries the parsed structure for matches against the given pattern.</summary>
+            <param name="pattern">Pattern to search for.</param>
+            <returns>Matching regions in the parsed structure.</returns>
+        </member>
+        <member name="T:Modulus.SDK.Plugins.InvocationContext">
+            <summary>
+            Describes where and how the validation was invoked.
+            Allows plugins to adapt behavior based on execution context.
+            </summary>
+            <example>
+            Examples of context-aware behavior:
+            - Slack plugin: Skip in IDE (too noisy), post in CI/CD (team notification)
+            - SARIF plugin: Different output paths for IDE (.vscode/) vs CI/CD (build/)
+            - Console plugin: Verbose in interactive CLI, terse in CI/CD
+            </example>
+        </member>
+        <member name="P:Modulus.SDK.Plugins.InvocationContext.Source">
+            <summary>
+            Source of invocation.
+            Common values: "CLI", "VSCode", "VisualStudio", "GitHubActions", "Jenkins", "GitLabCI", "API"
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Plugins.InvocationContext.User">
+            <summary>
+            User who triggered validation (from IDE or Git context).
+            Null if not available (e.g., scheduled cron job, anonymous API call).
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Plugins.InvocationContext.IsInteractive">
+            <summary>
+            Interactive mode: User is waiting for results (true) vs background execution (false).
+            Affects output verbosity and notification strategies.
+            Examples:
+            - CLI with user waiting: true
+            - IDE file save: true
+            - CI/CD pipeline: false
+            - Scheduled batch scan: false
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Plugins.InvocationContext.WorkingDirectory">
+            <summary>
+            Working directory where validation was invoked
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Plugins.InvocationContext.CommandLine">
+            <summary>
+            Command-line arguments (for CLI invocations)
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Plugins.InvocationContext.Properties">
+            <summary>
+            Additional context properties specific to the invocation source.
+            Examples:
+            - VSCode: { "vscodeVersion": "1.85.0", "workspaceFolder": "/path/to/workspace" }
+            - GitHub Actions: { "GITHUB_REPOSITORY": "org/repo", "GITHUB_RUN_ID": "12345" }
+            - Jenkins: { "BUILD_NUMBER": "42", "JOB_NAME": "nightly-scan" }
+            </summary>
+        </member>
+        <member name="T:Modulus.SDK.Plugins.IProcessor">
+            <summary>
+            Generic processor interface - can analyze, transform, cache, output, etc.
+            Replaces Iprocessor, Itransformer, IOutputPlugin with a unified interface.
+            Everything is a processor: parsers, processors, transformers, outputs, cache builders.
+            </summary>
+        </member>
+        <member name="M:Modulus.SDK.Plugins.IProcessor.ProcessAsync(Modulus.SDK.Plugins.ProcessorInput)">
+            <summary>
+            Process input and return result
+            </summary>
+        </member>
+        <member name="T:Modulus.SDK.Plugins.ProcessorInput">
+            <summary>
+            Input data passed to processors
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Plugins.ProcessorInput.Context">
+            <summary>
+            Shared context flowing through the pipeline
+            Processors can read from and write to Context.
+            Common keys: "dependency-graph", "findings", "metrics", etc.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Plugins.ProcessorInput.Config">
+            <summary>
+            Processor configuration
+            Convention: processors read config keys prefixed with their ID
+            Example: "my-processor.max-depth" = "5"
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Plugins.ProcessorInput.Manifest">
+            <summary>
+            Plugin manifest (for self-awareness)
+            </summary>
+        </member>
+        <member name="T:Modulus.SDK.Plugins.ProcessorResult">
+            <summary>
+            Result of processor execution
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Plugins.ProcessorResult.Success">
+            <summary>
+            Whether processing succeeded
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Plugins.ProcessorResult.Context">
+            <summary>
+            Shared context with processor outputs
+            Processors write their outputs here using whatever keys they want.
+            Examples:
+            - Context["findings"] = list of findings
+            - Context["dependency-graph"] = graph object
+            - Context["report"] = report data
+            - Context["metrics"] = stats
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Plugins.ProcessorResult.Error">
+            <summary>
+            Error message if processing failed
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Plugins.ProcessorResult.Warnings">
+            <summary>
+            Non-fatal warnings
+            </summary>
+        </member>
+        <member name="T:Modulus.SDK.Processors.ProcessorBase">
+            <summary>
+            Optional base class for processors that provides common patterns.
+            Processors can implement IProcessor directly if they prefer.
+            This base class handles:
+            - Automatic requirement validation from manifest
+            - Consistent error handling
+            - Try/catch wrapper
+            - Context copying
+            </summary>
+        </member>
+        <member name="M:Modulus.SDK.Processors.ProcessorBase.ProcessAsync(Modulus.SDK.Plugins.ProcessorInput)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.SDK.Processors.ProcessorBase.ValidateRequirements(Modulus.SDK.Plugins.ProcessorInput)">
+            <summary>
+            Validate requirements. Default: validate manifest requires context keys.
+            Override for custom validation.
+            </summary>
+            <param name="input">Processor input</param>
+            <exception cref="T:System.InvalidOperationException">Thrown if validation fails</exception>
+        </member>
+        <member name="M:Modulus.SDK.Processors.ProcessorBase.ExecuteAsync(Modulus.SDK.Plugins.ProcessorInput)">
+            <summary>
+            Execute processor logic. Return modified context.
+            Implemented by derived class.
+            </summary>
+            <param name="input">Processor input with file content, context, config, etc.</param>
+            <returns>Output context with processor results</returns>
+        </member>
+        <member name="T:Modulus.SDK.Storage.IDataStore">
+            <summary>
+            Generic abstraction for data storage backends (file, S3, Redis, memory, etc.)
+            Uses byte[] for maximum flexibility - supports text, binary, and compressed formats.
+            Implementations can be composed using decorator pattern for compression, encryption, etc.
+            </summary>
+        </member>
+        <member name="M:Modulus.SDK.Storage.IDataStore.LoadAsync(System.String)">
+            <summary>
+            Load data as byte array.
+            Could be JSON text, gzipped JSON, protobuf, or any binary format.
+            </summary>
+            <param name="key">Storage key (e.g., "dependency-graph", "config-data")</param>
+            <returns>Data as object, or null if not found</returns>
+        </member>
+        <member name="M:Modulus.SDK.Storage.IDataStore.SaveAsync(System.String,System.Object)">
+            <summary>
+            Save data as byte array.
+            </summary>
+            <param name="key">Storage key (e.g., "dependency-graph", "config-data")</param>
+            <param name="data">Data as object</param>
+        </member>
+        <member name="M:Modulus.SDK.Storage.IDataStore.ExistsAsync(System.String)">
+            <summary>
+            Check if data exists for the given key.
+            </summary>
+            <param name="key">Storage key</param>
+            <returns>True if data exists, false otherwise</returns>
+        </member>
+        <member name="M:Modulus.SDK.Storage.IDataStore.DeleteAsync(System.String)">
+            <summary>
+            Delete data for the given key.
+            </summary>
+            <param name="key">Storage key</param>
+        </member>
+        <member name="T:Modulus.SDK.Storage.NullDataStore">
+            <summary>
+            No-op data store that does nothing.
+            Used as default when no storage is needed.
+            Safe - performs no file system operations.
+            </summary>
+        </member>
+        <member name="M:Modulus.SDK.Storage.NullDataStore.LoadAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.SDK.Storage.NullDataStore.SaveAsync(System.String,System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.SDK.Storage.NullDataStore.ExistsAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.SDK.Storage.NullDataStore.DeleteAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:Modulus.SDK.Utilities.ContextHelper">
+            <summary>
+            Generic utilities for working with processor context dictionaries.
+            Provides type-safe access to context keys with clear error messages.
+            Domain-agnostic - works with any types.
+            </summary>
+        </member>
+        <member name="M:Modulus.SDK.Utilities.ContextHelper.GetRequired``1(System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},System.String)">
+            <summary>
+            Gets a required value from context, throws if missing or wrong type.
+            </summary>
+            <typeparam name="T">Expected type of the value</typeparam>
+            <param name="context">Context dictionary to read from</param>
+            <param name="key">Key to retrieve</param>
+            <returns>Typed value from context</returns>
+            <exception cref="T:System.InvalidOperationException">Thrown if key is missing or has wrong type</exception>
+        </member>
+        <member name="M:Modulus.SDK.Utilities.ContextHelper.GetOrDefault``1(System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},System.String,``0)">
+            <summary>
+            Gets a value from context, returns default if missing.
+            </summary>
+            <typeparam name="T">Expected type of the value</typeparam>
+            <param name="context">Context dictionary to read from</param>
+            <param name="key">Key to retrieve</param>
+            <param name="defaultValue">Value to return if key is missing or wrong type</param>
+            <returns>Typed value from context or default</returns>
+        </member>
+        <member name="M:Modulus.SDK.Utilities.ContextHelper.GetOrNull``1(System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},System.String)">
+            <summary>
+            Gets a value from context, returns null if missing or wrong type.
+            </summary>
+            <typeparam name="T">Expected type of the value (must be class)</typeparam>
+            <param name="context">Context dictionary to read from</param>
+            <param name="key">Key to retrieve</param>
+            <returns>Typed value from context or null</returns>
+        </member>
+        <member name="M:Modulus.SDK.Utilities.ContextHelper.Set``1(System.Collections.Generic.IDictionary{System.String,System.Object},System.String,``0)">
+            <summary>
+            Sets a value in context (create or replace).
+            </summary>
+            <typeparam name="T">Type of the value</typeparam>
+            <param name="context">Context dictionary to write to</param>
+            <param name="key">Key to set</param>
+            <param name="value">Value to set</param>
+        </member>
+        <member name="M:Modulus.SDK.Utilities.ContextHelper.AppendToList``1(System.Collections.Generic.IDictionary{System.String,System.Object},System.String,System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Appends items to a list in context (creates list if doesn't exist).
+            </summary>
+            <typeparam name="T">Type of items in the list</typeparam>
+            <param name="context">Context dictionary to modify</param>
+            <param name="key">Key of the list</param>
+            <param name="items">Items to append</param>
+        </member>
+        <member name="M:Modulus.SDK.Utilities.ContextHelper.AppendToList``1(System.Collections.Generic.IDictionary{System.String,System.Object},System.String,``0)">
+            <summary>
+            Appends a single item to a list in context (creates list if doesn't exist).
+            </summary>
+            <typeparam name="T">Type of item in the list</typeparam>
+            <param name="context">Context dictionary to modify</param>
+            <param name="key">Key of the list</param>
+            <param name="item">Item to append</param>
+        </member>
+        <member name="M:Modulus.SDK.Utilities.ContextHelper.ValidateRequired(System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},System.String[])">
+            <summary>
+            Validates that all required keys exist in context.
+            </summary>
+            <param name="context">Context dictionary to validate</param>
+            <param name="requiredKeys">Keys that must be present</param>
+            <exception cref="T:System.InvalidOperationException">Thrown if any required keys are missing</exception>
+        </member>
+        <member name="M:Modulus.SDK.Utilities.ContextHelper.ValidateRequiredTypes(System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object},System.ValueTuple{System.String,System.Type}[])">
+            <summary>
+            Validates that required keys exist and have correct types.
+            </summary>
+            <param name="context">Context dictionary to validate</param>
+            <param name="requirements">Key-type pairs that must be satisfied</param>
+            <exception cref="T:System.InvalidOperationException">Thrown if validation fails</exception>
+        </member>
+        <member name="T:Modulus.SDK.Utilities.HierarchyHelper">
+            <summary>
+            Utilities for working with Modulus hierarchy discovery.
+            Provides file-to-scope resolution so any processor can determine which config anchor
+            applies to a given file without reimplementing walk-up logic.
+            </summary>
+        </member>
+        <member name="M:Modulus.SDK.Utilities.HierarchyHelper.GetScope(System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.String)">
+            <summary>
+            Resolves the config scope (anchor path) for a file by walking up the directory chain
+            and returning the first ancestor that is a known config root.
+            </summary>
+            <remarks>
+            Use this in processors to map a file path to the anchor key in your config dictionary,
+            e.g. <c>InitConfig.ConfigRoots</c>. All processors use the same walk so scope resolution
+            is consistent across the pipeline.
+            </remarks>
+            <param name="filePath">File or directory path to resolve scope for.</param>
+            <param name="anchorPaths">Known config root (anchor) paths. Comparison is ordinal-ignore-case.</param>
+            <param name="fallback">Returned when no anchor is found in the chain. Defaults to null.</param>
+            <returns>The anchor path that is the closest ancestor of <paramref name="filePath"/>,
+            or <paramref name="fallback"/> if none found.</returns>
+        </member>
+        <member name="M:Modulus.SDK.Utilities.HierarchyHelper.GetAnchors(System.String,System.Collections.Generic.IReadOnlyCollection{System.String})">
+            <summary>
+            Returns all ancestor anchor paths for a file, walking up the directory chain.
+            Unlike <see cref="M:Modulus.SDK.Utilities.HierarchyHelper.GetScope(System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.String)"/> which returns only the closest, this returns all matches.
+            </summary>
+            <param name="filePath">File or directory path to resolve anchors for.</param>
+            <param name="anchorPaths">Known config root (anchor) paths.</param>
+            <returns>List of matching anchor paths from closest to farthest, or null if none found.</returns>
+        </member>
+    </members>
+</doc>

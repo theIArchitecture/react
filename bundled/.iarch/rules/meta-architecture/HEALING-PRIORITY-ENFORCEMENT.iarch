@@ -1,0 +1,115 @@
+# IArchitecture Meta-Architecture Healing Priority Enforcement Rule
+# This rule ensures complete healing (FATAL → FIXED) is always prioritized before partial healing (FATAL → WARNING)
+# Revolutionary self-governance: Architecture enforcing logical constraints on its own healing strategies
+
+// @architecture: IMetaArchitecture
+
+RULE "HEALING-PRIORITY-ENFORCEMENT" : IMetaArchitecture
+  ID: "META-ARCH-002"
+  DESCRIPTION: "Complete healing (FIXES) must be prioritized before partial healing (PARTIAL_HEALING) - prevents illogical healing strategies"
+  SEVERITY: Fatal
+  CATEGORY: Meta-Architecture
+  APPLIES_TO: ["iarch"]
+  
+  EDUCATION:
+    DOCS_URL: "https://docs.iarchitecture.com/meta-architecture/healing-priority"
+    WHY_IT_MATTERS: "Partial healing should only be attempted when complete healing is impossible - prioritizing partial over complete healing is architecturally illogical"
+    BUSINESS_IMPACT: "Ensures optimal healing strategies and prevents suboptimal technical debt accumulation through misplaced healing priorities"
+    EXAMPLES_PATH: "./examples/healing-priority-violations.md"
+    QUICK_FIX: "Reorder FIXES section to prioritize complete healing (HEALING_PRIORITY: 1-5) before partial healing (HEALING_PRIORITY: 6-10)"
+  
+  LAYERS:
+    META_RULES: [".iarch", "meta-architecture", "self-governance"]
+    HEALING_STRATEGIES: ["FIXES", "PARTIAL_HEALING", "healing-priority", "severity-downgrade"]
+    COMPILATION: ["compiler", "multi-pass", "in-memory-reordering"]
+    
+  DETECT:
+    PATTERNS:
+      iarch:
+        # Detect when partial healing has higher priority than complete healing
+        - PARTIAL_BEFORE_COMPLETE: "PARTIAL_HEALING:[\\s\\S]*?HEALING_PRIORITY:\\s*(\\d+)[\\s\\S]*?FIXES:[\\s\\S]*?HEALING_PRIORITY:\\s*(\\d+)"
+        - MISSING_HEALING_PRIORITY: "FIXES:[\\s\\S]*?(?!HEALING_PRIORITY)"
+        - PARTIAL_HEALING_NO_PRIORITY: "PARTIAL_HEALING:[\\s\\S]*?(?!HEALING_PRIORITY)"
+        - EQUAL_PRIORITIES: "HEALING_PRIORITY:\\s*(\\d+)[\\s\\S]*?HEALING_PRIORITY:\\s*\\1"
+        
+  VIOLATIONS:
+    - "Meta-Architecture: Partial healing has higher priority than complete healing - violates logical healing order"
+    - "Meta-Architecture: FIXES section missing HEALING_PRIORITY - prevents proper healing order enforcement"  
+    - "Meta-Architecture: PARTIAL_HEALING section missing HEALING_PRIORITY - cannot validate healing order"
+    - "Meta-Architecture: Equal healing priorities detected - creates ambiguous healing strategy"
+    
+  FIXES:
+    iarch:
+      # This fix is handled by the compiler during multi-pass compilation
+      # The compiler will reorder FIXES sections in memory based on HEALING_PRIORITY values
+      - COMPILER_REORDER: "true"
+      - REORDER_STRATEGY: "COMPLETE_HEALING_FIRST"
+      - TEACHING: "Complete healing (FATAL → FIXED) should always be attempted before partial healing (FATAL → WARNING) to achieve optimal architectural compliance"
+      
+  EXAMPLES:
+    VIOLATION:
+      iarch: |
+        # ❌ META-ARCHITECTURE VIOLATION: Partial healing prioritized before complete healing
+        RULE "EXAMPLE-VIOLATION"
+          FIXES:
+            typescript:
+              - REPLACE: "old_pattern"
+              - WITH: "new_pattern"
+              
+          META_ARCHITECTURE:
+            HEALING_PRIORITY: 5  # ← COMPLETE healing with priority 5
+            
+          PARTIAL_HEALING:
+            typescript:
+              - ACTION: "Add warning comment"
+              - DOWNGRADE_TO: "WARNING"
+              
+            META_ARCHITECTURE:
+              HEALING_PRIORITY: 2  # ← FATAL: Partial healing priority 2 < Complete healing priority 5
+        END RULE
+        
+    CORRECT:
+      iarch: |
+        # ✅ CORRECT: Complete healing prioritized before partial healing
+        RULE "EXAMPLE-CORRECT"
+          FIXES:
+            typescript:
+              - REPLACE: "old_pattern" 
+              - WITH: "new_pattern"
+              
+          META_ARCHITECTURE:
+            HEALING_PRIORITY: 1  # ← Complete healing priority 1 (highest)
+            
+          PARTIAL_HEALING:
+            typescript:
+              - ACTION: "Add warning comment"
+              - DOWNGRADE_TO: "WARNING"
+              
+            META_ARCHITECTURE:
+              HEALING_PRIORITY: 5  # ← Partial healing priority 5 (lower than complete)
+        END RULE
+
+  # INTERFACE METHOD IMPLEMENTATIONS for IMetaArchitecture:
+  
+  # GetMetaArchitecturalPrinciple(): string
+  META_ARCHITECTURAL_PRINCIPLE: "Complete healing (FIXES) must always be attempted before partial healing (PARTIAL_HEALING) - logical healing sequence enforcement"
+  
+  # GetMetaArchitecturePriority(): int (must be 1-3)  
+  META_ARCHITECTURE_PRIORITY: 1
+  
+  # GetMaxRecursionDepth(): int
+  MAX_RECURSION_DEPTH: 3
+  
+  # CanFixStructuralIssues(): bool
+  CAN_FIX_STRUCTURAL_ISSUES: true
+
+  SELF_GOVERNANCE:
+    VALIDATES_SELF: true
+    RECURSIVE_DEPTH: 3
+    META_VALIDATION: "This meta-architecture rule enforces logical healing priority constraints on all .iarch files, including itself"
+    PROOF_OF_COMPLIANCE: "Rule structure follows language specification - no top-level META_ARCHITECTURE"
+    BUSINESS_IMPACT: "Ensures optimal healing strategies across all architectural rules, preventing suboptimal technical debt management"
+    GOVERNANCE_LEVEL: "CONSTRAINT_ENFORCEMENT"
+    COMPILATION_PHASE: "PASS_1_META_ARCHITECTURE"
+
+END RULE

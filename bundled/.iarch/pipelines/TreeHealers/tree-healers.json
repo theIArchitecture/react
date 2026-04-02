@@ -1,0 +1,6 @@
+{
+  "name": "tree-healers",
+  "description": "Tree-level healers for structural violations (circular dependencies, layer violations). Placeholder — tree healers not yet implemented.",
+  "processors": [],
+  "config": {}
+}

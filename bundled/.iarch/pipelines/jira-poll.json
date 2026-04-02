@@ -1,0 +1,24 @@
+{
+  "name": "Jira CA* Status Poll",
+  "description": "Hourly poll: detect Approved/Rejected/Promoted CA* proposals in Jira, write state transitions to ledger, trigger cluster-remediation and governance-promote workflows, refresh dashboard.",
+  "processors": [
+    "@Caching/cache-config",
+    "source-metadata-cache-loader",
+    "entropy-history-cache-loader",
+    "governance-stats-cache-loader",
+    "ci-environment-provider",
+    "governance-ledger-reader",
+    "jira-status-poller",
+    "governance-ledger-state-transition",
+    "github-bot-commit",
+    "governance-workflow-dispatcher",
+    "@DashboardRefresh/dashboard-refresh"
+  ],
+  "config": {
+    "bot-commit-message": "IArchitecture: governance ledger state transitions (jira-poll)",
+    "bot-files": ".iarch/governance-ledger.jsonl",
+    "cluster-remediation-workflow": "iarchitecture-cluster-remediation.yml",
+    "governance-promote-workflow": "iarchitecture-governance-promote.yml",
+    "trigger-workflow-ref": "main"
+  }
+}

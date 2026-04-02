@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./IArchitecture.HealerFlush.dll",
+  "processors": [
+    {
+      "id": "annotation-flush",
+      "name": "Annotation Flush",
+      "entry-point": "IArchitecture.HealerFlush.RemedyFlushProcessor",
+      "requires": [ "remedies" ],
+      "provides": [ "annotation-flush-written" ],
+      "ide-hidden": true,
+      "config": {
+        "annotation-flush.backup": "true"
+      }
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Heal - ConfigureAwait (Preview)",
+  "processors": [
+    "@scan-violations-csharp",
+    "configure-await-healer"
+  ],
+  "config": {}
+}

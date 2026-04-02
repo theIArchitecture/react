@@ -1,0 +1,9 @@
+{
+  "name": "Smoke Test — Cache Write",
+  "description": "Writes a known payload to the smoke-test file cache. Run this before smoke-cache-read.",
+  "processors": ["iarch-init", "smoke-data-generator", "smoke-data-cache-saver"],
+  "config": {
+    "cache.smoke-data.cache-type": "file",
+    "cache.smoke-data.cache-name": "smoke-test"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./IArchitecture.Processors.JsonOutput.dll",
+  "processors": [
+    {
+      "id": "iarch-json-output",
+      "name": "JSON Output Processor",
+      "entry-point": "IArchitecture.Processors.JsonOutput.JsonOutputProcessor",
+      "requires": ["pipeline-sink", "dependency-graph"],
+      "provides": ["json-output-path"],
+      "ide-hidden": true
+    }
+  ]
+}

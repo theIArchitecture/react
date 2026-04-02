@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./write_ticket_requests.py",
+  "processors": [
+    {
+      "id": "write-ticket-requests",
+      "name": "Write Ticket Requests",
+      "requires": ["violations"],
+      "optional-requires": ["ci-environment"],
+      "provides": ["ticket-requests"],
+      "ide-hidden": true
+    }
+  ]
+}

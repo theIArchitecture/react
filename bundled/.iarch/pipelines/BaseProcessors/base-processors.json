@@ -1,0 +1,9 @@
+{
+  "name": "base-processors",
+  "description": "Universal pipeline foundation: initialize IArch context and parse source files. Include at the start of any full-scan pipeline.",
+  "processors": [
+    "iarch-init",
+    "file-parser"
+  ],
+  "config": {}
+}

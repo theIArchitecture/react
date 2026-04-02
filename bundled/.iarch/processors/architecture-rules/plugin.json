@@ -1,0 +1,129 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./IArchitecture.ArchitectureRules.dll",
+  "processors": [
+    {
+      "id": "dependency-graph-stats",
+      "name": "Dependency Graph Stats",
+      "entry-point": "IArchitecture.ArchitectureRules.DependencyGraphStatsProcessor",
+      "requires": [ "dependency-graph-stats" ],
+      "optional-requires": [ "dependency-graph" ],
+      "provides": [ "dependency-graph-stats", "dependency-graph-stats.transformed", "graph-fan-in-by-type", "graph-fan-out-by-type", "graph-fan-in-by-file", "graph-fan-out-by-file", "graph-stability-by-file" ],
+	  "ide-hidden": true,
+      "ide-required": true
+    },
+    {
+      "id": "circular-dependency-validator",
+      "name": "Circular Dependency Detector",
+      "entry-point": "IArchitecture.ArchitectureRules.CircularDependencyDetector",
+      "requires": [ "parsed-config" ],
+      "optional-requires": [ "dependency-graph", "dependency-graph-stats" ],
+      "provides": [ "violations" ]
+    },
+    {
+      "id": "layer-violation-validator",
+      "name": "Layer Violation Detector",
+      "entry-point": "IArchitecture.ArchitectureRules.LayerViolationDetector",
+      "requires": [ "parsed-config" ],
+      "optional-requires": [ "dependency-graph", "dependency-graph-stats" ],
+      "provides": [ "violations" ]
+    },
+    {
+      "id": "coupling-metrics-validator",
+      "name": "Coupling Metrics Detector",
+      "entry-point": "IArchitecture.ArchitectureRules.CouplingMetricsDetector",
+      "requires": [ "parsed-config" ],
+      "optional-requires": [ "dependency-graph", "dependency-graph-stats", "graph-fan-in-by-type", "graph-fan-out-by-type" ],
+      "provides": [ "violations" ]
+    },
+    {
+      "id": "dependency-direction-validator",
+      "name": "Dependency Direction Detector",
+      "entry-point": "IArchitecture.ArchitectureRules.DependencyDirectionDetector",
+      "requires": [ "parsed-config" ],
+      "optional-requires": [ "dependency-graph", "dependency-graph-stats" ],
+      "provides": [ "violations" ]
+    },
+    {
+      "id": "aggregate-boundary-validator",
+      "name": "Aggregate Boundary Detector",
+      "entry-point": "IArchitecture.ArchitectureRules.AggregateBoundaryDetector",
+      "requires": [ "parsed-config" ],
+      "optional-requires": [ "dependency-graph", "dependency-graph-stats" ],
+      "provides": [ "violations" ]
+    },
+    {
+      "id": "cross-boundary-type-validator",
+      "name": "Cross-Boundary Type Detector",
+      "entry-point": "IArchitecture.ArchitectureRules.CrossBoundaryTypeDetector",
+      "requires": [ "parsed-config" ],
+      "optional-requires": [ "dependency-graph", "dependency-graph-stats" ],
+      "provides": [ "violations" ]
+    },
+    {
+      "id": "shared-kernel-validator",
+      "name": "Shared Kernel Detector",
+      "entry-point": "IArchitecture.ArchitectureRules.SharedKernelDetector",
+      "requires": [ "parsed-config" ],
+      "optional-requires": [ "dependency-graph", "dependency-graph-stats" ],
+      "provides": [ "violations" ]
+    },
+    {
+      "id": "test-structure-validator",
+      "name": "Test Structure Detector",
+      "entry-point": "IArchitecture.ArchitectureRules.TestStructureDetector",
+      "requires": [ "parsed-config" ],
+      "optional-requires": [ "dependency-graph", "dependency-graph-stats" ],
+      "provides": [ "violations" ]
+    },
+    {
+      "id": "dependency-stability-validator",
+      "name": "Dependency Stability Detector",
+      "entry-point": "IArchitecture.ArchitectureRules.DependencyStabilityDetector",
+      "requires": [ "parsed-config" ],
+      "optional-requires": [ "dependency-graph", "dependency-graph-stats", "graph-stability-by-file" ],
+      "provides": [ "violations" ]
+    },
+    {
+      "id": "directory-depth-limits-validator",
+      "name": "Directory Depth Limits Detector",
+      "entry-point": "IArchitecture.ArchitectureRules.DirectoryDepthLimitsDetector",
+      "requires": [ "parsed-config" ],
+      "optional-requires": [ "dependency-graph", "dependency-graph-stats" ],
+      "provides": [ "violations" ]
+    },
+    {
+      "id": "file-count-limits-validator",
+      "name": "File Count Limits Detector",
+      "entry-point": "IArchitecture.ArchitectureRules.FileCountLimitsDetector",
+      "requires": [ "parsed-config" ],
+      "optional-requires": [ "dependency-graph", "dependency-graph-stats" ],
+      "provides": [ "violations" ]
+    },
+    {
+      "id": "test-directory-colocation-validator",
+      "name": "Test Directory Co-Location Detector",
+      "entry-point": "IArchitecture.ArchitectureRules.TestDirectoryCoLocationDetector",
+      "requires": [ "parsed-config" ],
+      "optional-requires": [ "dependency-graph", "dependency-graph-stats" ],
+      "provides": [ "violations" ]
+    },
+    {
+      "id": "abstract-metrics-validator",
+      "name": "Abstractness Metrics Detector",
+      "entry-point": "IArchitecture.ArchitectureRules.AbstractnessMetricsDetector",
+      "requires": [ "parsed-config" ],
+      "optional-requires": [ "dependency-graph", "dependency-graph-stats", "graph-fan-in-by-file", "graph-fan-out-by-file" ],
+      "provides": [ "violations" ]
+    },
+    {
+      "id": "violation-index-builder",
+      "name": "Violation Index",
+      "entry-point": "IArchitecture.ArchitectureRules.ViolationIndexProcessor",
+      "requires": [ "violations", "parsed-config", "filtered-files", "violation-index" ],
+      "provides": [ "violation-index", "violation-index.transformed" ],
+      "ide-hidden": true,
+      "ide-required": true
+    }
+  ]
+}

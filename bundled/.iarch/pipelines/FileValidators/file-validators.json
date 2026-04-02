@@ -1,0 +1,9 @@
+{
+  "name": "file-validators",
+  "description": "File-based validators: regex rule detection and semgrep pattern scanning. Does not require the dependency graph; runs independently of tree-validators.",
+  "processors": [
+    "iarch-regex-rule-detector",
+    "semgrep-validator"
+  ],
+  "config": {}
+}

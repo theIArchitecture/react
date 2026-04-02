@@ -1,0 +1,6 @@
+{
+  "name": "Smoke Test — Jira",
+  "description": "Verifies: Jira connectivity. Creates one test ticket (label: iarch-smoke-test). Requires TICKET_* env vars.",
+  "processors": ["iarch-init", "smoke-ticket-writer", "jira-processor"],
+  "config": {}
+}

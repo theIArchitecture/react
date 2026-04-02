@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./cloudformation_layer_validator.py",
+  "processors": [
+    {
+      "id": "cloudformation-layer-validator",
+      "name": "CloudFormation Layer Access Validator",
+      "requires": ["neighborhoods", "parsed-config"],
+      "provides": ["violations"]
+    }
+  ]
+}

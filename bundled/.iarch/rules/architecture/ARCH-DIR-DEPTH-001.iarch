@@ -1,0 +1,33 @@
+# Directory Depth Limits Rule
+# Enforces maximum directory nesting depth to prevent overly deep hierarchies
+
+RULE "DIRECTORY-DEPTH-LIMITS" : IMetaArchitecture
+  ID: "ARCH-DIR-DEPTH-001"
+  DESCRIPTION: "Directory nesting depth exceeds maximum limit - structure is too deep"
+  SEVERITY: Warning
+  CATEGORY: "Architecture_Quality"
+  APPLIES_TO: ["csharp", "java", "python", "typescript", "javascript", "go"]
+
+  PLUGIN:
+    ID: "directory-depth-limits-validator"
+    SCOPE: "tree"
+    CONFIG:
+      max_depth: "5"
+
+  EDUCATION:
+    DOCS_URL: "https://en.wikipedia.org/wiki/Code_organization"
+    WHY_IT_MATTERS: "Overly deep directory hierarchies make navigation difficult and increase cognitive load. Flatter structures are easier to understand and maintain, reducing the time developers spend searching for files."
+    BUSINESS_IMPACT: "Deep directory structures slow down development and increase onboarding time. Flatter structures improve developer productivity and reduce maintenance costs."
+    QUICK_FIX: "Flatten the directory structure by reducing nesting levels. Consider grouping related functionality at the same level rather than creating deep hierarchies."
+
+  ARCHITECTURAL_CONTEXT:
+    PROJECT_TYPE: "Generic"
+    ARCHITECTURE_PATTERN: "Language_Agnostic"
+    DESIGN_PRINCIPLES: ["Simplicity", "Maintainability", "Flat_Hierarchy"]
+
+  VIOLATIONS:
+    - "Directory is {{DEPTH}} levels deep, exceeding maximum of {{MAX_DEPTH}}. Consider flattening the structure."
+    - "Directory depth violation: {{DEPTH}} levels (max: {{MAX_DEPTH}})"
+    - "Structure too deep: Directory nesting exceeds limit"
+
+END_RULE

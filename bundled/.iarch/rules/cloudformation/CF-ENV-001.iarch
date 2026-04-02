@@ -1,0 +1,22 @@
+RULE "CF-ENV-VAR-NAME-MISMATCH" : IMetaArchitecture
+  ID: "CF-ENV-001"
+  DESCRIPTION: "Lambda function defines an environment variable in CloudFormation that no application code reads — likely a rename mismatch"
+  SEVERITY: Error
+  CATEGORY: "CloudFormation_Alignment"
+  APPLIES_TO: ["cloudformation", "csharp", "python", "typescript", "javascript"]
+
+  PLUGIN:
+    ID: "cloudformation-env-validator"
+    SCOPE: "tree"
+
+  EDUCATION:
+    WHY_IT_MATTERS: "An environment variable defined in CloudFormation but never read by code is waste at best and a rename mismatch at worst. If code was reading it under a different name, the Lambda will use a null value at runtime."
+    BUSINESS_IMPACT: "Silent misconfiguration causes runtime failures that are hard to trace. Cross-referencing infrastructure and code statically prevents these issues from reaching production."
+    QUICK_FIX: "Verify the variable name matches exactly what GetEnvironmentVariable() reads in the application code. Rename in CloudFormation if it differs, or remove if the variable is genuinely unused."
+
+  ARCHITECTURAL_CONTEXT:
+    PROJECT_TYPE: "AWS_Lambda"
+    ARCHITECTURE_PATTERN: "Infrastructure_As_Code"
+    DESIGN_PRINCIPLES: ["Configuration_Alignment", "Infrastructure_Code_Parity"]
+
+END_RULE

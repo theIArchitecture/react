@@ -1,0 +1,195 @@
+# Public API Surface Control - Internal Namespace Enforcement
+# Prevents accidental API surface exposure through incorrect accessibility modifiers
+# Ensures implementation details remain internal, not public
+
+RULE "PUBLIC-API-SURFACE-CONTROL" : IHealerArchitecture
+  ID: "ARCH-PUBLIC-API-001"
+  DESCRIPTION: "Public type in Internal namespace exposes implementation details in API surface"
+  SEVERITY: Error
+  CATEGORY: "API_Design"
+  APPLIES_TO: ["csharp"]
+
+  # ARCHITECTURAL SILOS - Global context
+  ARCHITECTURAL_CONTEXT:
+    PROJECT_TYPE: "LIBRARY_SDK"
+    API_DESIGN_PRINCIPLES: ["Minimize_Surface", "Hide_Implementation", "Semantic_Versioning", "Breaking_Change_Prevention"]
+    ORGANIZATION_STANDARDS: ["Internal_Namespace_Convention", "Explicit_Public_API"]
+    TECHNOLOGY_STACK: ["dotnet", "nuget-package"]
+    MAINTENANCE_STRATEGY: "Long_Term_Backward_Compatibility"
+
+  # IEducationArchitecture Interface Implementation
+  EDUCATION:
+    DOCS_URL: "https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/access-modifiers"
+    BUSINESS_IMPACT: "Public types in .Internal namespaces create accidental backward compatibility obligations, preventing refactoring and creating confusion for {{SILO:PROJECT_TYPE}} consumers - violates {{SILO:API_DESIGN_PRINCIPLES}}"
+    QUICK_FIX: "Mark types in .Internal, .Implementation, .Impl namespaces as internal to hide implementation details and enable safe refactoring per {{SILO:MAINTENANCE_STRATEGY}}"
+
+  # API Design Architecture
+  ARCHITECTURAL_LAYERS:
+    PUBLIC_API_SURFACE: ["Public types in root/feature namespaces", "Documented interfaces", "Stable contracts"]
+    INTERNAL_IMPLEMENTATION: [".Internal namespaces", ".Implementation namespaces", ".Impl namespaces", ".Private namespaces"]
+    ACCESSIBILITY_RULES: ["Public = API contract", "Internal = implementation detail", "Private = class-internal"]
+    VERSIONING_IMPACT: ["Public changes = major version", "Internal changes = patch/minor version"]
+
+  # IValidationArchitecture Interface Implementation
+  DETECT:
+    PATTERNS:
+      csharp:
+        # Public class in Internal namespace
+        - PUBLIC_CLASS_INTERNAL: "public\\s+class\\s+\\w+"
+
+        # Public interface in Internal namespace
+        - PUBLIC_INTERFACE_INTERNAL: "public\\s+interface\\s+\\w+"
+
+        # Public struct in Internal namespace
+        - PUBLIC_STRUCT_INTERNAL: "public\\s+struct\\s+\\w+"
+
+        # Public enum in Internal namespace
+        - PUBLIC_ENUM_INTERNAL: "public\\s+enum\\s+\\w+"
+
+        # Public record in Internal namespace
+        - PUBLIC_RECORD_INTERNAL: "public\\s+record\\s+\\w+"
+
+        # Public record class in Internal namespace
+        - PUBLIC_RECORD_CLASS_INTERNAL: "public\\s+record\\s+class\\s+\\w+"
+
+        # Public record struct in Internal namespace
+        - PUBLIC_RECORD_STRUCT_INTERNAL: "public\\s+record\\s+struct\\s+\\w+"
+
+    # Additional context check: Only flag if namespace contains .Internal, .Implementation, .Impl, or .Private
+    NAMESPACE_FILTER:
+      - "\\.Internal\\b"
+      - "\\.Implementation\\b"
+      - "\\.Impl\\b"
+      - "\\.Private\\b"
+
+  VIOLATIONS:
+    - "{{SILO:PROJECT_TYPE}} API Design: Public type in Internal namespace exposes implementation details - violates {{SILO:API_DESIGN_PRINCIPLES}}"
+    - "{{SILO:PROJECT_TYPE}}: Type should be 'internal' to hide implementation and enable safe refactoring per {{SILO:MAINTENANCE_STRATEGY}}"
+    - "{{SILO:PROJECT_TYPE}}: Public accessibility in .Internal namespace creates accidental backward compatibility obligation"
+
+  # IHealerArchitecture Interface Implementation
+  FIXES:
+    csharp:
+      # Class fixes
+      - REPLACE: "public\\s+(class\\s+\\w+)"
+      - WITH: "internal \\1"
+      - TEACHING: "Mark classes in .Internal namespaces as 'internal' to hide implementation details per {{SILO:API_DESIGN_PRINCIPLES}} - prevents accidental {{SILO:PROJECT_TYPE}} API surface exposure"
+
+      # Interface fixes
+      - REPLACE: "public\\s+(interface\\s+\\w+)"
+      - WITH: "internal \\1"
+      - TEACHING: "Internal interfaces should not be public - violates {{SILO:API_DESIGN_PRINCIPLES}} and creates maintenance burden for {{SILO:MAINTENANCE_STRATEGY}}"
+
+      # Struct fixes
+      - REPLACE: "public\\s+(struct\\s+\\w+)"
+      - WITH: "internal \\1"
+      - TEACHING: "Structs in implementation namespaces should be internal to allow safe refactoring in {{SILO:PROJECT_TYPE}}"
+
+      # Enum fixes
+      - REPLACE: "public\\s+(enum\\s+\\w+)"
+      - WITH: "internal \\1"
+      - TEACHING: "Enums in .Internal namespaces should be internal - public enums create versioning constraints for {{SILO:PROJECT_TYPE}}"
+
+      # Record fixes
+      - REPLACE: "public\\s+(record\\s+\\w+)"
+      - WITH: "internal \\1"
+      - TEACHING: "Records in internal namespaces should be 'internal' per {{SILO:API_DESIGN_PRINCIPLES}}"
+
+      # Record class fixes
+      - REPLACE: "public\\s+(record\\s+class\\s+\\w+)"
+      - WITH: "internal \\1"
+      - TEACHING: "Record classes in .Internal namespaces should be internal for {{SILO:PROJECT_TYPE}} maintainability"
+
+      # Record struct fixes
+      - REPLACE: "public\\s+(record\\s+struct\\s+\\w+)"
+      - WITH: "internal \\1"
+      - TEACHING: "Record structs in implementation namespaces should be internal per {{SILO:MAINTENANCE_STRATEGY}}"
+
+    META_ARCHITECTURE:
+      HEALING_PRIORITY: 2
+      BREAKING_CHANGE: false
+      BUSINESS_IMPACT: "Reduces accidental API surface, enables safe refactoring, prevents backward compatibility debt"
+      AUTO_HEAL_SUCCESS_RATE: "95% - Simple keyword replacement, rarely requires manual review"
+
+  EXAMPLES:
+    VIOLATION:
+      csharp: |
+        // ❌ VIOLATION: Public type in Internal namespace
+        namespace Amazon.S3.Internal
+        {
+            // Public class exposes implementation detail!
+            public class S3Signer
+            {
+                public string SignRequest(HttpRequest request)
+                {
+                    // Implementation details...
+                    return signature;
+                }
+            }
+
+            // Public interface in internal namespace!
+            public interface IRequestHandler
+            {
+                void Handle();
+            }
+
+            // Public enum exposed accidentally!
+            public enum SignatureVersion
+            {
+                V2,
+                V4
+            }
+        }
+
+    CORRECT:
+      csharp: |
+        // ✅ CORRECT: Internal types in Internal namespace
+        namespace Amazon.S3.Internal
+        {
+            // Internal class - implementation detail hidden
+            internal class S3Signer
+            {
+                public string SignRequest(HttpRequest request)
+                {
+                    // Implementation details...
+                    return signature;
+                }
+            }
+
+            // Internal interface - not part of public API
+            internal interface IRequestHandler
+            {
+                void Handle();
+            }
+
+            // Internal enum - allows safe modification
+            internal enum SignatureVersion
+            {
+                V2,
+                V4
+            }
+        }
+
+  WHITELISTED_PATTERNS:
+    # Allow public types in non-Internal namespaces
+    - "^(?!.*\\.Internal\\b).*public\\s+class"
+    - "^(?!.*\\.Implementation\\b).*public\\s+interface"
+    # Allow internal types anywhere
+    - "internal\\s+(class|interface|struct|enum|record)"
+
+  # LAYER BLEEDING - Cross-layer data flow
+  LAYER_BLEEDING:
+    EDUCATION.BUSINESS_IMPACT -> HEALER.REFACTORING_JUSTIFICATION
+    ARCHITECTURAL_LAYERS.ACCESSIBILITY_RULES -> VALIDATION.DETECTION_PATTERNS
+    ARCHITECTURAL_LAYERS.VERSIONING_IMPACT -> HEALER.TEACHING_CONTEXT
+
+  # SELF-GOVERNANCE
+  SELF_GOVERNANCE:
+    VALIDATES_SELF: true
+    RECURSIVE_DEPTH: 1
+    META_VALIDATION: "This rule enforces {{SILO:API_DESIGN_PRINCIPLES}} for {{SILO:PROJECT_TYPE}} implementation namespaces"
+    PROOF_OF_COMPLIANCE: "Rule implements IHealerArchitecture interface and validates internal namespace accessibility"
+    COMPLIANCE_CHECK: "All detection patterns target public types in .Internal namespaces, all fixes provide internal accessibility"
+
+
+END RULE

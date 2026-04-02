@@ -1,0 +1,49 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./IArchitecture.RoslynRules.dll",
+  "processors": [
+    {
+      "id": "configure-await-validator",
+      "name": "ConfigureAwait Detector",
+      "entry-point": "IArchitecture.RoslynRules.ConfigureAwaitValidatorProcessor",
+      "requires": [ "dependency-graph", "parsed-config" ],
+      "provides": ["violations"]
+    },
+    {
+      "id": "immutability-validator",
+      "name": "Immutability Detector",
+      "entry-point": "IArchitecture.RoslynRules.ImmutabilityValidatorProcessor",
+      "requires": [ "dependency-graph", "parsed-config" ],
+      "provides": ["violations"]
+    },
+    {
+      "id": "interface-segregation-validator",
+      "name": "Interface Segregation Detector",
+      "entry-point": "IArchitecture.RoslynRules.InterfaceSegregationValidatorProcessor",
+      "requires": [ "dependency-graph", "parsed-config" ],
+      "provides": ["violations"]
+    },
+    {
+      "id": "public-api-surface-validator",
+      "name": "Public API Surface Detector",
+      "entry-point": "IArchitecture.RoslynRules.PublicApiSurfaceValidatorProcessor",
+      "requires": [ "dependency-graph", "parsed-config" ],
+      "provides": ["violations"]
+    },
+    {
+      "id": "temporal-coupling-validator",
+      "name": "Temporal Coupling Detector",
+      "entry-point": "IArchitecture.RoslynRules.TemporalCouplingValidatorProcessor",
+      "requires": [ "dependency-graph", "parsed-config" ],
+      "provides": ["violations"]
+    },
+    {
+      "id": "configure-await-healer",
+      "name": "ConfigureAwait Healer",
+      "entry-point": "IArchitecture.RoslynRules.ConfigureAwaitHealerProcessor",
+      "requires": ["violations"],
+      "provides": ["remedies"],
+      "ide-hidden": true
+    }
+  ]
+}

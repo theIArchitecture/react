@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./IArchitecture.NeighborhoodBuilder.dll",
+  "processors": [
+    {
+      "id": "neighborhood-builder",
+      "name": "Cross-File Neighborhood Builder",
+      "entry-point": "IArchitecture.NeighborhoodBuilder.NeighborhoodBuilderProcessor",
+      "requires": [ "filtered-files", "parsed-config" ],
+      "optional-requires": [ "dependency-graph" ],
+      "provides": [ "neighborhoods" ],
+      "ide-hidden": true
+    }
+  ]
+}

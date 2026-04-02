@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./IArchitecture.PrScanRecorder.dll",
+  "processors": [
+    {
+      "id": "pr-scan-recorder",
+      "name": "PR Scan Recorder",
+      "entry-point": "IArchitecture.PrScanRecorder.PrScanRecorderProcessor",
+      "requires": ["annotation-summary"],
+      "optional-requires": ["pr-scan-history", "ci-environment"],
+      "provides": ["pr-scan-history"],
+      "ide-hidden": true
+    }
+  ]
+}

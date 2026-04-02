@@ -1,0 +1,6 @@
+{
+  "name": "Smoke Test — Config",
+  "description": "Verifies: IArch starts, config resolves, context-dump runs. No secrets required.",
+  "processors": ["iarch-init", "context-dump"],
+  "config": {}
+}

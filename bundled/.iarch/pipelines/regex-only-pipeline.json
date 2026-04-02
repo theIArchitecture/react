@@ -1,0 +1,13 @@
+{
+  "name": "Regex only - built in regex + reporter",
+  "processors": [
+    "iarch-init",
+    "file-filter",
+    "dependency-graph-evaluator",
+    "iarch-regex-rule-detector",
+    "markdown-reporter"
+  ],
+  "config": {
+    "markdown-reporter.include-timestamp": "false"
+  }
+}

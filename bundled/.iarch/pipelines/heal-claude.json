@@ -1,0 +1,12 @@
+{
+  "name": "Heal - All Violations (Claude AI)",
+  "processors": [
+    "@scan-violations-csharp",
+    "claude-healer",
+    "annotation-flush"
+  ],
+  "config": {
+    "iarch-json-output.output-file": "./violations-before-heal.json",
+    "annotation-flush.backup": "true"
+  }
+}

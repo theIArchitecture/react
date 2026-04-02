@@ -1,0 +1,36 @@
+# Test Structure Mirroring Rule
+# Ensures test files mirror source file structure (makes tests easy to find and maintain)
+
+RULE "TEST-STRUCTURE-MIRRORING" : IMetaArchitecture
+  ID: "ARCH-TEST-STRUCTURE-001"
+  DESCRIPTION: "Test file missing - source file structure should be mirrored in test directory"
+  SEVERITY: Warning
+  CATEGORY: "Testing"
+  APPLIES_TO: ["csharp", "java", "python", "typescript", "javascript"]
+
+  PLUGIN:
+    ID: "test-structure-validator"
+    SCOPE: "tree"
+    CONFIG:
+      source_dir: "src/"
+      test_dir: "tests/"
+      test_suffix: "Tests"
+      exclude_patterns: "[\"*/Program.cs\",\"*/AssemblyInfo.cs\",\"*/GlobalUsings.cs\",\"*/_Imports.cs\"]"
+
+  EDUCATION:
+    DOCS_URL: "https://martinfowler.com/bliki/TestPyramid.html"
+    WHY_IT_MATTERS: "This rule is important because it helps ensure that tests are written for all source files in a project. When a test file is missing, it can lead to incorrect or incomplete testing, which can result in bugs and other issues in the software. By mirroring the structure of the source directory in the test directory, this rule ensures that all source files have an associated test file, which helps ensure that the code is thoroughly tested and of high quality"
+    BUSINESS_IMPACT: "Violating this rule can lead to increased costs and delays in testing and deployment, as well as a higher risk of bugs and errors being introduced into the software due to the lack of proper test coverage. Additionally, violating this rule can also lead to non-compliance with industry standards and regulations, which can result in legal and financial consequences"
+    QUICK_FIX: "Create the missing test file in the test directory, mirroring the source file structure. For example, if source is 'src/Service/OrderService.cs', create 'tests/Service/OrderServiceTests.cs'. Ensure the test file follows your project's testing conventions and includes appropriate test cases."
+
+  ARCHITECTURAL_CONTEXT:
+    PROJECT_TYPE: "LAYERED_APPLICATION"
+    ARCHITECTURE_PATTERN: "Test_Organization"
+    DESIGN_PRINCIPLES: ["Testability", "Maintainability", "Discoverability"]
+
+  VIOLATIONS:
+    - "Missing test file for {{SOURCE_FILE}} - expected: {{EXPECTED_TEST_FILE}}"
+    - "Test structure violation: Source file does not have corresponding test file"
+    - "Test mirroring violation: {{SOURCE_FILE}} should have test file at {{EXPECTED_TEST_FILE}}"
+
+END_RULE

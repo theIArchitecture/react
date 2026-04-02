@@ -1,0 +1,9 @@
+{
+  "name": "Smoke Test — Cache Read",
+  "description": "Loads the smoke-test cache and verifies data is present. Must run after smoke-cache-write.",
+  "processors": ["iarch-init", "smoke-data-cache-loader", "smoke-data-verifier"],
+  "config": {
+    "cache.smoke-data.cache-type": "file",
+    "cache.smoke-data.cache-name": "smoke-test"
+  }
+}

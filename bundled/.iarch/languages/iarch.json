@@ -1,0 +1,41 @@
+{
+  "language": "iarch",
+  "display_name": "IArchitecture Rule Language",
+  "file_extensions": [".iarch"],
+  "comment_styles": ["#"],
+
+  "layer_detection": {
+    "layers": {
+      "Base": {
+        "path_patterns": [".*"],
+        "base_class_patterns": [],
+        "interface_patterns": [],
+        "naming_patterns": [".*\\.iarch$"],
+        "import_patterns": []
+      },
+      "Meta": {
+        "path_patterns": ["meta", "META"],
+        "base_class_patterns": [],
+        "interface_patterns": [],
+        "naming_patterns": ["META-.*\\.iarch$"],
+        "import_patterns": []
+      }
+    }
+  },
+
+  "parsing_patterns": {
+    "namespace": "",
+    "import": "",
+    "type_declaration": "RULE\\s+\"([^\"]+)\"",
+    "type_keywords": ["RULE"],
+    "method_declaration": "",
+    "comment_single_line": "#(.*)$",
+    "comment_multi_line": "",
+    "comment_documentation": "#(.*)$"
+  },
+
+  "syntax_validation": {
+    "balanced_pairs": [],
+    "invalid_patterns": []
+  }
+}

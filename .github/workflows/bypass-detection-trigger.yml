@@ -1,0 +1,80 @@
+name: Bypass Detection Trigger
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths-ignore:
+      - '**/.iarch/**'  # Ignore .iarch changes (handled by iarch-change-trigger.yml)
+
+permissions:
+  contents: read
+
+jobs:
+  trigger-bypass-detection:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if push is from PR merge
+        id: check-pr-merge
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const commitMessage = context.payload.head_commit.message;
+            const isPRMerge = commitMessage.includes('Merge pull request') ||
+                             context.payload.head_commit.author.username === 'web-flow';
+
+            if (isPRMerge) {
+              console.log('PR merge detected - skipping bypass detection (already validated)');
+              core.setOutput('is_pr_merge', 'true');
+            } else {
+              console.log('Direct push detected - triggering bypass detection');
+              core.setOutput('is_pr_merge', 'false');
+            }
+
+      - name: Checkout repository
+        if: steps.check-pr-merge.outputs.is_pr_merge != 'true'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Get changed files
+        if: steps.check-pr-merge.outputs.is_pr_merge != 'true'
+        id: changed-files
+        run: |
+          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD)
+          SOURCE_FILES=$(echo "$CHANGED_FILES" | grep -E '\.(cs|py|js|ts|java|cpp|cu|cuh)$' || true)
+
+          if [ -z "$SOURCE_FILES" ]; then
+            echo "No source files changed - skipping bypass detection"
+            echo "has_source_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Source files changed - triggering bypass detection"
+            echo "has_source_changes=true" >> $GITHUB_OUTPUT
+            echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+            echo "$SOURCE_FILES" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Trigger IArchHub bypass detection workflow
+        if: steps.changed-files.outputs.has_source_changes == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.IARCHITECTURE_PAT }}
+          script: |
+            await github.rest.repos.createDispatchEvent({
+              owner: 'theIArchitecture',
+              repo: 'IArchHub',
+              event_type: 'bypass_detected',
+              client_payload: {
+                customer:      context.payload.repository.name,
+                ref:           context.ref,
+                commit_sha:    context.sha,
+                commit_message: context.payload.head_commit.message,
+                pusher:        context.payload.pusher.name,
+                changed_files: `${{ steps.changed-files.outputs.changed_files }}`
+              }
+            });
+            console.log('Bypass detection event dispatched to IArchHub');

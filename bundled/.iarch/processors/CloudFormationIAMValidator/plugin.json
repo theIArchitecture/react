@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./cloudformation_iam_validator.py",
+  "processors": [
+    {
+      "id": "cloudformation-iam-validator",
+      "name": "CloudFormation IAM Policy Validator",
+      "requires": ["neighborhoods", "parsed-config"],
+      "provides": ["violations"]
+    }
+  ]
+}

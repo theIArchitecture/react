@@ -1,0 +1,37 @@
+{
+  "language": "javascript",
+  "display_name": "JavaScript",
+  "file_extensions": [".js", ".mjs", ".cjs"],
+  "layer_detection": {
+    "layers": {
+      "Repository": {
+        "namespace_patterns": [".*\\.repositories?$", ".*\\.data$"],
+        "import_patterns": [".*repository.*", ".*dal.*", ".*data.*"]
+      },
+      "Domain": {
+        "namespace_patterns": [".*\\.domain$", ".*\\.models?$", ".*\\.entities$"],
+        "import_patterns": [".*domain.*", ".*model.*", ".*entity.*"]
+      },
+      "Service": {
+        "namespace_patterns": [".*\\.services?$", ".*\\.application$"],
+        "import_patterns": [".*service.*", ".*application.*"]
+      },
+      "Controller": {
+        "namespace_patterns": [".*\\.controllers?$", ".*\\.api$"],
+        "import_patterns": [".*controller.*", ".*api.*", ".*routes.*"]
+      }
+    }
+  },
+  "parsing_patterns": {
+    "import": "^\\s*import\\s+(?:\\{(?<symbols>[^}]+)\\}|\\*\\s+as\\s+(?<alias>\\w+)|(?<alias>\\w+))\\s+from\\s+['\"](?<module>[^'\"]+)['\"]",
+    "type_declaration": "(?:export\\s+)?(?:default\\s+)?(class)\\s+(\\w+)(?:\\s+extends\\s+([\\w\\.]+))?",
+    "type_keywords": ["class"],
+    "method_declaration": "(?:async\\s+)?(\\w+)\\s*\\(([^)]*)\\)\\s*\\{",
+    "instantiation": "new\\s+([\\w\\.]+)\\s*\\(",
+    "comment_single_line": "//(.*)$",
+    "comment_multi_line": "/\\*(.*?)\\*/",
+    "comment_documentation": "/\\*\\*(.*)\\*/"
+  },
+
+  "plain_import_behavior": "skip"
+}

@@ -1,0 +1,143 @@
+{
+  "$schema": "./concept-adapter.schema.json",
+  "name": "DateTime Concepts",
+  "version": "1.0.0",
+  "domain": "reliability",
+  "description": "Cross-language mappings for date/time operations and timezone handling",
+  
+  "concepts": {
+    "CURRENT_TIME_LOCAL": {
+      "description": "Getting current local time - behavior varies by timezone, DST issues",
+      "risk": "medium",
+      "languageMappings": {
+        "csharp": {
+          "patterns": [
+            "DateTime\\.Now(?![a-zA-Z])",
+            "DateTime\\.Today"
+          ],
+          "imports": [],
+          "replacement": {
+            "pattern": "DateTime.UtcNow",
+            "imports": []
+          }
+        },
+        "java": {
+          "patterns": [
+            "new\\s+Date\\s*\\(\\s*\\)",
+            "LocalDateTime\\.now\\s*\\(\\s*\\)",
+            "Calendar\\.getInstance\\s*\\("
+          ],
+          "imports": ["java.util.Date", "java.time.LocalDateTime", "java.util.Calendar"],
+          "replacement": {
+            "pattern": "Instant.now()",
+            "imports": ["java.time.Instant"]
+          }
+        },
+        "python": {
+          "patterns": [
+            "datetime\\.now\\s*\\(\\s*\\)",
+            "datetime\\.today\\s*\\(\\s*\\)"
+          ],
+          "imports": ["datetime"],
+          "replacement": {
+            "pattern": "datetime.now(timezone.utc)",
+            "imports": ["datetime", "timezone"]
+          }
+        },
+        "typescript": {
+          "patterns": [
+            "new\\s+Date\\s*\\(\\s*\\)"
+          ],
+          "imports": [],
+          "replacement": {
+            "pattern": "new Date().toISOString()",
+            "imports": []
+          }
+        },
+        "javascript": {
+          "patterns": [
+            "new\\s+Date\\s*\\(\\s*\\)"
+          ],
+          "imports": [],
+          "replacement": {
+            "pattern": "new Date().toISOString()",
+            "imports": []
+          }
+        },
+        "go": {
+          "patterns": [
+            "time\\.Now\\s*\\(\\s*\\)(?!\\.UTC)"
+          ],
+          "imports": ["time"],
+          "replacement": {
+            "pattern": "time.Now().UTC()",
+            "imports": ["time"]
+          }
+        }
+      },
+      "recommendedConcept": "CURRENT_TIME_UTC"
+    },
+    
+    "CURRENT_TIME_UTC": {
+      "description": "Getting current UTC time - timezone-agnostic, consistent behavior",
+      "risk": "none",
+      "languageMappings": {
+        "csharp": {
+          "patterns": [
+            "DateTime\\.UtcNow",
+            "DateTimeOffset\\.UtcNow"
+          ],
+          "imports": []
+        },
+        "java": {
+          "patterns": [
+            "Instant\\.now\\s*\\(",
+            "ZonedDateTime\\.now\\s*\\(\\s*ZoneOffset\\.UTC\\s*\\)",
+            "OffsetDateTime\\.now\\s*\\(\\s*ZoneOffset\\.UTC\\s*\\)"
+          ],
+          "imports": ["java.time.Instant", "java.time.ZonedDateTime", "java.time.ZoneOffset"]
+        },
+        "python": {
+          "patterns": [
+            "datetime\\.utcnow\\s*\\(",
+            "datetime\\.now\\s*\\(\\s*timezone\\.utc\\s*\\)",
+            "datetime\\.now\\s*\\(\\s*tz\\s*=\\s*timezone\\.utc\\s*\\)"
+          ],
+          "imports": ["datetime"]
+        },
+        "go": {
+          "patterns": [
+            "time\\.Now\\s*\\(\\s*\\)\\.UTC\\s*\\("
+          ],
+          "imports": ["time"]
+        }
+      }
+    },
+    
+    "HARDCODED_TIMEZONE": {
+      "description": "Hardcoded timezone strings - fragile, may break with DST changes",
+      "risk": "low",
+      "languageMappings": {
+        "csharp": {
+          "patterns": [
+            "TimeZoneInfo\\.FindSystemTimeZoneById\\s*\\(\\s*[\"'][^\"']+[\"']\\s*\\)"
+          ],
+          "imports": []
+        },
+        "java": {
+          "patterns": [
+            "TimeZone\\.getTimeZone\\s*\\(\\s*[\"'][^\"']+[\"']\\s*\\)",
+            "ZoneId\\.of\\s*\\(\\s*[\"'][^\"']+[\"']\\s*\\)"
+          ],
+          "imports": ["java.util.TimeZone", "java.time.ZoneId"]
+        },
+        "python": {
+          "patterns": [
+            "pytz\\.timezone\\s*\\(\\s*[\"'][^\"']+[\"']\\s*\\)"
+          ],
+          "imports": ["pytz"]
+        }
+      }
+    }
+  }
+}

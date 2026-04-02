@@ -1,0 +1,6 @@
+{
+  "name": "Smoke Test — Slack",
+  "description": "Verifies: Slack connectivity. Posts one test message. Requires MESSAGING_WEBHOOK_URL env var.",
+  "processors": ["iarch-init", "smoke-message-writer", "slack-processor"],
+  "config": {}
+}

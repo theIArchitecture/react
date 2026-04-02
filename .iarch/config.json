@@ -1,35 +1,53 @@
 {
   "discovery-root": ".",
-  "bundled-defaults-path": "../dist",
+  "bundled-defaults-path": "bundled",
   "version": "1.0",
   "default-layer": "Base",
   "governance": {
     "embedding-model": "nomic-embed-text",
     "ollama-host": "http://localhost:11434",
-    "embedding-max-types": 600,
+    "llm-host": "http://localhost:11434",
+    "llm-model": "qwen2.5-coder:14b",
+    "embedding-max-types": 1200,
     "embedding-batch-delay-ms": 50,
     "dbscan-epsilon": 0.30,
     "dbscan-min-pts": 3,
     "analysis-seed": 42,
     "min-cluster-purity": 0.6,
     "duplicate-threshold": 0.95,
-    "voting-confidence-threshold": 0.25
+    "voting-confidence-threshold": 0.25,
+    "violation-density-cap": 5.0,
+    "violation-severity-weight-critical": 2.0,
+    "violation-severity-weight-warning": 1.0,
+    "violation-severity-weight-info": 0.5
+  },
+  "ticket": {
+    "base-url": "https://theiarchitecture.atlassian.net",
+    "project-key": "KAN",
+    "issue-type": "Task",
+    "assignee": "mike.jensen@theiarchitecture.com",
+    "labels": ["architecture", "iarchitecture", "tech-debt"]
+  },
+  "messaging": {
+    "channel": "#architecture-violations",
+    "notify-on-violation": true,
+    "notify-on-governance": true
   },
   "layer-hierarchy": {
-    "Base": { "inherits-from": [] },
-    "Shared": { "inherits-from": ["Base"] },
-    "DevTools": { "inherits-from": ["Base", "Shared"] },
-    "Internal": { "inherits-from": ["Base", "Shared"] },
-    "Bindings": { "inherits-from": ["Base", "Shared", "Internal"] },
+    "Base":       { "inherits-from": [] },
+    "Shared":     { "inherits-from": ["Base"] },
+    "DevTools":   { "inherits-from": ["Base", "Shared"] },
+    "Internal":   { "inherits-from": ["Base", "Shared"] },
+    "Bindings":   { "inherits-from": ["Base", "Shared", "Internal"] },
     "Reconciler": { "inherits-from": ["Base", "Shared", "Internal"] },
-    "PublicAPI": { "inherits-from": ["Base", "Shared", "Internal", "Reconciler", "Bindings", "DevTools"] }
+    "PublicAPI":  { "inherits-from": ["Base", "Shared", "Internal", "Reconciler", "Bindings", "DevTools"] }
   },
   "engine-config": {
     "parallel-threads": 9,
     "max-file-size-bytes": 500000,
     "files-per-batch": 50,
     "progressive-output-threshold": 200,
-    "cache-root-path": "D:/cache/react",
+    "cache-root-path": "C:/cache/react",
     "ignore-patterns": [
       "node_modules",
       "bin", "build", "dist", "out", "artifacts",

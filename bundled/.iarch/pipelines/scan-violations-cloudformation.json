@@ -1,0 +1,12 @@
+{
+  "name": "Scan - CloudFormation Cross-Domain Violations",
+  "description": "Extends the general violation scan with cross-domain CloudFormation validation. Detects environment variable mismatches, IAM permission gaps, and layer boundary violations visible only by cross-referencing application source and infrastructure definitions.",
+  "processors": [
+    "@scan-violations-general",
+    "neighborhood-builder",
+    "cloudformation-env-validator",
+    "cloudformation-iam-validator",
+    "cloudformation-layer-validator"
+  ],
+  "config": {}
+}

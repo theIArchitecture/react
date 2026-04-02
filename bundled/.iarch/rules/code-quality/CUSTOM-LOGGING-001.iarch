@@ -1,0 +1,27 @@
+RULE "Console Logging in Production" : IBaseArchitecture
+  ID: "CUSTOM-LOGGING-001"
+  DESCRIPTION: "Detects console.log statements that should not be in production code"
+  SEVERITY: Warning
+  CATEGORY: "Code_Quality"
+  APPLIES_TO: ["javascript", "typescript", "csharp"]
+
+  DETECT:
+    PATTERNS:
+      javascript:
+        - CONSOLE_LOG: "console\\.log\\("
+      typescript:
+        - CONSOLE_LOG: "console\\.log\\("
+      csharp:
+        - CONSOLE_WRITELINE: "Console\\.WriteLine\\("
+
+  VIOLATIONS:
+    - "Production code should not contain console.log statements"
+    - "Use proper logging framework instead"
+
+  EDUCATION:
+    WHY_IT_MATTERS: "Console.log statements expose internal implementation details and can impact performance in production"
+    BUSINESS_IMPACT: "Debug statements left in production code can leak sensitive information and degrade user experience"
+    QUICK_FIX: "Replace with proper logging framework (e.g., Winston, Bunyan) or remove"
+    DOCS_URL: "https://example.com/logging-best-practices"
+
+END RULE

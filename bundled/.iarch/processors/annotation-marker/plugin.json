@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./IArchitecture.AnnotationMarker.dll",
+  "processors": [
+    {
+      "id": "annotation-marker",
+      "name": "Annotation Marker",
+      "entry-point": "IArchitecture.AnnotationMarker.AnnotationMarkerProcessor",
+      "requires": ["violations", "parsed-config"],
+      "optional-requires": ["remedies", "parsed-files", "file-content", "file-path"],
+      "provides": ["remedies", "annotation-summary"],
+      "ide-hidden": true
+    }
+  ]
+}

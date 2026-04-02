@@ -1,0 +1,47 @@
+{
+  "language": "cpp",
+  "display_name": "C++",
+  "file_extensions": [".cpp", ".cc", ".cxx", ".hpp", ".hh", ".hxx", ".h"],
+  "layer_detection": {
+    "layers": {
+      "Core": {
+        "namespace_patterns": [".*::core$", ".*::engine$"],
+        "import_patterns": [".*core.*", ".*engine.*"]
+      },
+      "Utils": {
+        "namespace_patterns": [".*::utils?$", ".*::helpers?$"],
+        "import_patterns": [".*util.*", ".*helper.*"]
+      },
+      "API": {
+        "namespace_patterns": [".*::api$", ".*::interface$"],
+        "import_patterns": [".*api.*", ".*interface.*"]
+      }
+    }
+  },
+  "parsing_patterns": {
+    "namespace": "^\\s*namespace\\s+([\\w:]+)(?:\\s*\\{)?",
+    "import": "^\\s*#include\\s*[<\"](?<module>[^>\"]+)[>\"]",
+    "type_declaration": "^\\s*(?:template\\s*<[^>]*>\\s*)?(class|struct|enum(?:\\s+class)?)\\s+(\\w+)(?:\\s*(?:[:{]|:\\s*(?:public|protected|private)))?",
+    "type_keywords": ["class", "struct", "enum"],
+    "method_declaration": "^\\s*(?:virtual\\s+)?(?:static\\s+)?(?:inline\\s+)?([\\w:]+(?:<[^>]+>)?)\\s+([\\w:]+)\\s*\\(([^)]*)\\)",
+    "instantiation": "\\bnew\\s+([\\w:]+)(?:<[^>]*>)?\\s*\\(",
+    "comment_single_line": "//(.*)$",
+    "comment_multi_line": "/\\*(.*?)\\*/",
+    "comment_documentation": "///(.*)$"
+  },
+  "formatting_rules": {
+    "indent_size": 2,
+    "increase_indent_triggers": ["{"],
+    "decrease_indent_triggers": ["}"],
+    "decrease_before_line": true
+  },
+  "syntax_validation": {
+    "balanced_pairs": [
+      { "open": "(", "close": ")" },
+      { "open": "[", "close": "]" },
+      { "open": "{", "close": "}" },
+      { "open": "<", "close": ">" }
+    ]
+  },
+  "comment_styles": ["//", "/*", "///"]
+}

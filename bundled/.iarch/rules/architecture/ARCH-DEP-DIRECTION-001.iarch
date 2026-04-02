@@ -1,0 +1,40 @@
+# Dependency Direction Enforcement Rule
+# Enforces explicit namespace-level dependency direction rules
+# Prevents UI from depending on DataAccess, Infrastructure from depending on Domain internals, etc.
+
+RULE "DEPENDENCY-DIRECTION-ENFORCEMENT" : IMetaArchitecture
+  ID: "ARCH-DEP-DIRECTION-001"
+  DESCRIPTION: "Namespace dependency violates explicit direction rules - forbidden dependency detected"
+  SEVERITY: Error
+  CATEGORY: "Architecture_Quality"
+  APPLIES_TO: ["csharp", "java", "python", "typescript", "javascript"]
+
+  PLUGIN:
+    ID: "dependency-direction-validator"
+    SCOPE: "tree"
+
+  ALLOWED_LAYERS:
+    "*.UI.*":
+      FORBIDDEN: ["*.DataAccess.*", "*.Infrastructure.*"]
+    "*.Domain.*":
+      FORBIDDEN: ["*.UI.*", "*.Infrastructure.*"]
+    "*.Application.*":
+      FORBIDDEN: ["*.UI.*", "*.Infrastructure.*"]
+
+  EDUCATION:
+    DOCS_URL: "https://en.wikipedia.org/wiki/Dependency_inversion_principle"
+    WHY_IT_MATTERS: "Enforcing dependency direction prevents architectural erosion. When lower layers depend on higher layers, changes cascade unpredictably and modules become tightly coupled. Clean dependency direction keeps the architecture maintainable and testable."
+    BUSINESS_IMPACT: "Violations cause cascading changes across modules, increasing maintenance cost and risk of regressions. Undisciplined dependencies make the codebase progressively harder to modify safely."
+    QUICK_FIX: "Invert the dependency using an interface or abstraction. Move the interface to the lower-level module and have the higher-level module implement it. Use dependency injection to wire implementations at runtime."
+
+  ARCHITECTURAL_CONTEXT:
+    PROJECT_TYPE: "Generic"
+    ARCHITECTURE_PATTERN: "Language_Agnostic"
+    DESIGN_PRINCIPLES: ["Dependency_Inversion", "Clean_Architecture", "Separation_of_Concerns"]
+
+  VIOLATIONS:
+    - "Forbidden dependency: {{SOURCE_NAMESPACE}} -> {{TARGET_NAMESPACE}}"
+    - "Dependency direction violation: {{SOURCE_NAMESPACE}} is not allowed to depend on {{TARGET_NAMESPACE}}"
+    - "Architectural boundary crossed: {{SOURCE_NAMESPACE}} -> {{TARGET_NAMESPACE}} violates direction rules"
+
+END_RULE

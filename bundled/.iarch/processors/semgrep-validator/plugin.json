@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./IArchitecture.SemgrepValidator.dll",
+  "processors": [
+    {
+      "id": "semgrep-validator",
+      "name": "Semgrep Validator",
+      "entry-point": "IArchitecture.SemgrepValidator.SemgrepValidator",
+      "requires": [ "parsed-config", "parsed-files" ],
+      "provides": ["violations"]
+    }
+  ]
+}

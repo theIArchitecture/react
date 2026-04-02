@@ -1,0 +1,12 @@
+{
+  "name": "Scan - All Violations (C# + Roslyn)",
+  "processors": [
+    "@scan-violations-general",
+    "configure-await-validator",
+    "immutability-validator",
+    "interface-segregation-validator",
+    "public-api-surface-validator",
+    "temporal-coupling-validator"
+  ],
+  "config": {}
+}

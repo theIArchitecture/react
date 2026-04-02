@@ -1,0 +1,48 @@
+# Abstractness / Stability Main Sequence Rule
+# Detects components that are too far from the "main sequence" (Robert C. Martin)
+#
+# Main Sequence:  A + I = 1  (ideal balance of abstractness and stability)
+# Zone of Pain:   A + I << 1 (stable AND concrete — painful to change, high rigidity)
+# Zone of Useless: A + I >> 1 (abstract AND unstable — nobody uses the abstraction)
+#
+# Metrics:
+#   I (Instability)  = FanOut / (FanIn + FanOut)   — 0=stable, 1=unstable
+#   A (Abstractness) = Interfaces / TotalTypes      — 0=concrete, 1=fully abstract
+#   D (Distance)     = |A + I - 1|                  — violation when D > threshold
+
+RULE "ABSTRACTNESS-MAIN-SEQUENCE" : IMetaArchitecture
+  ID: "ARCH-MAIN-SEQUENCE-001"
+  DESCRIPTION: "Component is too far from the main sequence (|Abstractness + Instability - 1| > threshold)"
+  SEVERITY: Warning
+  CATEGORY: "Architecture_Quality"
+  APPLIES_TO: ["csharp", "java", "python", "typescript", "javascript", "go"]
+
+  PLUGIN:
+    ID: "abstract-metrics-validator"
+    SCOPE: "tree"
+    CONFIG:
+      # Distance threshold -- violation when |A + I - 1| exceeds this value.
+      # 0.3 is Robert C. Martin's recommended default for a "normalized distance" metric.
+      threshold: "0.3"
+      # Minimum total connections (fan-in + fan-out) required before evaluating a file.
+      # Files below this floor have insufficient structural signal for the metric to be meaningful.
+      # Eliminates degenerate D=1.0 violations on isolated leaf files (common in JS/TS/Python monorepos).
+      min-dependency-count: "3"
+
+  EDUCATION:
+    DOCS_URL: "https://en.wikipedia.org/wiki/Software_package_metrics#Abstractness"
+    WHY_IT_MATTERS: "The main sequence defines the ideal balance between abstractness and stability. Components in the Zone of Pain are hard to change because they are concrete and heavily depended upon. Components in the Zone of Uselessness are abstract but have no dependents — dead weight."
+    BUSINESS_IMPACT: "Components in the Zone of Pain accumulate technical debt and become change bottlenecks, slowing feature delivery. Components in the Zone of Uselessness add unnecessary complexity without benefit."
+    QUICK_FIX: "Zone of Pain: extract interfaces or abstract base classes to increase abstractness, or break incoming dependencies. Zone of Uselessness: remove unused abstractions or add consumers to justify their existence."
+
+  ARCHITECTURAL_CONTEXT:
+    PROJECT_TYPE: "Library"
+    ARCHITECTURE_PATTERN: "Clean_Architecture"
+    DESIGN_PRINCIPLES: ["Stable_Abstractions_Principle", "Stable_Dependencies_Principle", "Open_Closed_Principle"]
+
+  VIOLATIONS:
+    - "Component '{{COMPONENT}}' is in the Zone of Pain: A={{A}}, I={{I}}, D={{D}}"
+    - "Component '{{COMPONENT}}' is in the Zone of Uselessness: A={{A}}, I={{I}}, D={{D}}"
+    - "Main sequence distance violation: |{{A}} + {{I}} - 1| = {{D}} exceeds threshold {{THRESHOLD}}"
+
+END_RULE

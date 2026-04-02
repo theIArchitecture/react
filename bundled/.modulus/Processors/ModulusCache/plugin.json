@@ -1,0 +1,269 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./Modulus.Storage.dll",
+  "processors": [
+    {
+      "id": "cache-loader",
+      "name": "Cache Loader Processor",
+      "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
+      "requires": [ "cache-config" ],
+      "provides": [ "dependency-graph", "dependency-graph.metadata" ],
+      "ide-hidden": true,
+      "ide-required": true
+    },
+    {
+      "id": "cache-saver",
+      "name": "Cache Saver Processor",
+      "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
+      "requires": [ "dependency-graph", "cache-config", "dependency-graph.metadata", "dependency-graph.transformed" ],
+      "provides": [],
+      "ide-hidden": true,
+      "ide-required": true
+    },
+    {
+      "id": "stats-cache-loader",
+      "name": "Cache Loader Processor",
+      "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
+      "requires": [ "cache-config" ],
+      "optional-requires": [ "clear-cache" ],
+      "provides": [ "dependency-graph-stats" ],
+      "ide-hidden": true,
+      "ide-required": true
+    },
+    {
+      "id": "stats-cache-saver",
+      "name": "Cache Saver Processor",
+      "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
+      "requires": [ "dependency-graph-stats", "cache-config", "dependency-graph-stats.transformed" ],
+      "provides": [],
+      "ide-hidden": true,
+      "ide-required": true
+    },
+    {
+      "id": "violation-cache-loader",
+      "name": "Violation Cache Loader Processor",
+      "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
+      "requires": [ "cache-config" ],
+      "optional-requires": [ "clear-cache" ],
+      "provides": [ "violation-index" ],
+      "ide-hidden": true,
+      "ide-required": true
+    },
+    {
+      "id": "violation-cache-saver",
+      "name": "Violation Cache Saver Processor",
+      "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
+      "requires": [ "violation-index", "cache-config", "violation-index.transformed" ],
+      "provides": [],
+      "ide-hidden": true,
+      "ide-required": true
+    },
+    {
+      "id": "cochange-cache-loader",
+      "name": "Git Co-Change Cache Loader Processor",
+      "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
+      "requires": [ "cache-config" ],
+      "optional-requires": [ "clear-cache" ],
+      "provides": [ "cochange-matrix" ],
+      "ide-hidden": true,
+      "ide-required": true
+    },
+    {
+      "id": "cochange-cache-saver",
+      "name": "Git Co-Change Cache Saver Processor",
+      "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
+      "requires": [ "cochange-matrix", "cache-config", "cochange-matrix.transformed" ],
+      "provides": [],
+      "ide-hidden": true,
+      "ide-required": true
+    },
+    {
+      "id": "source-metadata-cache-loader",
+      "name": "Source Metadata Cache Loader",
+      "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
+      "requires": [ "cache-config" ],
+      "optional-requires": [ "clear-cache" ],
+      "provides": [ "source-metadata" ],
+      "ide-hidden": true,
+      "ide-required": true
+    },
+    {
+      "id": "source-metadata-cache-saver",
+      "name": "Source Metadata Cache Saver",
+      "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
+      "requires": [ "source-metadata", "cache-config", "source-metadata.transformed" ],
+      "provides": [],
+      "ide-hidden": true,
+      "ide-required": true
+    },
+    {
+      "id": "governance-ledger-cache-loader",
+      "name": "Governance Ledger Cache Loader",
+      "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
+      "requires": [ "cache-config" ],
+      "optional-requires": [ "clear-cache" ],
+      "provides": [ "governance-ledger" ],
+      "ide-hidden": true,
+      "ide-required": true
+    },
+    {
+      "id": "governance-ledger-cache-saver",
+      "name": "Governance Ledger Cache Saver",
+      "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
+      "requires": [ "governance-ledger", "cache-config", "governance-ledger.transformed" ],
+      "provides": [],
+      "ide-hidden": true,
+      "ide-required": true
+    },
+    {
+      "id": "entropy-history-cache-loader",
+      "name": "Entropy History Cache Loader",
+      "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
+      "requires": [ "cache-config" ],
+      "optional-requires": [ "clear-cache" ],
+      "provides": [ "entropy-history" ],
+      "ide-hidden": true,
+      "ide-required": true
+    },
+    {
+      "id": "entropy-history-cache-saver",
+      "name": "Entropy History Cache Saver",
+      "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
+      "requires": [ "entropy-history", "cache-config", "entropy-history.transformed" ],
+      "provides": [],
+      "ide-hidden": true,
+      "ide-required": true
+    },
+    {
+      "id": "governance-stats-cache-loader",
+      "name": "Governance Cycle Stats Cache Loader",
+      "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
+      "requires": [ "cache-config" ],
+      "optional-requires": [ "clear-cache" ],
+      "provides": [ "governance-stats" ],
+      "ide-hidden": true,
+      "ide-required": true
+    },
+    {
+      "id": "governance-stats-cache-saver",
+      "name": "Governance Cycle Stats Cache Saver",
+      "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
+      "requires": [ "governance-stats", "cache-config", "governance-stats.transformed" ],
+      "provides": [],
+      "ide-hidden": true,
+      "ide-required": true
+    },
+    {
+      "id": "dashboard-html-cache-loader",
+      "name": "Dashboard HTML Page Cache Loader",
+      "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
+      "requires": [ "cache-config" ],
+      "provides": [ "dashboard-html" ],
+      "ide-hidden": true
+    },
+    {
+      "id": "dashboard-html-cache-saver",
+      "name": "Dashboard HTML Page Cache Saver",
+      "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
+      "requires": [ "dashboard-html", "cache-config", "dashboard-html.transformed" ],
+      "provides": [],
+      "ide-hidden": true
+    },
+    {
+      "id": "dashboard-json-cache-loader",
+      "name": "Dashboard JSON Data Cache Loader",
+      "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
+      "requires": [ "cache-config" ],
+      "provides": [ "dashboard-json" ],
+      "ide-hidden": true
+    },
+    {
+      "id": "dashboard-json-cache-saver",
+      "name": "Dashboard JSON Data Cache Saver",
+      "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
+      "requires": [ "dashboard-json", "cache-config", "dashboard-json.transformed" ],
+      "provides": [],
+      "ide-hidden": true
+    },
+    {
+      "id": "governance-html-cache-loader",
+      "name": "Governance Summary Page Cache Loader",
+      "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
+      "requires": [ "cache-config" ],
+      "provides": [ "governance-html" ],
+      "ide-hidden": true
+    },
+    {
+      "id": "governance-html-cache-saver",
+      "name": "Governance Summary Page Cache Saver",
+      "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
+      "requires": [ "governance-html", "cache-config", "governance-html.transformed" ],
+      "provides": [],
+      "ide-hidden": true
+    },
+    {
+      "id": "governance-efficacy-html-cache-loader",
+      "name": "Governance Efficacy Page Cache Loader",
+      "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
+      "requires": [ "cache-config" ],
+      "provides": [ "governance-efficacy-html" ],
+      "ide-hidden": true
+    },
+    {
+      "id": "governance-efficacy-html-cache-saver",
+      "name": "Governance Efficacy Page Cache Saver",
+      "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
+      "requires": [ "governance-efficacy-html", "cache-config", "governance-efficacy-html.transformed" ],
+      "provides": [],
+      "ide-hidden": true
+    },
+    {
+      "id": "governance-voting-html-cache-loader",
+      "name": "Governance Voting Page Cache Loader",
+      "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
+      "requires": [ "cache-config" ],
+      "provides": [ "governance-voting-html" ],
+      "ide-hidden": true
+    },
+    {
+      "id": "governance-voting-html-cache-saver",
+      "name": "Governance Voting Page Cache Saver",
+      "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
+      "requires": [ "governance-voting-html", "cache-config", "governance-voting-html.transformed" ],
+      "provides": [],
+      "ide-hidden": true
+    },
+    {
+      "id": "governance-ledger-html-cache-loader",
+      "name": "Governance Ledger Page Cache Loader",
+      "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
+      "requires": [ "cache-config" ],
+      "provides": [ "governance-ledger-html" ],
+      "ide-hidden": true
+    },
+    {
+      "id": "governance-ledger-html-cache-saver",
+      "name": "Governance Ledger Page Cache Saver",
+      "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
+      "requires": [ "governance-ledger-html", "cache-config", "governance-ledger-html.transformed" ],
+      "provides": [],
+      "ide-hidden": true
+    },
+    {
+      "id": "smoke-data-cache-loader",
+      "name": "Smoke Test Data Cache Loader",
+      "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
+      "requires": [ "cache-config" ],
+      "provides": [ "smoke-data" ],
+      "ide-hidden": true
+    },
+    {
+      "id": "smoke-data-cache-saver",
+      "name": "Smoke Test Data Cache Saver",
+      "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
+      "requires": [ "smoke-data", "cache-config", "smoke-data.transformed" ],
+      "provides": [],
+      "ide-hidden": true
+    }
+  ]
+}

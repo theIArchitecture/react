@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./smoke_data_verifier.py",
+  "processors": [
+    {
+      "id": "smoke-data-verifier",
+      "name": "Smoke Test Data Verifier",
+      "requires": ["smoke-data", "pipeline-sink"],
+      "provides": [],
+      "ide-hidden": true
+    }
+  ]
+}

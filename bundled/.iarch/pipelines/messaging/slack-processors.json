@@ -1,0 +1,11 @@
+{
+  "name": "Slack Notification",
+  "processors": [
+    "write-message-requests",
+    "slack-processor"
+  ],
+  "config": {
+    "ide-hidden": "true",
+    "messaging-username": "IArch"
+  }
+}

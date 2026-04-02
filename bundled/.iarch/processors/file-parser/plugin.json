@@ -1,0 +1,52 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./IArchitecture.Processors.FileProcs.dll",
+  "processors": [
+    {
+      "id": "file-filter",
+      "name": "File Filter Processor",
+      "entry-point": "IArchitecture.Processors.FileFilter.FileFilterProcessor",
+      "requires": [ "init-config", "parsed-config" ],
+      "provides": [ "filtered-files" ],
+      "ide-hidden": true,
+      "ide-required": true
+    },
+    {
+      "id": "dependency-graph-evaluator",
+      "name": "Dependency Graph Evaluator",
+      "entry-point": "IArchitecture.Processors.DependencyGraphEvaluator.DependencyGraphEvaluator",
+      "requires": [ "init-config", "parsed-config", "filtered-files" ],
+      "optional-requires": [ "dependency-graph.metadata" ],
+      "provides": [ "files-to-parse", "deleted-files" ],
+      "ide-hidden": true,
+      "ide-required": true
+    },
+    {
+      "id": "file-parser",
+      "name": "Parallel File Parser",
+      "entry-point": "IArchitecture.Processors.IArchParallelFileParseProc.IArchParallelFileParseProc",
+      "requires": [ "files-to-parse", "parsed-config" ],
+      "provides": [ "parsed-files", "parsed-file-count" ],
+      "ide-hidden": true,
+      "ide-required": true
+    },
+    {
+      "id": "iarch-regex-rule-detector",
+      "name": "Regex Rule Detector - IArch",
+      "entry-point": "IArchitecture.Processors.IArchRuleRegexDetector.IArchRuleRegexDetector",
+      "requires": [ "parsed-config", "filtered-files" ],
+      "optional-requires": [ "files-to-parse" ],
+      "provides": [ "violations" ]
+    },
+    {
+      "id": "dependency-graph-builder",
+      "name": "Dependency Graph Builder",
+      "entry-point": "IArchitecture.Processors.IArchGraphBuildProc.IArchGraphBuildProc",
+      "requires": [ "parsed-files" ],
+      "optional-requires": [ "dependency-graph", "deleted-files" ],
+      "provides": [ "dependency-graph", "dependency-graph.transformed" ],
+      "ide-hidden": true,
+      "ide-required": true
+    }
+  ]
+}

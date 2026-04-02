@@ -1,0 +1,178 @@
+# IArchitecture Meta-Architecture Self-Governance Rule
+# This rule defines how IArchitecture itself must be architected
+# The ultimate test: Can IArchitecture govern itself using its own principles?
+
+RULE "IARCHITECTURE-SELF-GOVERNANCE"
+  ID: "META-ARCH-001"
+  DESCRIPTION: "IArchitecture must follow its own architectural principles - recursive self-governance"
+  SEVERITY: Fatal
+  CATEGORY: Meta-Architecture
+  APPLIES_TO: ["iarch"]
+  
+  EDUCATION:
+    DOCS_URL: "https://docs.iarchitecture.com/meta-architecture/self-governance"
+    WHY_IT_MATTERS: "If IArchitecture cannot govern itself, how can it govern other systems? Self-compliance proves the architecture works."
+    BUSINESS_IMPACT: "Demonstrates that executable architecture is not just theory - it's a practical, self-sustaining reality"
+    EXAMPLES_PATH: "./examples/meta-architecture-violations.md"
+    QUICK_FIX: "Apply the same architectural principles IArchitecture enforces: proper layer separation and dependency flow"
+  
+  LAYERS:
+    CORE: ["Core", "Models", "Interfaces", "Contracts"]
+    PARSING: ["Parsing", "AST", "Compiler", "Language"]
+    ANALYSIS: ["Analysis", "Detection", "Classification", "Intelligence"]
+    VALIDATION: ["Validation", "Rules", "Enforcement", "Compliance"]
+    ENGINE: ["Engine", "Runtime", "Execution", "Orchestration"]
+    CLI: ["CLI", "Console", "Interface", "UserExperience"]
+    
+  DETECT:
+    PATTERNS:
+      csharp:
+        # Core layer violations - Core should not depend on higher layers
+        - CORE_UPWARD_DEPENDENCY: "using\\s+IArchitecture\\.(Parsing|Analysis|Validation|Engine|CLI)"
+        - CORE_CONCRETE_DEPENDENCY: "using\\s+.*\\.(Parsing|Analysis|Validation|Engine|CLI)\\."
+
+        # Parsing layer violations - Should only depend on Core
+        - PARSING_SKIP_CORE: "using\\s+IArchitecture\\.(Analysis|Validation|Engine|CLI)"
+        - PARSING_DIRECT_ENGINE: "using\\s+.*\\.Engine\\."
+
+        # Analysis layer violations - Should depend on Core and Parsing only
+        - ANALYSIS_SKIP_LAYERS: "using\\s+IArchitecture\\.(Engine|CLI)"
+        - ANALYSIS_VALIDATION_DEPENDENCY: "using\\s+.*\\.Validation\\."
+
+        # Engine layer violations - Should not depend on CLI
+        - ENGINE_CLI_DEPENDENCY: "using\\s+IArchitecture\\.CLI"
+        - ENGINE_CONSOLE_DEPENDENCY: "using\\s+.*\\.CLI\\."
+
+        # Cross-cutting violations
+        - CIRCULAR_DEPENDENCY: "using\\s+IArchitecture\\.Core.*using\\s+IArchitecture\\.(Parsing|Analysis)"
+        - TIGHT_COUPLING: "new\\s+(Concrete|Specific).*\\(\\)"
+
+  VIOLATIONS:
+    - "Meta-Architecture: Core layer depends on higher-level layers (violates dependency inversion)"
+    - "Meta-Architecture: Parsing layer skips Core abstractions (violates layered architecture)"
+    - "Meta-Architecture: Analysis layer has inappropriate dependencies (violates separation of concerns)"  
+    - "Meta-Architecture: Engine layer depends on presentation concerns (violates architectural flow)"
+    - "Meta-Architecture: Circular dependencies detected (violates acyclic dependencies principle)"
+    - "Meta-Architecture: Tight coupling through concrete instantiation (violates loose coupling principle)"
+    
+  FIXES:
+    csharp:
+      # Fix Core layer upward dependency
+      - REPLACE: "using IArchitecture.Engine;"
+      - WITH: "using IArchitecture.Core.Interfaces;"
+      - TEACHING: "Core layer should only depend on system primitives, not higher-level orchestration layers"
+      
+      # Fix Parsing layer dependency skip
+      - REPLACE: "using IArchitecture.Analysis;"
+      - WITH: "using IArchitecture.Core.Models;\\nusing IArchitecture.Core.Interfaces;"
+      - TEACHING: "Parsing should depend on Core abstractions, not skip to Analysis layer directly"
+      
+      # Fix Engine CLI dependency
+      - REPLACE: "using IArchitecture.CLI;"
+      - WITH: "using IArchitecture.Core.Interfaces;"
+      - TEACHING: "Engine should orchestrate through abstractions, not depend on specific presentation layers"
+      
+      # Fix tight coupling
+      - REPLACE: "new ConcreteValidator()"
+      - WITH: "serviceProvider.GetRequiredService<IValidator>()"
+      - TEACHING: "Use dependency injection to maintain loose coupling and enable testability"
+      
+    META_ARCHITECTURE:
+      SELF_VALIDATION: "This rule validates IArchitecture's own compliance with architectural principles it enforces"
+      HEALING_PRIORITY: 1
+      BREAKING_CHANGE: true
+      BUSINESS_IMPACT: "Proves that executable architecture is self-sustaining and practically viable"
+      RECURSIVE_DEPTH: 3
+      GOVERNANCE_LEVEL: "AUTONOMOUS"
+      PROOF_OF_CONCEPT: true
+
+  ALLOWED_LAYERS:
+    "META-ARCH-001":
+      CORE: ["System primitives only", "No upward dependencies"]
+      PARSING: ["Core abstractions", "Language-specific implementations"]
+      ANALYSIS: ["Core and Parsing", "No validation dependencies"]  
+      VALIDATION: ["Core, Parsing, Analysis", "No engine dependencies"]
+      ENGINE: ["All lower layers", "No CLI dependencies"]
+      CLI: ["All layers allowed", "Top-level orchestration"]
+      
+  EXAMPLES:
+    VIOLATION:
+      csharp: |
+        // ❌ META-ARCHITECTURE VIOLATION: Core depending on Engine
+        using IArchitecture.Core.Models;
+        using IArchitecture.Engine;  // ← FATAL: Core → Engine dependency
+        
+        namespace IArchitecture.Core.Validation
+        {
+            public class LayerValidator 
+            {
+                private readonly ValidationEngine _engine;  // ← Core depending on Engine
+                
+                public bool ValidateLayer(string layer)
+                {
+                    return _engine.Validate(layer);  // ← Upward dependency violation
+                }
+            }
+        }
+        
+      CORRECT:
+        csharp: |
+          // ✅ CORRECT: Core depending only on abstractions
+          using IArchitecture.Core.Models;
+          using IArchitecture.Core.Interfaces;  // ← Core → Core (same layer)
+          
+          namespace IArchitecture.Core.Validation
+          {
+              public class LayerValidator 
+              {
+                  private readonly IValidationEngine _engine;  // ← Depend on abstraction
+                  
+                  public LayerValidator(IValidationEngine engine)  // ← Dependency injection
+                  {
+                      _engine = engine;
+                  }
+                  
+                  public bool ValidateLayer(string layer)
+                  {
+                      return _engine.Validate(layer);  // ← Proper abstraction usage
+                  }
+              }
+          }
+          
+    VIOLATION:
+      java: |
+        // ❌ META-ARCHITECTURE VIOLATION: Parsing skipping to Analysis
+        package com.iarch.parsing;
+        
+        import com.iarch.analysis.LayerAnalyzer;  // ← FATAL: Parsing → Analysis
+        
+        public class RuleParser {
+            private LayerAnalyzer analyzer;  // ← Skipping Core abstractions
+            
+            public void parseRule(String rule) {
+                analyzer.analyze(rule);  // ← Improper layer dependency
+            }
+        }
+        
+      CORRECT:
+        java: |
+          // ✅ CORRECT: Parsing depending on Core abstractions
+          package com.iarch.parsing;
+          
+          import com.iarch.core.interfaces.ILayerAnalyzer;  // ← Core abstraction
+          import com.iarch.core.models.ParsedRule;
+          
+          public class RuleParser {
+              private ILayerAnalyzer analyzer;  // ← Proper abstraction
+              
+              public RuleParser(ILayerAnalyzer analyzer) {  // ← Dependency injection
+                  this.analyzer = analyzer;
+              }
+              
+              public ParsedRule parseRule(String rule) {
+                  // Parse rule using Core models and interfaces
+                  return new ParsedRule(rule);
+              }
+          }
+
+END RULE

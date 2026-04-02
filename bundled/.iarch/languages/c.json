@@ -1,0 +1,41 @@
+{
+  "language": "c",
+  "display_name": "C",
+  "file_extensions": [".c", ".h"],
+  "layer_detection": {
+    "layers": {
+      "Core": {
+        "namespace_patterns": [],
+        "import_patterns": [".*core.*", ".*engine.*"]
+      },
+      "Utils": {
+        "namespace_patterns": [],
+        "import_patterns": [".*util.*", ".*helper.*"]
+      }
+    }
+  },
+  "parsing_patterns": {
+    "namespace": "",
+    "import": "^\\s*#include\\s*[<\"](?<module>[^>\"]+)[>\"]",
+    "type_declaration": "^\\s*(struct|enum|typedef)\\s+(\\w+)",
+    "type_keywords": ["struct", "enum", "typedef"],
+    "method_declaration": "^\\s*([\\w\\*]+)\\s+([\\w]+)\\s*\\(([^)]*)\\)",
+    "comment_single_line": "//(.*)$",
+    "comment_multi_line": "/\\*(.*?)\\*/",
+    "comment_documentation": "///(.*)$"
+  },
+  "formatting_rules": {
+    "indent_size": 2,
+    "increase_indent_triggers": ["{"],
+    "decrease_indent_triggers": ["}"],
+    "decrease_before_line": true
+  },
+  "syntax_validation": {
+    "balanced_pairs": [
+      { "open": "(", "close": ")" },
+      { "open": "[", "close": "]" },
+      { "open": "{", "close": "}" }
+    ]
+  },
+  "comment_styles": ["//", "/*", "///"]
+}

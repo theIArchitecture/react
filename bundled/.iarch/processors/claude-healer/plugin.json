@@ -1,0 +1,19 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./IArchitecture.ClaudeHealer.dll",
+  "processors": [
+    {
+      "id": "claude-healer",
+      "name": "Claude AI Healer",
+      "entry-point": "IArchitecture.ClaudeHealer.ClaudeHealerProcessor",
+      "requires": [ "violations" ],
+      "provides": [ "remedies" ],
+      "ide-hidden": true,
+      "config": {
+        "claude-healer.model": "claude-sonnet-4-6",
+        "claude-healer.max-tokens": 8096,
+        "ai-healer.max-files-per-call": 10
+      }
+    }
+  ]
+}

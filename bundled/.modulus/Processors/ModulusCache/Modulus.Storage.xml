@@ -1,0 +1,392 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Modulus.Storage</name>
+    </assembly>
+    <members>
+        <member name="T:Modulus.Bundled.Processors.CacheLoaderProcessor">
+             <summary>
+             Loads cache bytes from a named store and writes them to the pipeline context.
+            
+             The processor is self-describing: it reads its own Manifest.Provides[0] to determine
+             which context tag to populate. A matching CacheConfig entry (from context["cache-config"])
+             provides the store and cache name.
+            
+             Pipeline example:
+               Manifest.provides = ["dep-graph"]
+               CacheConfig entry: OutputTag="dep-graph", CacheName="dependency-graph", CacheStore=...
+               → context["dep-graph"] = raw bytes (byte[])
+               → context["dep-graph.metadata"] = CacheMetadata  (if found)
+            
+             If Manifest is null, Provides is empty, or no matching CacheConfig is found, the
+             processor passes context through unchanged and returns success.
+             </summary>
+        </member>
+        <member name="M:Modulus.Bundled.Processors.CacheLoaderProcessor.#ctor(Microsoft.Extensions.Logging.ILogger{Modulus.Bundled.Processors.CacheLoaderProcessor})">
+            <summary>Creates a new cache loader processor.</summary>
+            <param name="logger">Optional logger for cache loading diagnostics.</param>
+        </member>
+        <member name="M:Modulus.Bundled.Processors.CacheLoaderProcessor.ProcessAsync(Modulus.SDK.Plugins.ProcessorInput)">
+            <inheritdoc />
+        </member>
+        <member name="T:Modulus.Bundled.Processors.CacheSaverProcessor">
+             <summary>
+             Saves a context value to a named cache store.
+            
+             The processor is self-describing: it reads its own Manifest.Requires[0] to determine
+             which context tag to persist. A matching CacheConfig entry (from context["cache-config"])
+             provides the store and cache name.
+            
+             Pipeline example:
+               Manifest.requires = ["dep-graph"]
+               CacheConfig entry: OutputTag="dep-graph", CacheName="dependency-graph", CacheStore=...
+               → reads context["dep-graph"] (byte[], string, or any JSON-serialisable object)
+               → reads context["dep-graph.metadata"] (CacheMetadata, optional)
+               → persists both to the store
+            
+             If Manifest is null, Requires is empty, no matching CacheConfig is found, or the
+             context tag has no value, the processor passes context through unchanged and returns success.
+             A failed save does not fail the pipeline — it is returned as a warning.
+             </summary>
+        </member>
+        <member name="M:Modulus.Bundled.Processors.CacheSaverProcessor.#ctor(Microsoft.Extensions.Logging.ILogger{Modulus.Bundled.Processors.CacheSaverProcessor})">
+            <summary>Creates a new cache saver processor.</summary>
+            <param name="logger">Optional logger for cache saving diagnostics.</param>
+        </member>
+        <member name="M:Modulus.Bundled.Processors.CacheSaverProcessor.ProcessAsync(Modulus.SDK.Plugins.ProcessorInput)">
+            <inheritdoc />
+        </member>
+        <member name="T:Modulus.Storage.Cache.CacheConfig">
+             <summary>
+             Binds a pipeline context tag to a named cache store.
+             Place a List&lt;CacheConfig&gt; in InitialContext under the key "cache-config".
+            
+             Each entry tells the cache processors:
+               OutputTag  — the context key they provide/require (matches Manifest.Provides[0] or Requires[0])
+               CacheName  — the key used when reading/writing the ICacheStore (e.g. "dependency-graph")
+               CacheStore — the store implementation to use
+            
+             Example:
+               new CacheConfig
+               {
+                   OutputTag  = "dep-graph",
+                   CacheName  = "dependency-graph",
+                   CacheStore = new FileCacheStore(".modulus/cache")
+               }
+             </summary>
+        </member>
+        <member name="P:Modulus.Storage.Cache.CacheConfig.OutputTag">
+            <summary>
+            The pipeline context key this entry maps to.
+            For CacheLoaderProcessor: must match Manifest.Provides[0].
+            For CacheSaverProcessor: must match Manifest.Requires[0].
+            </summary>
+        </member>
+        <member name="P:Modulus.Storage.Cache.CacheConfig.CacheName">
+            <summary>
+            The cache name passed to ICacheStore.LoadAsync / SaveAsync.
+            Typically a stable identifier like "dependency-graph".
+            </summary>
+        </member>
+        <member name="P:Modulus.Storage.Cache.CacheConfig.CacheStore">
+            <summary>
+            The store to read from / write to.
+            </summary>
+        </member>
+        <member name="P:Modulus.Storage.Cache.CacheConfig.ValueType">
+            <summary>
+            Gets the type of data - either byte[] or a JSON-serialisable type - that the cache processors should expect for this tag.
+            </summary>
+        </member>
+        <member name="P:Modulus.Storage.Cache.CacheConfig.RequireTransformedMarker">
+            <summary>
+            Gets a value indicating whether a transformed marker is required.
+            </summary>
+        </member>
+        <member name="T:Modulus.Storage.Cache.CacheContextKeys">
+            <summary>
+            Well-known context keys used by CacheLoaderProcessor and CacheSaverProcessor.
+            </summary>
+        </member>
+        <member name="F:Modulus.Storage.Cache.CacheContextKeys.CacheConfig">
+            <summary>
+            InitialContext key that holds the List&lt;CacheConfig&gt;.
+            </summary>
+        </member>
+        <member name="T:Modulus.Storage.Cache.CacheMetadata">
+            <summary>
+            Metadata for tracking file changes in cached builds.
+            Used for incremental builds - tracks which files have changed since last cache.
+            </summary>
+        </member>
+        <member name="P:Modulus.Storage.Cache.CacheMetadata.LastModified">
+            <summary>
+            When this cache was last modified.
+            </summary>
+        </member>
+        <member name="P:Modulus.Storage.Cache.CacheMetadata.FileSizes">
+            <summary>
+            File size mapping for quick change detection. 
+            Used to detect which files have changed since cache was built.
+            </summary>
+        </member>
+        <member name="P:Modulus.Storage.Cache.CacheMetadata.FileTimestamps">
+            <summary>
+            File path to last modified timestamp mapping.
+            Quick check before computing expensive hash - if timestamp unchanged, file likely unchanged.
+            </summary>
+        </member>
+        <member name="T:Modulus.Storage.Cache.ICacheStore">
+            <summary>
+            Cache-specific extension of IDataStore that adds metadata tracking.
+            Metadata enables incremental builds by tracking file changes (hashes, timestamps).
+            </summary>
+        </member>
+        <member name="M:Modulus.Storage.Cache.ICacheStore.LoadMetadataAsync(System.String)">
+            <summary>
+            Load cache metadata (timestamps, hashes for incremental builds).
+            </summary>
+            <param name="key">Cache key (e.g., "dependency-graph", "call-graph")</param>
+            <returns>Metadata, or null if not found</returns>
+        </member>
+        <member name="M:Modulus.Storage.Cache.ICacheStore.SaveMetadataAsync(System.String,Modulus.Storage.Cache.CacheMetadata)">
+            <summary>
+            Save cache metadata.
+            </summary>
+            <param name="key">Cache key</param>
+            <param name="metadata">Metadata to save</param>
+        </member>
+        <member name="T:Modulus.Storage.FileCacheStore">
+             <summary>
+             File-based cache storage implementation.
+             Stores cache data and metadata in the file system.
+            
+             File structure:
+             {basePath}/
+             ├── {cacheType}/
+             │   ├── cache.bin      (cache data as bytes)
+             │   └── metadata.json  (timestamps, hashes)
+             </summary>
+        </member>
+        <member name="M:Modulus.Storage.FileCacheStore.#ctor(System.String,Microsoft.Extensions.Logging.ILogger{Modulus.Storage.FileCacheStore})">
+            <summary>
+            Creates a new file-based cache store.
+            </summary>
+            <param name="basePath">Base directory for cache storage (e.g., ".modulus/cache")</param>
+            <param name="logger">Optional logger</param>
+        </member>
+        <member name="M:Modulus.Storage.FileCacheStore.LoadAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.FileCacheStore.SaveAsync(System.String,System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.FileCacheStore.LoadMetadataAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.FileCacheStore.SaveMetadataAsync(System.String,Modulus.Storage.Cache.CacheMetadata)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.FileCacheStore.ExistsAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.FileCacheStore.DeleteAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:Modulus.Storage.GzippedCacheStore">
+             <summary>
+             Decorator for ICacheStore that adds gzip compression/decompression.
+             Uses decorator pattern - wraps any ICacheStore implementation and transparently compresses data.
+            
+             Examples:
+             - GzippedCacheStore(FileCacheStore) → Gzipped files on disk
+             - GzippedCacheStore(MemoryCacheStore) → Gzipped data in memory
+             - EncryptedCacheStore(GzippedCacheStore(FileCacheStore)) → Encrypted + gzipped files
+             </summary>
+        </member>
+        <member name="M:Modulus.Storage.GzippedCacheStore.#ctor(Modulus.Storage.Cache.ICacheStore,Microsoft.Extensions.Logging.ILogger{Modulus.Storage.GzippedCacheStore})">
+            <summary>
+            Creates a new gzipped cache store that wraps an inner store.
+            </summary>
+            <param name="inner">The inner cache store to wrap (e.g., FileCacheStore, MemoryCacheStore)</param>
+            <param name="logger">Optional logger for compression diagnostics</param>
+        </member>
+        <member name="M:Modulus.Storage.GzippedCacheStore.LoadAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.GzippedCacheStore.SaveAsync(System.String,System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.GzippedCacheStore.LoadMetadataAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.GzippedCacheStore.SaveMetadataAsync(System.String,Modulus.Storage.Cache.CacheMetadata)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.GzippedCacheStore.ExistsAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.GzippedCacheStore.DeleteAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:Modulus.Storage.HybridCacheStore">
+            <summary>
+            Hybrid (memory + file) cache storage implementation.
+            Combines fast in-memory access with file-based persistence for durability.
+            Memory cache is checked first on reads; file-based fallback is used on a miss.
+            Writes go to both layers simultaneously.
+            Useful for CI builds and ephemeral environments where speed and persistence both matter.
+            Thread-safe implementation using lock for concurrent access.
+            </summary>
+        </member>
+        <member name="M:Modulus.Storage.HybridCacheStore.#ctor(System.String,Microsoft.Extensions.Logging.ILogger{Modulus.Storage.HybridCacheStore})">
+            <summary>
+            Creates a new hybrid (memory + file) cache store.
+            </summary>
+            <param name="basePath">Base directory path where file cache entries are stored.</param>
+            <param name="logger">Optional logger for cache diagnostics (useful for debugging, usually null for testing)</param>
+        </member>
+        <member name="M:Modulus.Storage.HybridCacheStore.LoadAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.HybridCacheStore.SaveAsync(System.String,System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.HybridCacheStore.LoadMetadataAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.HybridCacheStore.SaveMetadataAsync(System.String,Modulus.Storage.Cache.CacheMetadata)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.HybridCacheStore.ExistsAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.HybridCacheStore.DeleteAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.HybridCacheStore.Clear">
+            <summary>
+            Clears all cached data and metadata.
+            Useful for test cleanup between test runs.
+            </summary>
+        </member>
+        <member name="P:Modulus.Storage.HybridCacheStore.Count">
+            <summary>
+            Gets the total number of cached entries.
+            Useful for test assertions and debugging.
+            </summary>
+        </member>
+        <member name="M:Modulus.Storage.HybridCacheStore.GetCacheTypes">
+            <summary>
+            Gets all cache type names currently stored.
+            Useful for test assertions and debugging.
+            </summary>
+        </member>
+        <member name="T:Modulus.Storage.MemoryCacheStore">
+            <summary>
+            In-memory cache storage implementation.
+            Useful for testing and scenarios where disk I/O should be avoided (CI builds, ephemeral environments).
+            Thread-safe implementation using lock for concurrent access.
+            </summary>
+        </member>
+        <member name="M:Modulus.Storage.MemoryCacheStore.#ctor(Microsoft.Extensions.Logging.ILogger{Modulus.Storage.MemoryCacheStore})">
+            <summary>
+            Creates a new in-memory cache store.
+            </summary>
+            <param name="logger">Optional logger for cache diagnostics (useful for debugging, usually null for testing)</param>
+        </member>
+        <member name="M:Modulus.Storage.MemoryCacheStore.LoadAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.MemoryCacheStore.SaveAsync(System.String,System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.MemoryCacheStore.LoadMetadataAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.MemoryCacheStore.SaveMetadataAsync(System.String,Modulus.Storage.Cache.CacheMetadata)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.MemoryCacheStore.ExistsAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.MemoryCacheStore.DeleteAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.MemoryCacheStore.Clear">
+            <summary>
+            Clears all cached data and metadata.
+            Useful for test cleanup between test runs.
+            </summary>
+        </member>
+        <member name="P:Modulus.Storage.MemoryCacheStore.Count">
+            <summary>
+            Gets the total number of cached entries.
+            Useful for test assertions and debugging.
+            </summary>
+        </member>
+        <member name="M:Modulus.Storage.MemoryCacheStore.GetCacheTypes">
+            <summary>
+            Gets all cache type names currently stored.
+            Useful for test assertions and debugging.
+            </summary>
+        </member>
+        <member name="T:Modulus.Storage.RawCacheStore">
+             <summary>
+             Human-readable cache store. Writes data as plain files rather than opaque cache.bin blobs.
+            
+             File layout (flat — no subdirectories):
+               {basePath}/{key}.json   — objects and collections (pretty-printed JSON)
+               {basePath}/{key}        — raw byte[] data; key must include the extension (e.g. "dashboard.html")
+            
+             LoadAsync returns byte[] in both cases. CacheLoaderProcessor deserializes via ValueType as normal.
+             SaveMetadataAsync / LoadMetadataAsync are no-ops — files are their own documentation.
+            
+             When to use:
+               - Data that humans need to read directly (governance ledger, entropy history, dashboard HTML)
+               - Files that are committed to a hub repo and served or reviewed outside the pipeline
+            
+             Future: IRawCacheStore : IDataStore can add richer metadata without duplicating CacheConfig.
+             </summary>
+        </member>
+        <member name="M:Modulus.Storage.RawCacheStore.#ctor(System.String,Microsoft.Extensions.Logging.ILogger{Modulus.Storage.RawCacheStore})">
+            <summary>Creates a raw (human-readable) cache store.</summary>
+            <param name="basePath">Directory where files are written.</param>
+            <param name="logger">Optional logger.</param>
+        </member>
+        <member name="M:Modulus.Storage.RawCacheStore.LoadAsync(System.String)">
+            <inheritdoc />
+            <remarks>
+            Tries {key} first (raw bytes), then {key}.json. Returns byte[] either way so
+            CacheLoaderProcessor can deserialize via ValueType as normal.
+            </remarks>
+        </member>
+        <member name="M:Modulus.Storage.RawCacheStore.SaveAsync(System.String,System.Object)">
+            <inheritdoc />
+            <remarks>
+            byte[] → written to {key} (extension must be in the key, e.g. "dashboard.html").
+            All other types → pretty-printed JSON to {key}.json.
+            </remarks>
+        </member>
+        <member name="M:Modulus.Storage.RawCacheStore.ExistsAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.RawCacheStore.DeleteAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.RawCacheStore.LoadMetadataAsync(System.String)">
+            <summary>No-op — raw files are self-describing. Metadata will be added via IRawCacheStore : IDataStore.</summary>
+        </member>
+        <member name="M:Modulus.Storage.RawCacheStore.SaveMetadataAsync(System.String,Modulus.Storage.Cache.CacheMetadata)">
+            <summary>No-op — raw files are self-describing.</summary>
+        </member>
+        <member name="T:Modulus.Storage.StorageHelpers">
+            <summary>
+            Common methods for use across cache storage implementations.
+            </summary>
+        </member>
+        <member name="M:Modulus.Storage.StorageHelpers.ToBytes(System.Object)">
+            <summary>Converts a cached object to a byte array. Passes through byte[] as-is; encodes strings as UTF-8; serializes everything else as JSON.</summary>
+        </member>
+    </members>
+</doc>

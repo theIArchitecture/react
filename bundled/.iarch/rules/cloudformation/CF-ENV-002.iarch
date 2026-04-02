@@ -1,0 +1,22 @@
+RULE "CF-ENV-VAR-UNDEFINED" : IMetaArchitecture
+  ID: "CF-ENV-002"
+  DESCRIPTION: "Application code reads an environment variable that is not defined in any Lambda function in the CloudFormation stack — the value will be null at runtime"
+  SEVERITY: Fatal
+  CATEGORY: "CloudFormation_Alignment"
+  APPLIES_TO: ["cloudformation", "csharp", "python", "typescript", "javascript"]
+
+  PLUGIN:
+    ID: "cloudformation-env-validator"
+    SCOPE: "tree"
+
+  EDUCATION:
+    WHY_IT_MATTERS: "If code reads an environment variable that CloudFormation never provisions, the Lambda will receive null for that value. This causes NullReferenceExceptions or silent misconfigurations that only surface at runtime."
+    BUSINESS_IMPACT: "Runtime failures in production that static analysis could have caught before deployment. Cross-domain validation is the only way to detect this class of bug."
+    QUICK_FIX: "Add the missing variable to the Lambda function's Environment.Variables block in CloudFormation, or remove the GetEnvironmentVariable() call if it is no longer needed."
+
+  ARCHITECTURAL_CONTEXT:
+    PROJECT_TYPE: "AWS_Lambda"
+    ARCHITECTURE_PATTERN: "Infrastructure_As_Code"
+    DESIGN_PRINCIPLES: ["Configuration_Alignment", "Infrastructure_Code_Parity"]
+
+END_RULE

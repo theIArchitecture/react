@@ -1,0 +1,12 @@
+{
+  "name": "Heal - ConfigureAwait",
+  "processors": [
+    "@scan-violations-csharp",
+    "configure-await-healer",
+    "annotation-flush"
+  ],
+  "config": {
+    "iarch-json-output.output-file": "./violations-before-heal.json",
+    "annotation-flush.backup": "true"
+  }
+}

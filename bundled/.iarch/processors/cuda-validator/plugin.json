@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./IArchitecture.CudaValidator.dll",
+  "processors": [
+    {
+      "id": "cuda-memory-validator",
+      "name": "CUDA Memory Safety Validator",
+      "description": "Detects CUDA allocations without corresponding frees or error checks. Activated by .iarch rules with PLUGIN.ID: cuda-memory-validator.",
+      "entry-point": "IArchitecture.CudaValidator.Validators.CudaMemoryValidatorProcessor",
+      "requires": [ "parsed-config", "parsed-files" ],
+      "provides": [ "violations" ]
+    },
+    {
+      "id": "cuda-error-check-validator",
+      "name": "CUDA Error Check Validator",
+      "description": "Detects CUDA API calls and kernel launches without error checking. Activated by .iarch rules with PLUGIN.ID: cuda-error-check-validator.",
+      "entry-point": "IArchitecture.CudaValidator.Validators.CudaErrorCheckValidatorProcessor",
+      "requires": [ "parsed-config", "parsed-files" ],
+      "provides": [ "violations" ]
+    }
+  ]
+}

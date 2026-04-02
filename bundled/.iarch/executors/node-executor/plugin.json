@@ -1,0 +1,10 @@
+{
+  "id": "node-executor",
+  "type": "executor",
+  "fileExtensions": [".js", ".mjs"],
+  "command": "node",
+  "args": ["{processorPath}"],
+  "protocol": "stdin-stdout-json",
+  "timeout": 30000,
+  "description": "Executes Node.js plugins via stdin/stdout JSON protocol"
+}

@@ -1,0 +1,8 @@
+{
+  "id": "dll-executor",
+  "type": "executor",
+  "fileExtensions": [".dll"],
+  "protocol": "reflection-assembly-load",
+  "timeout": 30000,
+  "description": "Executes .NET DLL plugins via reflection"
+}

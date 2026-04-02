@@ -1,0 +1,15 @@
+{
+  "name": "System Full - Bootstrap and Save",
+  "processors": [
+    "@Caching/cache-config",
+    "@BaseProcessors/base-processors",
+    "@Caching/caching-processors",
+    "@TreeValidators/tree-validators",
+    "@FileValidators/file-validators",
+    "violation-index-builder",
+    "violation-filter"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}
