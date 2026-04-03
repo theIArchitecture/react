@@ -403,9 +403,10 @@ function Invoke-GovernanceRemediationCommit {
     $cfg        = $payload.config
     $ciEnv      = $ctx.'ci-environment'
 
-    $targetPath = $cfg.'bot-target-path'
-    $botName    = if ($cfg.'bot-name')  { $cfg.'bot-name' }  else { 'IArchitecture Bot' }
-    $botEmail   = if ($cfg.'bot-email') { $cfg.'bot-email' } else { 'iarch-bot@iarchitecture.com' }
+    $targetPath   = $cfg.'bot-target-path'
+    $botName      = if ($cfg.'bot-name')  { $cfg.'bot-name' }  else { 'IArchitecture Bot' }
+    $botEmail     = if ($cfg.'bot-email') { $cfg.'bot-email' } else { 'iarch-bot@iarchitecture.com' }
+    $healedFiles  = if ($ctx.'annotation-flush-written') { @($ctx.'annotation-flush-written') } else { @() }
 
     $warnings = [System.Collections.Generic.List[string]]::new()
     $errors   = [System.Collections.Generic.List[string]]::new()
@@ -425,7 +426,7 @@ function Invoke-GovernanceRemediationCommit {
     }
 
     # Derive branch name from the directory name of ca-processor-path
-    # e.g. ".iarch/processors/ca-coupling-001" → "iarch/remediation/ca-coupling-001"
+    # e.g. ".iarch/processors/ca-coupling-001" -> "iarch/remediation/ca-coupling-001"
     $processorDirName = Split-Path $caProcessorPath -Leaf
     $branchName       = "iarch/remediation/$processorDirName"
 
@@ -444,17 +445,31 @@ function Invoke-GovernanceRemediationCommit {
             return
         }
 
-        # Stage the processor directory (relative to target-path); resolve paths to handle
-        # cases where bot-target-path is relative and ca-processor-path is absolute
+        # Stage the ca-*-processor directory (relative to target-path)
         $absoluteTargetPath = (Resolve-Path $targetPath).Path
         $relPath = [System.IO.Path]::GetRelativePath($absoluteTargetPath, $caProcessorPath)
         git add -f $relPath 2>&1 | Out-Null
+
+        # Stage healed source files produced by annotation-flush
+        if ($healedFiles.Count -gt 0) {
+            foreach ($healedFile in $healedFiles) {
+                $relHealedPath = [System.IO.Path]::GetRelativePath($absoluteTargetPath, $healedFile)
+                git add -f $relHealedPath 2>&1 | Out-Null
+            }
+            $warnings.Add("governance-remediation-commit: staged $($healedFiles.Count) healed file(s)")
+        }
 
         git diff --cached --quiet 2>&1 | Out-Null
         if ($LASTEXITCODE -eq 0) {
             $warnings.Add('governance-remediation-commit: nothing staged to commit — processor may already be committed')
         } else {
-            git commit -m "IArchitecture: add $processorDirName ca-*-processor (cluster-remediation)" 2>&1 | Out-Null
+            $healedCount = $healedFiles.Count
+            $commitMsg   = if ($healedCount -gt 0) {
+                "IArchitecture: add $processorDirName ca-*-processor + $healedCount healed file(s) (cluster-remediation)"
+            } else {
+                "IArchitecture: add $processorDirName ca-*-processor (cluster-remediation)"
+            }
+            git commit -m $commitMsg 2>&1 | Out-Null
             if ($LASTEXITCODE -ne 0) {
                 $errors.Add("governance-remediation-commit: git commit failed (exit $LASTEXITCODE)")
             } else {
