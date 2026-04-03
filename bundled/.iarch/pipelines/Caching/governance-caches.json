@@ -1,0 +1,14 @@
+{
+  "name": "Governance Caches",
+  "description": "Config-only include: loads cache-config plus all governance cache loaders. Drop at the top of any governance pipeline. Embeds @Caching/cache-config so a single @Caching/governance-caches line provides all config and loaders.",
+  "processors": [
+    "@Caching/cache-config",
+    "source-metadata-cache-loader",
+    "governance-ledger-cache-loader",
+    "entropy-history-cache-loader",
+    "governance-stats-cache-loader"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

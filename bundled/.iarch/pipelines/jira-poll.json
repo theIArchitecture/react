@@ -2,10 +2,7 @@
   "name": "Jira CA* Status Poll",
   "description": "Hourly poll: detect Approved/Rejected/Promoted CA* proposals in Jira, write state transitions to ledger, trigger cluster-remediation and governance-promote workflows, refresh dashboard.",
   "processors": [
-    "@Caching/cache-config",
-    "source-metadata-cache-loader",
-    "entropy-history-cache-loader",
-    "governance-stats-cache-loader",
+    "@Caching/governance-caches",
     "ci-environment-provider",
     "governance-ledger-reader",
     "jira-status-poller",
