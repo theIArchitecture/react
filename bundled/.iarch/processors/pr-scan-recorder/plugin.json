@@ -8,7 +8,7 @@
       "entry-point": "IArchitecture.PrScanRecorder.PrScanRecorderProcessor",
       "requires": ["annotation-summary"],
       "optional-requires": ["pr-scan-history", "ci-environment"],
-      "provides": ["pr-scan-history"],
+      "provides": ["pr-scan-history", "pr-scan-history.transformed"],
       "ide-hidden": true
     }
   ]
