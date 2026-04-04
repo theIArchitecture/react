@@ -240,9 +240,24 @@ function Invoke-BotCommit {
     $botBranch       = $cfg.'bot-branch'
     $botFilesRaw     = $cfg.'bot-files'
     $commitCachesRaw = $cfg.'commit-caches'
-    $cacheBasePath   = if ($cfg.'cache.base-path') { $cfg.'cache.base-path'.TrimEnd('/\') } else { '.iarch' }
     $botName         = if ($cfg.'bot-name')  { $cfg.'bot-name' }  else { 'IArchitecture Bot' }
     $botEmail        = if ($cfg.'bot-email') { $cfg.'bot-email' } else { 'iarch-bot@iarchitecture.com' }
+
+    # Resolve bot-target-path: "project-root" token → absolute path from context
+    if ($targetPath -eq 'project-root') { $targetPath = $ctx.'project-root' }
+    if (![string]::IsNullOrEmpty($targetPath) -and ![System.IO.Path]::IsPathRooted($targetPath)) {
+        $targetPath = Join-Path ($ctx.'project-root') $targetPath
+    }
+
+    # Resolve cache base path: --config cache.base-path > config.json cache-root-path > 'cache'
+    $rawCachePath = if ($cfg.'cache.base-path') { $cfg.'cache.base-path' }
+                    elseif ($ctx.'cache-root-path') { $ctx.'cache-root-path' }
+                    else { 'cache' }
+    $cacheBasePath = if ([System.IO.Path]::IsPathRooted($rawCachePath)) {
+        $rawCachePath.TrimEnd('/\')
+    } else {
+        Join-Path $targetPath $rawCachePath.TrimEnd('/\')
+    }
 
     $warnings = [System.Collections.Generic.List[string]]::new()
     $errors   = [System.Collections.Generic.List[string]]::new()
