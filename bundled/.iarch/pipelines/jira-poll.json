@@ -7,6 +7,7 @@
     "governance-ledger-reader",
     "jira-status-poller",
     "governance-ledger-state-transition",
+    "governance-ledger-cache-saver",
     "github-bot-commit",
     "governance-workflow-dispatcher",
     "@DashboardRefresh/dashboard-refresh"

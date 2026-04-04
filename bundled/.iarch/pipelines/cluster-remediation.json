@@ -13,6 +13,7 @@
     "governance-remediation-commit",
     "github-create-pr",
     "governance-ledger-pr-created",
+    "governance-ledger-cache-saver",
     "github-bot-commit",
     "@DashboardRefresh/dashboard-refresh"
   ],
