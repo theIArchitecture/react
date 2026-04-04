@@ -779,6 +779,27 @@
         <member name="M:Modulus.SDK.Storage.NullDataStore.DeleteAsync(System.String)">
             <inheritdoc />
         </member>
+        <member name="T:Modulus.SDK.Utilities.ConfigurationHelper">
+            <summary>
+            Static utilities for configuration resolution before or independent of engine construction.
+            Clients call these without knowing how discovery works internally — implementation
+            details (walk-up, file naming) are hidden behind simple method signatures.
+            </summary>
+        </member>
+        <member name="M:Modulus.SDK.Utilities.ConfigurationHelper.WalkUpForValue(System.String,System.String,System.String,Microsoft.Extensions.Logging.ILogger)">
+            <summary>
+            Walks up from startDir looking for {configDir}/config.json and returns the resolved
+            value of the named key from the first config file found that contains it.
+            Stops at the first config file encountered regardless of whether the key is present
+            (the nearest config is authoritative for its scope).
+            Path values are resolved relative to the directory that contains the config dir.
+            Returns null if no config file is found or if the key is not a string.
+            </summary>
+            <param name="configDir">Config directory name (e.g. ".iarch", ".modulus")</param>
+            <param name="startDir">Directory to start walking up from (file paths are normalised to their containing dir)</param>
+            <param name="key">JSON property name to read from config.json</param>
+            <param name="logger">Optional logger</param>
+        </member>
         <member name="T:Modulus.SDK.Utilities.ContextHelper">
             <summary>
             Generic utilities for working with processor context dictionaries.
