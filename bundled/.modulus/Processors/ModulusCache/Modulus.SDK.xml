@@ -693,6 +693,19 @@
             - Context copying
             </summary>
         </member>
+        <member name="P:Modulus.SDK.Processors.ProcessorBase.Logger">
+            <summary>
+            Logger available to all derived processors.
+            Injected by ProcessorExecutor after parameterless construction,
+            or set directly by processors that use constructor injection.
+            </summary>
+        </member>
+        <member name="M:Modulus.SDK.Processors.ProcessorBase.InjectLogger(Microsoft.Extensions.Logging.ILogger)">
+            <summary>
+            Called by ProcessorExecutor to inject a typed logger into processors
+            that use parameterless construction rather than constructor injection.
+            </summary>
+        </member>
         <member name="M:Modulus.SDK.Processors.ProcessorBase.ProcessAsync(Modulus.SDK.Plugins.ProcessorInput)">
             <inheritdoc />
         </member>

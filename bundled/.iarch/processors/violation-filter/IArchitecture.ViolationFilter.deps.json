@@ -49,6 +49,7 @@
       },
       "Modulus.SDK/1.0.0-local": {
         "dependencies": {
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.0",
           "System.Text.Json": "9.0.0"
         },
         "runtime": {
