@@ -43,7 +43,7 @@
       "name": "GitHub Bot Commit and Push",
       "entry-point": "Invoke-BotCommit",
       "requires": ["init-config", "pipeline-sink"],
-      "optional-requires": ["ci-environment", "source-metadata.transformed", "dashboard-html.transformed", "dashboard-json.transformed", "governance-html.transformed", "governance-efficacy-html.transformed", "governance-voting-html.transformed", "governance-ledger-html.transformed"],
+      "optional-requires": ["ci-environment", "project-root", "cache-root-path", "source-metadata.transformed", "dashboard-html.transformed", "dashboard-json.transformed", "governance-html.transformed", "governance-efficacy-html.transformed", "governance-voting-html.transformed", "governance-ledger-html.transformed"],
       "provides": [],
       "ide-hidden": true
     },
