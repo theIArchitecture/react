@@ -312,16 +312,16 @@ function Invoke-BotCommit {
 
     if ($ciEnv -and $ciEnv.token) { $env:GH_TOKEN = $ciEnv.token }
 
-    # Diagnostics: log resolved paths and file existence
-    Write-Host "bot-commit: targetPath=$targetPath"
-    Write-Host "bot-commit: cacheBasePath=$cacheBasePath"
+    # Diagnostics: log resolved paths and file existence (stderr — stdout is JSON)
+    [Console]::Error.WriteLine("bot-commit: targetPath=$targetPath")
+    [Console]::Error.WriteLine("bot-commit: cacheBasePath=$cacheBasePath")
     if ($filesToAdd.Count -gt 0) {
         $filesToAdd | ForEach-Object {
             $exists = Test-Path $_
-            Write-Host "bot-commit: file-to-add [$exists] $_"
+            [Console]::Error.WriteLine("bot-commit: file-to-add [$exists] $_")
         }
     } else {
-        Write-Host "bot-commit: no specific files configured — will use git add -A"
+        [Console]::Error.WriteLine("bot-commit: no specific files configured — will use git add -A")
     }
 
     Push-Location $targetPath
@@ -329,13 +329,13 @@ function Invoke-BotCommit {
         git config --local user.name $botName
         git config --local user.email $botEmail
 
-        # Diagnostics: show what git sees as changed/untracked before staging
+        # Diagnostics: show what git sees as changed/untracked before staging (stderr)
         $gitStatus = git status --porcelain 2>&1
         if ($gitStatus) {
-            Write-Host "bot-commit: git status (pre-stage):"
-            $gitStatus | ForEach-Object { Write-Host "  $_" }
+            [Console]::Error.WriteLine("bot-commit: git status (pre-stage):")
+            $gitStatus | ForEach-Object { [Console]::Error.WriteLine("  $_") }
         } else {
-            Write-Host "bot-commit: git status (pre-stage): no changes detected"
+            [Console]::Error.WriteLine("bot-commit: git status (pre-stage): no changes detected")
         }
 
         if ($filesToAdd.Count -gt 0) {
