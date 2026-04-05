@@ -1,0 +1,10 @@
+{
+  "name": "General User Notification Processors (ADO)",
+  "processors": [
+    "@ticketing/general-ado-processors",
+    "@messaging/slack-processors"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

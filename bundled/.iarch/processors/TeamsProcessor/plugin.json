@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./teams_processor.py",
+  "processors": [
+    {
+      "id": "teams-processor",
+      "name": "Microsoft Teams Message Processor",
+      "requires": ["message-requests"],
+      "optional-requires": [],
+      "provides": [],
+      "ide-hidden": true
+    }
+  ]
+}

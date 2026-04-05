@@ -1,0 +1,10 @@
+{
+  "name": "ADO Work Items - Governance Proposals",
+  "processors": [
+    "write-governance-ticket-requests",
+    "ado-work-item-processor"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

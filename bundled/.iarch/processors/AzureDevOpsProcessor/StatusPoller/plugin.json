@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+  "hub-only": "true",
+  "processor-path": "./ado_status_poller.py",
+  "processors": [
+    {
+      "id": "ado-status-poller",
+      "name": "Azure DevOps CA* Status Poller",
+      "requires": ["ledger-state"],
+      "optional-requires": [],
+      "provides": ["ca-transitions"],
+      "ide-hidden": true
+    }
+  ]
+}

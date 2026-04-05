@@ -1,0 +1,19 @@
+{
+  "name": "pr-validation-ado",
+  "description": "PR validation (Azure DevOps): scans changed files with all file-level validators, annotates violations inline, posts ADO PR status and PR thread comment.",
+  "processors": [
+    "@BaseProcessors/base-processors",
+    "ado-environment-provider",
+    "pr-scan-history-cache-loader",
+    "@FileValidators/file-validators",
+    "@FileHealers/file-healers",
+    "annotation-marker",
+    "pr-scan-recorder",
+    "pr-scan-history-cache-saver",
+    "annotation-flush",
+    "ado-create-status",
+    "ado-commit-markers",
+    "ado-post-pr-comment"
+  ],
+  "config": {}
+}

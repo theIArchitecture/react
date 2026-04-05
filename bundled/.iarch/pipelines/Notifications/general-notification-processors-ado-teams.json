@@ -1,0 +1,10 @@
+{
+  "name": "General User Notification Processors (ADO + Teams)",
+  "processors": [
+    "@ticketing/general-ado-processors",
+    "@messaging/teams-processors"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

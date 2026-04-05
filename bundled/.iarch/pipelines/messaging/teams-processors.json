@@ -1,0 +1,10 @@
+{
+  "name": "Teams Notification",
+  "processors": [
+    "write-message-requests",
+    "teams-processor"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./ado_work_item_processor.py",
+  "processors": [
+    {
+      "id": "ado-work-item-processor",
+      "name": "Azure DevOps Work Item Processor",
+      "requires": ["ticket-requests"],
+      "optional-requires": [],
+      "provides": ["created-tickets"],
+      "ide-hidden": true
+    }
+  ]
+}

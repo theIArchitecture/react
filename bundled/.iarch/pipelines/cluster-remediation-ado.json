@@ -1,0 +1,29 @@
+{
+  "name": "Cluster Remediation (ADO)",
+  "description": "Triggered per approved CA* proposal (ADO): loads context data, generates a ca-*-processor via LLM, heals violations, commits to a remediation branch, opens an ADO PR, updates the governance ledger to pr_created, refreshes dashboard.",
+  "processors": [
+    "@Caching/cache-config",
+    "source-metadata-cache-loader",
+    "entropy-history-cache-loader",
+    "governance-stats-cache-loader",
+    "ado-environment-provider",
+    "governance-ledger-reader",
+    "governance-proposal-resolver",
+    "ca-processor-generator",
+    "ca-processor-runner",
+    "claude-healer",
+    "annotation-flush",
+    "governance-remediation-commit-ado",
+    "ado-create-pr",
+    "governance-ledger-pr-created",
+    "ado-bot-commit",
+    "@DashboardRefresh/dashboard-refresh"
+  ],
+  "config": {
+    "pr-title": "IArchitecture: cluster-remediation",
+    "pr-base": "main",
+    "pr-labels": "iarchitecture,cluster-remediation",
+    "bot-commit-message": "IArchitecture: governance ledger pr_created (cluster-remediation)",
+    "bot-files": ".iarch/governance-ledger.jsonl"
+  }
+}

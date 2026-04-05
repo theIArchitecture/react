@@ -209,10 +209,23 @@ function Invoke-CommitMarkers {
 
     Push-Location $targetPath
     try {
-        git add -A
+        foreach ($writtenFile in $writtenFiles) {
+            git add -f $writtenFile 2>&1 | Out-Null
+            if ($LASTEXITCODE -ne 0) {
+                $warnings.Add("commit-markers: failed to stage '$writtenFile' (exit $LASTEXITCODE)")
+            }
+        }
+
+        git diff --cached --quiet 2>&1 | Out-Null
+        if ($LASTEXITCODE -eq 0) {
+            $warnings.Add('commit-markers: nothing staged to commit — annotation files may already be committed or gitignored')
+            @{ success = $true; context = @{}; error = $null; warnings = $warnings.ToArray() } | ConvertTo-Json -Depth 10
+            return
+        }
+
         git commit -m "IArchitecture: update violation markers ($violationCount violation(s))" 2>&1 | Out-Null
         if ($LASTEXITCODE -ne 0) {
-            $warnings.Add("commit-markers: git commit returned $LASTEXITCODE (possibly nothing to commit)")
+            $errors.Add("commit-markers: git commit failed (exit $LASTEXITCODE)")
         } else {
             git push 2>&1 | Out-Null
             if ($LASTEXITCODE -ne 0) { $errors.Add("commit-markers: git push failed (exit $LASTEXITCODE)") }
@@ -299,15 +312,46 @@ function Invoke-BotCommit {
 
     if ($ciEnv -and $ciEnv.token) { $env:GH_TOKEN = $ciEnv.token }
 
+    # Diagnostics: log resolved paths and file existence
+    Write-Host "bot-commit: targetPath=$targetPath"
+    Write-Host "bot-commit: cacheBasePath=$cacheBasePath"
+    if ($filesToAdd.Count -gt 0) {
+        $filesToAdd | ForEach-Object {
+            $exists = Test-Path $_
+            Write-Host "bot-commit: file-to-add [$exists] $_"
+        }
+    } else {
+        Write-Host "bot-commit: no specific files configured — will use git add -A"
+    }
+
     Push-Location $targetPath
     try {
-        git config user.name $botName
-        git config user.email $botEmail
+        git config --local user.name $botName
+        git config --local user.email $botEmail
+
+        # Diagnostics: show what git sees as changed/untracked before staging
+        $gitStatus = git status --porcelain 2>&1
+        if ($gitStatus) {
+            Write-Host "bot-commit: git status (pre-stage):"
+            $gitStatus | ForEach-Object { Write-Host "  $_" }
+        } else {
+            Write-Host "bot-commit: git status (pre-stage): no changes detected"
+        }
 
         if ($filesToAdd.Count -gt 0) {
-            $filesToAdd | ForEach-Object { git add -f $_ 2>&1 | Out-Null }
+            foreach ($f in $filesToAdd) {
+                git add -f $f 2>&1 | Out-Null
+                if ($LASTEXITCODE -ne 0) {
+                    $warnings.Add("bot-commit: failed to stage '$f' (exit $LASTEXITCODE)")
+                }
+            }
         } else {
             git add -A 2>&1 | Out-Null
+            if ($LASTEXITCODE -ne 0) {
+                $errors.Add("bot-commit: git add -A failed (exit $LASTEXITCODE)")
+                @{ success = $false; context = @{}; error = $errors -join '; '; warnings = $warnings.ToArray() } | ConvertTo-Json -Depth 10
+                return
+            }
         }
 
         # Check if there is anything staged to commit
@@ -449,8 +493,8 @@ function Invoke-GovernanceRemediationCommit {
 
     Push-Location $targetPath
     try {
-        git config user.name  $botName
-        git config user.email $botEmail
+        git config --local user.name  $botName
+        git config --local user.email $botEmail
 
         # Create or reset the remediation branch from current HEAD
         git checkout -B $branchName 2>&1 | Out-Null
@@ -464,14 +508,25 @@ function Invoke-GovernanceRemediationCommit {
         $absoluteTargetPath = (Resolve-Path $targetPath).Path
         $relPath = [System.IO.Path]::GetRelativePath($absoluteTargetPath, $caProcessorPath)
         git add -f $relPath 2>&1 | Out-Null
+        if ($LASTEXITCODE -ne 0) {
+            $errors.Add("governance-remediation-commit: failed to stage processor directory '$relPath' (exit $LASTEXITCODE)")
+            @{ success = $false; context = @{}; error = $errors -join '; '; warnings = $warnings.ToArray() } | ConvertTo-Json -Depth 10
+            return
+        }
 
         # Stage healed source files produced by annotation-flush
         if ($healedFiles.Count -gt 0) {
+            $stagedCount = 0
             foreach ($healedFile in $healedFiles) {
                 $relHealedPath = [System.IO.Path]::GetRelativePath($absoluteTargetPath, $healedFile)
                 git add -f $relHealedPath 2>&1 | Out-Null
+                if ($LASTEXITCODE -ne 0) {
+                    $warnings.Add("governance-remediation-commit: failed to stage healed file '$relHealedPath' (exit $LASTEXITCODE)")
+                } else {
+                    $stagedCount++
+                }
             }
-            $warnings.Add("governance-remediation-commit: staged $($healedFiles.Count) healed file(s)")
+            $warnings.Add("governance-remediation-commit: staged $stagedCount of $($healedFiles.Count) healed file(s)")
         }
 
         git diff --cached --quiet 2>&1 | Out-Null

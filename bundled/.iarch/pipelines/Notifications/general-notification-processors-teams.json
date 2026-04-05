@@ -1,0 +1,10 @@
+{
+  "name": "General User Notification Processors (Teams)",
+  "processors": [
+    "@ticketing/general-jira-processors",
+    "@messaging/teams-processors"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

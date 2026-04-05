@@ -1,0 +1,106 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./ado-processors.ps1",
+  "processors": [
+    {
+      "id": "ado-environment-provider",
+      "name": "Azure DevOps CI Environment Provider",
+      "entry-point": "Invoke-AdoContextProvider",
+      "requires": ["init-config"],
+      "optional-requires": [],
+      "provides": ["ci-environment"],
+      "ide-hidden": true
+    },
+    {
+      "id": "ado-post-pr-comment",
+      "name": "Azure DevOps Post PR Comment",
+      "entry-point": "Invoke-AdoPostPrComment",
+      "requires": ["violations", "ci-environment"],
+      "optional-requires": [],
+      "provides": [],
+      "ide-hidden": true
+    },
+    {
+      "id": "ado-create-status",
+      "name": "Azure DevOps Create PR Status",
+      "entry-point": "Invoke-AdoCreateStatus",
+      "requires": ["violations", "ci-environment"],
+      "optional-requires": [],
+      "provides": [],
+      "ide-hidden": true
+    },
+    {
+      "id": "ado-commit-markers",
+      "name": "Azure DevOps Commit Violation Markers",
+      "entry-point": "Invoke-AdoCommitMarkers",
+      "requires": ["annotation-flush-written"],
+      "optional-requires": ["violations", "ci-environment"],
+      "provides": [],
+      "ide-hidden": true
+    },
+    {
+      "id": "ado-bot-commit",
+      "name": "Azure DevOps Bot Commit and Push",
+      "entry-point": "Invoke-AdoBotCommit",
+      "requires": ["init-config"],
+      "optional-requires": ["ci-environment", "metadata-updated"],
+      "provides": [],
+      "ide-hidden": true
+    },
+    {
+      "id": "ado-create-pr",
+      "name": "Azure DevOps Create Pull Request",
+      "entry-point": "Invoke-AdoCreatePR",
+      "requires": ["ci-environment"],
+      "optional-requires": ["violations"],
+      "provides": ["pr-url"],
+      "ide-hidden": true
+    },
+    {
+      "id": "ado-trigger-pipeline",
+      "name": "Azure DevOps Trigger Pipeline Run",
+      "entry-point": "Invoke-AdoTriggerPipeline",
+      "requires": ["ci-environment"],
+      "optional-requires": ["approved-proposal-ids"],
+      "provides": [],
+      "ide-hidden": true
+    },
+    {
+      "id": "governance-remediation-commit-ado",
+      "name": "Governance Remediation Branch Commit (ADO)",
+      "entry-point": "Invoke-AdoGovernanceRemediationCommit",
+      "requires": ["init-config", "ca-processor-path"],
+      "optional-requires": ["ci-environment"],
+      "provides": ["remediation-branch"],
+      "ide-hidden": true
+    },
+    {
+      "id": "ado-workflow-dispatcher",
+      "name": "Azure DevOps Governance Workflow Dispatcher",
+      "entry-point": "Invoke-AdoWorkflowDispatcher",
+      "requires": ["ci-environment"],
+      "optional-requires": ["approved-proposal-ids", "promoted-proposal-ids"],
+      "provides": [],
+      "hub-only": "true",
+      "ide-hidden": true
+    },
+    {
+      "id": "ado-create-work-item",
+      "name": "Azure DevOps Create Work Item",
+      "entry-point": "Invoke-AdoCreateWorkItem",
+      "requires": ["violations", "ci-environment"],
+      "optional-requires": [],
+      "provides": [],
+      "ide-hidden": true
+    },
+    {
+      "id": "ado-create-commit-comment",
+      "name": "Azure DevOps Create Commit Comment",
+      "entry-point": "Invoke-AdoCreateCommitComment",
+      "requires": ["violations", "ci-environment"],
+      "optional-requires": [],
+      "provides": [],
+      "ide-hidden": true
+    }
+  ]
+}
