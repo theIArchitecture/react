@@ -47,7 +47,7 @@
     "max-file-size-bytes": 500000,
     "files-per-batch": 50,
     "progressive-output-threshold": 200,
-    "cache-root-path": "C:/cache/react",
+    "cache-root-path": "cache",
     "ignore-patterns": [
       "node_modules",
       "bin", "build", "dist", "out", "artifacts",
