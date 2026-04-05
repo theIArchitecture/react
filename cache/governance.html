@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>IArchitecture Governance Dashboard - /</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+    .container { max-width: 1400px; margin: 0 auto; background: white; padding: 24px; border-radius: 8px; }
+    h1 { color: #2c3e50; margin-bottom: 6px; }
+    nav a { margin-right: 12px; color: #2563eb; text-decoration: none; font-weight: 600; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 16px 0 20px; }
+    .card { border-radius: 8px; padding: 14px; background: #f8fafc; border: 1px solid #e2e8f0; }
+    .card .label { font-size: 12px; color: #475569; text-transform: uppercase; letter-spacing: 0.04em; }
+    .card .value { font-size: 28px; font-weight: 700; color: #0f172a; margin-top: 6px; }
+    .section { margin-top: 18px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    th, td { text-align: left; padding: 8px; border-bottom: 1px solid #e2e8f0; font-size: 13px; }
+    th { color: #334155; background: #f8fafc; }
+    .pill { padding: 2px 6px; border-radius: 999px; background: #e2e8f0; font-size: 11px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Governance Dashboard</h1>
+    <div><strong>Repo:</strong> /</div>
+    <div><strong>Generated:</strong> 2026-04-05 04:34:39 UTC</div>
+    <nav style="margin-top:10px;">
+      <a href="./dashboard.html">Compliance</a>
+      <a href="./governance.html">Governance Summary</a>
+      <a href="./governance-efficacy.html">Rule Efficacy</a>
+      <a href="./governance-voting.html">Voting Analysis</a>
+      <a href="./governance-ledger.html">Governance Ledger</a>
+    </nav>
+
+    <div class="cards" id="kpis"></div>
+
+    <div class="section">
+      <h2>Entropy Trend</h2>
+      <canvas id="entropyChart" style="max-height:300px;"></canvas>
+    </div>
+
+    <div class="section">
+      <h2>Top Governance Issues</h2>
+      <table>
+        <thead><tr><th>Anomaly Type</th><th>Score</th><th>Members</th><th>Scope</th><th>Layer</th><th>Description</th></tr></thead>
+        <tbody id="issuesBody"></tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h2>Active Adjustments</h2>
+      <table>
+        <thead><tr><th>Rule</th><th>Type</th><th>Severity</th><th>P</th><th>I</th><th>D</th><th>Reason</th></tr></thead>
+        <tbody id="adjustmentsBody"></tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+    const cycleMeta = {};
+    const clusters = [];
+    const history = [];
+    const efficacy = [];
+    const voting = [];
+    const adjustments = [];
+
+    const proposed = voting.filter(v => v.should_propose).length;
+    const suppressed = voting.filter(v => !!v.suppressed_reason).length;
+    const effective = efficacy.filter(e => String(e.rating || '').toLowerCase() === 'effective').length;
+
+    document.getElementById('kpis').innerHTML = [
+      ['Entropy Score', Number(cycleMeta.entropy_score ?? 0).toFixed(3)],
+      ['Anomaly Clusters', String(cycleMeta.anomaly_cluster_count ?? clusters.length)],
+      ['Proposed/Suppressed', `${proposed}/${suppressed}`],
+      ['Effective Rules', String(effective)]
+    ].map(k => `<div class="card"><div class="label">${k[0]}</div><div class="value">${k[1]}</div></div>`).join('');
+
+    const labels = history.map(h => String(h.cycle ?? ''));
+    const scores = history.map(h => Number(h.entropy_score ?? h.score ?? 0));
+    const baseline = history.map(h => h.baseline_entropy ?? h.baseline_score ?? null);
+    const ctx = document.getElementById('entropyChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          { label: 'Entropy', data: scores, borderColor: '#6366f1', backgroundColor: 'rgba(99,102,241,0.15)', fill: true, tension: 0.3 },
+          { label: 'Baseline', data: baseline, borderColor: '#ef4444', borderDash: [6,4], tension: 0 }
+        ]
+      },
+      options: { scales: { y: { beginAtZero: true, max: 1.0 } } }
+    });
+
+    const topClusters = [...clusters].sort((a,b) => (b.raw_anomaly_score ?? 0) - (a.raw_anomaly_score ?? 0)).slice(0, 12);
+    document.getElementById('issuesBody').innerHTML = topClusters.map(c => `
+      <tr>
+        <td><span class="pill">${c.anomaly_type || '-'}</span></td>
+        <td>${Number(c.raw_anomaly_score ?? 0).toFixed(3)}</td>
+        <td>${c.member_count ?? 0}</td>
+        <td>${c.dominant_scope || '-'}</td>
+        <td>${c.dominant_layer || '-'}</td>
+        <td>${c.description || '-'}</td>
+      </tr>`).join('');
+
+    document.getElementById('adjustmentsBody').innerHTML = (adjustments || []).map(a => `
+      <tr>
+        <td>${a.rule_id || '-'}</td>
+        <td>${a.type || '-'}</td>
+        <td>${a.new_severity || '-'}</td>
+        <td>${Number(a.p_term ?? 0).toFixed(3)}</td>
+        <td>${Number(a.i_term ?? 0).toFixed(3)}</td>
+        <td>${Number(a.d_term ?? 0).toFixed(3)}</td>
+        <td>${a.reason || '-'}</td>
+      </tr>`).join('');
+  </script>
+</body>
+</html>

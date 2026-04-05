@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>IArchitecture Dashboard - /</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 20px 0; }
+        .metric { padding: 20px; border-radius: 6px; text-align: center; }
+        .metric h3 { margin: 0; font-size: 36px; }
+        .untracked { background: #ecf0f1; color: #95a5a6; }
+        .clean { background: #d5f4e6; color: #27ae60; }
+        .warning { background: #fff3cd; color: #f39c12; }
+        .fatal { background: #f8d7da; color: #e74c3c; }
+        .healed { background: #d1ecf1; color: #17a2b8; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #34495e; color: white; }
+        button { background: #3498db; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        button:hover { background: #2980b9; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏛️ IArchitecture Compliance Dashboard</h1>
+        <p><strong>Repository:</strong> /</p>
+        <p><strong>Generated:</strong> 2026-04-05 04:34:39 UTC</p>
+        <p><strong>Branch:</strong> unknown | <strong>Commit:</strong> unknown</p>
+        <p><strong>Total Files:</strong> 1,530</p>
+        
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 12px; margin: 30px 0; text-align: center;">
+            <h2 style="color: white; margin: 0; font-size: 24px; font-weight: 300;">Architectural Coverage</h2>
+            <div style="font-size: 72px; font-weight: bold; margin: 20px 0;">100.0%</div>
+            <p style="font-size: 18px; opacity: 0.9; margin: 0;">1,363 of 1,530 files compliant</p>
+        </div>
+        <h2>📊 Overall Compliance</h2>
+        <div class="metrics">
+            <div class="metric untracked"><h3>0</h3><p>Untracked</p></div>
+            <div class="metric clean"><h3>1363</h3><p>Clean</p></div>
+            <div class="metric healed"><h3>0</h3><p>Healed</p></div>
+            <div class="metric warning"><h3>90</h3><p>Warnings</p></div>
+            <div class="metric fatal"><h3>77</h3><p>Fatal</p></div>
+        </div>
+        <h2>📁 Compliance by Subsystem</h2>
+        <table>
+            <thead><tr><th>Subsystem</th><th>Total</th><th>Untracked</th><th>Clean</th><th>Healed</th><th>Warning</th><th>Fatal</th><th>Compliance %</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td><strong>root</strong></td>
+                    <td>8</td>
+                    <td>0</td>
+                    <td>8</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>100.0%</td>
+                </tr>
+                <tr>
+                    <td><strong>.codesandbox</strong></td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>100.0%</td>
+                </tr>
+                <tr>
+                    <td><strong>.github</strong></td>
+                    <td>3</td>
+                    <td>0</td>
+                    <td>3</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>100.0%</td>
+                </tr>
+                <tr>
+                    <td><strong>packages</strong></td>
+                    <td>1272</td>
+                    <td>0</td>
+                    <td>1202</td>
+                    <td>0</td>
+                    <td>23</td>
+                    <td>47</td>
+                    <td>94.5%</td>
+                </tr>
+                <tr>
+                    <td><strong>compiler</strong></td>
+                    <td>246</td>
+                    <td>0</td>
+                    <td>149</td>
+                    <td>0</td>
+                    <td>67</td>
+                    <td>30</td>
+                    <td>60.6%</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>⚠️ Violations by Rule</h2>
+        <table>
+            <thead><tr><th>Rule ID</th><th>Files</th><th>Total Violations</th><th>Actions</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td><strong>ARCH-COUPLING-001</strong></td>
+                    <td>81</td>
+                    <td>328</td>
+                    <td><button onclick="toggleFiles('ARCH-COUPLING-001')">Show Files</button></td>
+                </tr>
+                <tr id="files-ARCH-COUPLING-001" style="display: none;">
+                    <td colspan="4">
+                        <div style="background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 4px;">
+                            <strong>Files violating ARCH-COUPLING-001:</strong>
+                            <ul style="margin: 10px 0; padding-left: 20px;">
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\apps\playground\components\Editor\Output.tsx</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\apps\playground\lib\createContext.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\CompilerError.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Entrypoint\Imports.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Entrypoint\Options.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Entrypoint\Pipeline.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Entrypoint\Program.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Entrypoint\ValidateNoUntransformedReferences.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Flood\FlowTypes.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Flood\TypeErrors.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Flood\Types.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Flood\TypeUtils.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\BuildHIR.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\BuildReactiveScopeTerminalsHIR.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\CollectHoistablePropertyLoads.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\CollectOptionalChainDependencies.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\DeriveMinimalDependenciesHIR.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\Dominator.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\Environment.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\Globals.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\HIR.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\HIRBuilder.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\index.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\ObjectShape.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\PropagateScopeDependenciesHIR.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\ScopeDependencyUtils.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\Types.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\visitors.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\index.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\AliasingEffects.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\AnalyseFunctions.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\DropManualMemoization.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\InferEffectDependencies.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\InferFunctionEffects.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\InferMutationAliasingEffects.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\InferMutationAliasingRanges.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\InferReactivePlaces.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\InferReferenceEffects.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Optimization\DeadCodeElimination.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Optimization\InlineJsxTransform.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Optimization\InstructionReordering.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Optimization\LowerContextAccess.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Optimization\OutlineJsx.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\AssertWellFormedBreakTargets.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\BuildReactiveFunction.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\CodegenReactiveFunction.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\CollectReactiveIdentifiers.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\CollectReferencedGlobals.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\ExtractScopeDeclarationsFromDestructuring.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\index.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\MergeReactiveScopesThatInvalidateTogether.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PrintReactiveFunction.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PromoteUsedTemporaries.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PropagateEarlyReturns.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PruneAllReactiveScopes.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PruneAlwaysInvalidatingScopes.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PruneHoistedContexts.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PruneInitializationDependencies.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PruneNonEscapingScopes.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PruneNonReactiveDependencies.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PruneTemporaryLValues.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PruneUnusedLabels.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PruneUnusedScopes.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\RenameVariables.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\visitors.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\SSA\EnterSSA.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Transform\TransformFire.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\TypeInference\InferTypes.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Utils\Result.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Utils\RuntimeDiagnosticConstants.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Utils\Stack.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Validation\ValidateHooksUsage.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Validation\ValidateMemoizedEffectDependencies.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Validation\ValidateNoImpureFunctionsInRender.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Validation\ValidateNoRefAccessInRender.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Validation\ValidatePreservedManualMemoization.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\index.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\rules\RulesOfHooks.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-client\src\ReactFlightClient.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shell\src\app\InspectableElements\InspectableElements.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\view-base\View.js</code></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>ARCH-MAIN-SEQUENCE-001</strong></td>
+                    <td>72</td>
+                    <td>72</td>
+                    <td><button onclick="toggleFiles('ARCH-MAIN-SEQUENCE-001')">Show Files</button></td>
+                </tr>
+                <tr id="files-ARCH-MAIN-SEQUENCE-001" style="display: none;">
+                    <td colspan="4">
+                        <div style="background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 4px;">
+                            <strong>Files violating ARCH-MAIN-SEQUENCE-001:</strong>
+                            <ul style="margin: 10px 0; padding-left: 20px;">
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\apps\playground\components\Editor\EditorImpl.tsx</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\apps\playground\components\Editor\Input.tsx</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\apps\playground\components\Editor\Output.tsx</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\apps\playground\components\TabbedWindow.tsx</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\apps\playground\lib\createContext.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\CompilerError.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Entrypoint\Imports.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Entrypoint\Pipeline.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Flood\TypeErrors.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Flood\Types.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\Dominator.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\Environment.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\Globals.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\HIR.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\ObjectShape.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\TypeSchema.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\AliasingEffects.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\InferFunctionEffects.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\AssertWellFormedBreakTargets.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Utils\DisjointSet.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Utils\Result.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Utils\RuntimeDiagnosticConstants.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Utils\todo.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\make-read-only-util\src\makeReadOnly.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\react-compiler-healthcheck\src\checks\reactCompiler.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\react-forgive\client\src\colors.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\react-forgive\server\src\compiler\compat.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\react-mcp-server\src\utils\assertExhaustive.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\snap\src\fixture-utils.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\snap\src\reporter.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\snap\src\runner-watch.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\code-path-analysis\code-path-analyzer.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\code-path-analysis\code-path-state.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\code-path-analysis\code-path.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\code-path-analysis\fork-context.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\code-path-analysis\id-generator.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\rules\ExhaustiveDeps.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\rules\ReactCompiler.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\rules\RulesOfHooks.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\types\estree.d.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-client\src\ReactFlightClient.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-extensions\src\main\reactPolling.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\backend\agent.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\backend\views\Highlighter\Overlay.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\bridge.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\devtools\ProfilerStore.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\devtools\ProfilingCache.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\devtools\store.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\devtools\views\ErrorBoundary\ErrorBoundary.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\errors\TimeoutError.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\errors\UnknownHookError.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\errors\UserError.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\events.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\UnsupportedBridgeOperationError.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shell\src\app\ErrorBoundaries\index.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shell\src\app\InspectableElements\CustomObject.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shell\src\app\InspectableElements\SimpleValues.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\content-views\utils\colors.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\import-worker\InvalidProfileError.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\view-base\BackgroundColorView.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\view-base\resizable\ResizeBarView.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\view-base\Surface.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\view-base\vertical-scroll-overflow\VerticalScrollBarView.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\view-base\VerticalScrollView.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\view-base\View.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools\preload.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-dom-bindings\src\events\SyntheticEvent.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-native-renderer\src\legacy-events\SyntheticEvent.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-reconciler\src\ReactFiberBeginWork.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react\src\ReactPostpone.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\shared\assign.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\use-sync-external-store\src\useSyncExternalStore.js</code></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>ARCH-LAYER-001</strong></td>
+                    <td>72</td>
+                    <td>97</td>
+                    <td><button onclick="toggleFiles('ARCH-LAYER-001')">Show Files</button></td>
+                </tr>
+                <tr id="files-ARCH-LAYER-001" style="display: none;">
+                    <td colspan="4">
+                        <div style="background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 4px;">
+                            <strong>Files violating ARCH-LAYER-001:</strong>
+                            <ul style="margin: 10px 0; padding-left: 20px;">
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\CompilerError.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Entrypoint\Imports.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\BuildHIR.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\DeriveMinimalDependenciesHIR.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\Dominator.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\Environment.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\HIRBuilder.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\PropagateScopeDependenciesHIR.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\InferFunctionEffects.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\InferMutationAliasingEffects.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\InferReactivePlaces.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\AssertWellFormedBreakTargets.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\BuildReactiveFunction.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\CodegenReactiveFunction.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\MergeReactiveScopesThatInvalidateTogether.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PrintReactiveFunction.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PromoteUsedTemporaries.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PruneNonEscapingScopes.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\RenameVariables.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\SSA\EnterSSA.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\TypeInference\InferTypes.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Utils\Result.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\react-forgive\client\src\colors.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\snap\src\sprout\evaluator.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\snap\src\sprout\shared-runtime.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\code-path-analysis\code-path-analyzer.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\code-path-analysis\code-path-segment.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\code-path-analysis\code-path-state.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\code-path-analysis\code-path.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\code-path-analysis\fork-context.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\code-path-analysis\id-generator.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-extensions\src\main\reactPolling.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\SourceMapIgnoreListPlugin.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\backend\views\Highlighter\Overlay.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\bridge.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\devtools\ProfilerStore.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\devtools\ProfilingCache.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\devtools\store.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\errors\TimeoutError.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\errors\UnknownHookError.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\errors\UserError.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\hooks\SourceMapMetadataConsumer.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\inspectedElementMutableSource.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\UnsupportedBridgeOperationError.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shell\src\app\ErrorBoundaries\index.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shell\src\app\Hydration\index.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shell\src\app\InspectableElements\Contexts.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shell\src\app\ReactNativeWeb\index.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shell\src\e2e-apps\ListAppLegacy.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\content-views\ComponentMeasuresView.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\content-views\FlamechartView.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\content-views\NativeEventsView.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\content-views\NetworkMeasuresView.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\content-views\ReactMeasuresView.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\content-views\SchedulingEventsView.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\content-views\SnapshotsView.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\content-views\SuspenseEventsView.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\content-views\ThrownErrorsView.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\content-views\TimeAxisMarkersView.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\content-views\UserTimingMarksView.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\content-views\utils\colors.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\view-base\HorizontalPanAndZoomView.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\view-base\resizable\ResizableView.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\view-base\resizable\ResizeBarView.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\view-base\Surface.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\view-base\vertical-scroll-overflow\VerticalScrollBarView.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\view-base\vertical-scroll-overflow\VerticalScrollOverflowView.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\view-base\VerticalScrollView.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\view-base\View.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-dom-bindings\src\client\ReactFiberConfigDOM.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-dom-bindings\src\server\ReactFizzConfigDOM.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-server-dom-webpack\src\ReactFlightWebpackPlugin.js</code></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>ARCH-CIRCULAR-001</strong></td>
+                    <td>60</td>
+                    <td>60</td>
+                    <td><button onclick="toggleFiles('ARCH-CIRCULAR-001')">Show Files</button></td>
+                </tr>
+                <tr id="files-ARCH-CIRCULAR-001" style="display: none;">
+                    <td colspan="4">
+                        <div style="background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 4px;">
+                            <strong>Files violating ARCH-CIRCULAR-001:</strong>
+                            <ul style="margin: 10px 0; padding-left: 20px;">
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\apps\playground\components\Editor\Output.tsx</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\CompilerError.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Entrypoint\Imports.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Entrypoint\Options.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Entrypoint\Pipeline.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Entrypoint\Program.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Entrypoint\Suppression.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Flood\FlowTypes.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Flood\TypeErrors.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Flood\Types.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Flood\TypeUtils.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\AssertValidBlockNesting.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\BuildHIR.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\CollectHoistablePropertyLoads.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\Dominator.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\Environment.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\Globals.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\HIR.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\HIRBuilder.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\ObjectShape.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\TypeSchema.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\AliasingEffects.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\InferFunctionEffects.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\InferMutationAliasingEffects.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\InferMutationAliasingRanges.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\InferReactivePlaces.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Optimization\OutlineJsx.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\AssertScopeInstructionsWithinScope.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\AssertWellFormedBreakTargets.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\BuildReactiveFunction.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\CodegenReactiveFunction.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\MergeReactiveScopesThatInvalidateTogether.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PromoteUsedTemporaries.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PruneInitializationDependencies.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PruneNonEscapingScopes.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\RenameVariables.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\StabilizeBlockIds.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\visitors.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\SSA\EnterSSA.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Transform\TransformFire.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\TypeInference\InferTypes.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Utils\DisjointSet.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Utils\Result.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Utils\RuntimeDiagnosticConstants.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Utils\Stack.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Validation\ValidateNoRefAccessInRender.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\code-path-analysis\code-path-analyzer.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\code-path-analysis\code-path-state.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\code-path-analysis\code-path.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\code-path-analysis\fork-context.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\code-path-analysis\id-generator.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\rules\RulesOfHooks.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-client\src\ReactFlightClient.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\backend\views\Highlighter\Overlay.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\devtools\ProfilerStore.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-shared\src\devtools\ProfilingCache.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\view-base\Surface.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\view-base\vertical-scroll-overflow\VerticalScrollBarView.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\view-base\vertical-scroll-overflow\VerticalScrollOverflowView.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\view-base\View.js</code></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>ARCH-STABILITY-001</strong></td>
+                    <td>54</td>
+                    <td>93</td>
+                    <td><button onclick="toggleFiles('ARCH-STABILITY-001')">Show Files</button></td>
+                </tr>
+                <tr id="files-ARCH-STABILITY-001" style="display: none;">
+                    <td colspan="4">
+                        <div style="background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 4px;">
+                            <strong>Files violating ARCH-STABILITY-001:</strong>
+                            <ul style="margin: 10px 0; padding-left: 20px;">
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\CompilerError.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Entrypoint\Imports.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Entrypoint\Pipeline.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Entrypoint\ValidateNoUntransformedReferences.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Flood\TypeErrors.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Flood\TypeUtils.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\BuildHIR.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\Environment.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\Globals.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\HIR.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\HIRBuilder.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\ObjectShape.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\AliasingEffects.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\DropManualMemoization.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\InferFunctionEffects.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\InferMutationAliasingEffects.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\InferReferenceEffects.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Optimization\OutlineJsx.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\AssertWellFormedBreakTargets.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\BuildReactiveFunction.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\CodegenReactiveFunction.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\CollectReactiveIdentifiers.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\CollectReferencedGlobals.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\ExtractScopeDeclarationsFromDestructuring.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PromoteUsedTemporaries.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PropagateEarlyReturns.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PruneHoistedContexts.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PruneInitializationDependencies.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PruneNonEscapingScopes.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PruneNonReactiveDependencies.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PruneTemporaryLValues.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PruneUnusedScopes.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\RenameVariables.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\visitors.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\SSA\EnterSSA.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Transform\TransformFire.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\TypeInference\InferTypes.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Utils\DisjointSet.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Utils\Stack.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Validation\ValidateHooksUsage.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Validation\ValidateMemoizedEffectDependencies.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Validation\ValidateNoRefAccessInRender.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Validation\ValidatePreservedManualMemoization.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\react-mcp-server\src\index.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\code-path-analysis\code-path.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\code-path-analysis\fork-context.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\rules\ExhaustiveDeps.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\rules\ReactCompiler.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\types\estree.d.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-client\src\ReactFlightClient.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\view-base\vertical-scroll-overflow\VerticalScrollBarView.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\view-base\View.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-reconciler\src\ReactFiberLegacyContext.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-reconciler\src\ReactFiberWorkLoop.js</code></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>ARCH-SHARED-KERNEL-001</strong></td>
+                    <td>30</td>
+                    <td>30</td>
+                    <td><button onclick="toggleFiles('ARCH-SHARED-KERNEL-001')">Show Files</button></td>
+                </tr>
+                <tr id="files-ARCH-SHARED-KERNEL-001" style="display: none;">
+                    <td colspan="4">
+                        <div style="background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 4px;">
+                            <strong>Files violating ARCH-SHARED-KERNEL-001:</strong>
+                            <ul style="margin: 10px 0; padding-left: 20px;">
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\apps\playground\components\Editor\Output.tsx</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\apps\playground\lib\createContext.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\CompilerError.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Entrypoint\Options.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Entrypoint\Pipeline.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Flood\FlowTypes.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Flood\TypeErrors.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Flood\Types.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\BuildHIR.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\Environment.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\Globals.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\HIR.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\HIRBuilder.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\ObjectShape.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\HIR\TypeSchema.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\AliasingEffects.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\InferFunctionEffects.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Inference\InferMutationAliasingEffects.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\AssertWellFormedBreakTargets.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\MergeReactiveScopesThatInvalidateTogether.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PromoteUsedTemporaries.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\ReactiveScopes\PruneNonEscapingScopes.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\TypeInference\InferTypes.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Utils\DisjointSet.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Utils\Result.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\compiler\packages\babel-plugin-react-compiler\src\Utils\Stack.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\code-path-analysis\code-path-analyzer.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\eslint-plugin-react-hooks\src\rules\RulesOfHooks.ts</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-client\src\ReactFlightClient.js</code></li>
+                                <li><code>D:\a\IArchHub\IArchHub\vendor-code\react\packages\react-devtools-timeline\src\view-base\View.js</code></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <script>
+            function toggleFiles(ruleId) {
+                var row = document.getElementById('files-' + ruleId);
+                if (row.style.display === 'none') {
+                    row.style.display = 'table-row';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        </script>
+        <p><em>Full file listing with 1,530 files available in JSON output for programmatic access</em></p>
+        <h2>🛡️ Violations Prevented (PR Scans)</h2>
+        <canvas id="prScanChart" height="80"></canvas>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const prScanHistory = [];
+            const labels = prScanHistory.map(e => e.timestamp ? e.timestamp.substring(0,10) : '');
+            const prevented = prScanHistory.map(e => e.violations_found || 0);
+            const healed = prScanHistory.map(e => e.auto_healed || 0);
+            new Chart(document.getElementById('prScanChart'), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'Violations Prevented', data: prevented, backgroundColor: 'rgba(231,76,60,0.5)', borderColor: '#e74c3c', borderWidth: 1 },
+                        { label: 'Auto-Healed', data: healed, backgroundColor: 'rgba(39,174,96,0.5)', borderColor: '#27ae60', borderWidth: 1 }
+                    ]
+                },
+                options: { responsive: true, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+            });
+        </script>
+    </div>
+</body>
+</html>
