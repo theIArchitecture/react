@@ -256,8 +256,9 @@ function Invoke-BotCommit {
     $botName         = if ($cfg.'bot-name')  { $cfg.'bot-name' }  else { 'IArchitecture Bot' }
     $botEmail        = if ($cfg.'bot-email') { $cfg.'bot-email' } else { 'iarch-bot@iarchitecture.com' }
 
-    # Resolve bot-target-path: "project-root" token → absolute path from context
-    if ($targetPath -eq 'project-root') { $targetPath = $ctx.'project-root' }
+    # Resolve bot-target-path: "project-root" / "discovery-root" token → absolute path from context
+    if ($targetPath -eq 'project-root')       { $targetPath = $ctx.'project-root' }
+    elseif ($targetPath -eq 'discovery-root') { $targetPath = if ($ctx.'discovery-root') { $ctx.'discovery-root' } else { $ctx.'project-root' } }
     if (![string]::IsNullOrEmpty($targetPath) -and ![System.IO.Path]::IsPathRooted($targetPath)) {
         $targetPath = Join-Path ($ctx.'project-root') $targetPath
     }

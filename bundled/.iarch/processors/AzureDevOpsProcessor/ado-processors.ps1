@@ -410,9 +410,25 @@ function Invoke-AdoBotCommit {
     $botBranch       = $cfg.'bot-branch'
     $botFilesRaw     = $cfg.'bot-files'
     $commitCachesRaw = $cfg.'commit-caches'
-    $cacheBasePath   = if ($cfg.'cache.base-path') { $cfg.'cache.base-path'.TrimEnd('/\') } else { '.iarch' }
     $botName         = if ($cfg.'bot-name')  { $cfg.'bot-name' }  else { 'IArchitecture Bot' }
     $botEmail        = if ($cfg.'bot-email') { $cfg.'bot-email' } else { 'iarch-bot@iarchitecture.com' }
+
+    # Resolve bot-target-path: "project-root" / "discovery-root" token → absolute path from context
+    if ($targetPath -eq 'project-root')       { $targetPath = $ctx.'project-root' }
+    elseif ($targetPath -eq 'discovery-root') { $targetPath = if ($ctx.'discovery-root') { $ctx.'discovery-root' } else { $ctx.'project-root' } }
+    if (![string]::IsNullOrEmpty($targetPath) -and ![System.IO.Path]::IsPathRooted($targetPath)) {
+        $targetPath = Join-Path ($ctx.'project-root') $targetPath
+    }
+
+    # Resolve cache base path: --config cache.base-path > context cache-root-path > 'cache'
+    $rawCachePath = if ($cfg.'cache.base-path') { $cfg.'cache.base-path' }
+                    elseif ($ctx.'cache-root-path') { $ctx.'cache-root-path' }
+                    else { 'cache' }
+    $cacheBasePath = if ([System.IO.Path]::IsPathRooted($rawCachePath)) {
+        $rawCachePath.TrimEnd('/\')
+    } else {
+        Join-Path $targetPath $rawCachePath.TrimEnd('/\')
+    }
 
     $warnings = [System.Collections.Generic.List[string]]::new()
     $errors   = [System.Collections.Generic.List[string]]::new()
@@ -445,6 +461,18 @@ function Invoke-AdoBotCommit {
         }
     }
 
+    # Diagnostics: log resolved paths
+    $warnings.Add("ado-bot-commit: targetPath=$targetPath")
+    $warnings.Add("ado-bot-commit: cacheBasePath=$cacheBasePath")
+    if ($filesToAdd.Count -gt 0) {
+        $filesToAdd | ForEach-Object {
+            $exists = Test-Path $_
+            $warnings.Add("ado-bot-commit: file-to-add [exists=$exists] $_")
+        }
+    } else {
+        $warnings.Add("ado-bot-commit: no specific files configured — will use git add -A")
+    }
+
     if ($ciEnv -and $ciEnv.token) { Set-AdoGitAuth -Token $ciEnv.token }
 
     Push-Location $targetPath
@@ -454,9 +482,9 @@ function Invoke-AdoBotCommit {
 
         if ($filesToAdd.Count -gt 0) {
             foreach ($f in $filesToAdd) {
-                git add -f $f 2>&1 | Out-Null
+                $gitAddOut = git add -f $f 2>&1
                 if ($LASTEXITCODE -ne 0) {
-                    $warnings.Add("ado-bot-commit: failed to stage '$f' (exit $LASTEXITCODE)")
+                    $warnings.Add("ado-bot-commit: failed to stage '$f' (exit $LASTEXITCODE): $($gitAddOut -join ' ')")
                 }
             }
         } else {

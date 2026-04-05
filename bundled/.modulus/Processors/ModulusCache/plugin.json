@@ -248,6 +248,22 @@
       "requires": [ "governance-ledger-html", "cache-config", "governance-ledger-html.transformed" ],
       "provides": [],
       "ide-hidden": true
+    },
+    {
+      "id": "smoke-data-cache-loader",
+      "name": "Smoke Test Data Cache Loader",
+      "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
+      "requires": [ "cache-config" ],
+      "provides": [ "smoke-data" ],
+      "ide-hidden": true
+    },
+    {
+      "id": "smoke-data-cache-saver",
+      "name": "Smoke Test Data Cache Saver",
+      "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
+      "requires": [ "smoke-data", "cache-config", "smoke-data.transformed" ],
+      "provides": [],
+      "ide-hidden": true
     }
   ]
 }
