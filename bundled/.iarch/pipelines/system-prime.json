@@ -1,9 +1,8 @@
 {
   "name": "System Prime - Cold Start",
   "processors": [
-    "@Caching/cache-config",
     "@BaseProcessors/base-processors",
-    "@Caching/caching-processors",
+    "@Caching/scan-caches",
     "@Graphing/dependency-graph-processors",
     "dependency-graph-stats",
     "violation-index-builder",

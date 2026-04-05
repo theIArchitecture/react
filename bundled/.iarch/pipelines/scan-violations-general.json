@@ -1,9 +1,8 @@
 {
   "name": "Scan - All General Violations",
   "processors": [
-    "@Caching/cache-config",
     "@BaseProcessors/base-processors",
-    "@Caching/caching-processors",
+    "@Caching/scan-caches",
     "@TreeValidators/tree-validators",
     "@FileValidators/file-validators",
     "violation-index-builder",

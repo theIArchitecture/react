@@ -1,0 +1,12 @@
+{
+  "name": "Governance Loaders",
+  "description": "Loads governance data (ledger, entropy history, stats) from cache for display. Use in pipelines that render the dashboard but do not run the governance intelligence cycle (e.g. full-scan). Does not include savers — governance-cycle lists those directly after the intelligence processors.",
+  "processors": [
+    "governance-ledger-cache-loader",
+    "entropy-history-cache-loader",
+    "governance-stats-cache-loader"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}
