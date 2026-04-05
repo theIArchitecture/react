@@ -312,16 +312,16 @@ function Invoke-BotCommit {
 
     if ($ciEnv -and $ciEnv.token) { $env:GH_TOKEN = $ciEnv.token }
 
-    # Diagnostics: log resolved paths and file existence (stderr — stdout is JSON)
-    [Console]::Error.WriteLine("bot-commit: targetPath=$targetPath")
-    [Console]::Error.WriteLine("bot-commit: cacheBasePath=$cacheBasePath")
+    # Diagnostics: log resolved paths via warnings (appear in JSON output → CI log)
+    $warnings.Add("bot-commit: targetPath=$targetPath")
+    $warnings.Add("bot-commit: cacheBasePath=$cacheBasePath")
     if ($filesToAdd.Count -gt 0) {
         $filesToAdd | ForEach-Object {
             $exists = Test-Path $_
-            [Console]::Error.WriteLine("bot-commit: file-to-add [$exists] $_")
+            $warnings.Add("bot-commit: file-to-add [exists=$exists] $_")
         }
     } else {
-        [Console]::Error.WriteLine("bot-commit: no specific files configured — will use git add -A")
+        $warnings.Add("bot-commit: no specific files configured — will use git add -A")
     }
 
     Push-Location $targetPath
@@ -329,20 +329,19 @@ function Invoke-BotCommit {
         git config --local user.name $botName
         git config --local user.email $botEmail
 
-        # Diagnostics: show what git sees as changed/untracked before staging (stderr)
+        # Diagnostics: git status before staging
         $gitStatus = git status --porcelain 2>&1
         if ($gitStatus) {
-            [Console]::Error.WriteLine("bot-commit: git status (pre-stage):")
-            $gitStatus | ForEach-Object { [Console]::Error.WriteLine("  $_") }
+            $warnings.Add("bot-commit: git status (pre-stage): $($gitStatus -join '; ')")
         } else {
-            [Console]::Error.WriteLine("bot-commit: git status (pre-stage): no changes detected")
+            $warnings.Add("bot-commit: git status (pre-stage): no changes detected")
         }
 
         if ($filesToAdd.Count -gt 0) {
             foreach ($f in $filesToAdd) {
-                git add -f $f 2>&1 | Out-Null
+                $gitAddOut = git add -f $f 2>&1
                 if ($LASTEXITCODE -ne 0) {
-                    $warnings.Add("bot-commit: failed to stage '$f' (exit $LASTEXITCODE)")
+                    $warnings.Add("bot-commit: failed to stage '$f' (exit $LASTEXITCODE): $($gitAddOut -join ' ')")
                 }
             }
         } else {
