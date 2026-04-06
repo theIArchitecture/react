@@ -18,6 +18,19 @@ export function validateProps(props) {
   }
 }
 ob/main/scripts/error-codes/README.md
+// VIOLATION: REACT-PROD-ERROR-CODES-001 - Error message without production error code - breaks React bundle size optimization [CONSOLE_ERROR_LITERAL: console.error('React component onClick prop must be a function')]
+// SEVERITY: WARNING
+// ISSUES FOUND (7):
+//   1. Line 21: Error message without production error code - breaks React bundle size optimization [CONSOLE_ERROR_LITERAL: console.error('React component onClick prop must be a function')]
+//   2. Line 29: Error message without production error code - breaks React bundle size optimization [CONSOLE_ERROR_LITERAL: console.error('React component onClick prop must be a function')]
+//   3. Line 35: Error message without production error code - breaks React bundle size optimization [CONSOLE_ERROR_LITERAL: console.error('React component onClick prop must be a function')]
+//   4. Line 39: Error message without production error code - breaks React bundle size optimization [ERROR_LITERAL_MEDIUM: throw new Error('React component requires children prop to render content pro...]
+//   5. Line 44: Error message without production error code - breaks React bundle size optimization [CONSOLE_ERROR_LITERAL: console.error('React component onClick prop must be a function')]
+//   6. Line 49: Error message without production error code - breaks React bundle size optimization [CONSOLE_ERROR_LITERAL: console.error('React component onClick prop must be a function')]
+//   7. Line 54: Error message without production error code - breaks React bundle size optimization [CONSOLE_ERROR_LITERAL: console.error('React component onClick prop must be a function')]
+// QUICK_FIX: Add error to codes.json and use formatProdErrorMessage() with assigned code for {{SILO:SECURITY_LEVEL}}
+// BUSINESS_IMPACT: Missing error codes prevent REACT_APPLICATION bundle optimization worth millions in performance - production errors become impossible to debug
+// DOCS: https://github.com/facebook/react/blob/main/scripts/error-codes/README.md
       console.error('React component onClick prop must be a function');
     } else {
       console.error(formatProdErrorMessage(521));
