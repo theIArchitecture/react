@@ -786,6 +786,25 @@
             details (walk-up, file naming) are hidden behind simple method signatures.
             </summary>
         </member>
+        <member name="M:Modulus.SDK.Utilities.ConfigurationHelper.ResolveConfig(System.String,System.String,Microsoft.Extensions.Logging.ILogger)">
+            <summary>
+            Walks up from path looking for {customConfigDir}/config.json (then .modulus/config.json)
+            and returns the resolved discovery-root and bundled-defaults-path values.
+            Stops when both are found or the filesystem root is reached.
+            Path values in config are resolved relative to the directory containing the config dir.
+            Accepts a file path or directory path — file paths are normalised to their containing dir.
+            </summary>
+            <param name="path">File or directory path to start walking up from</param>
+            <param name="customConfigDir">Custom config directory name (e.g. ".iarch"). Also checks ".modulus" at each level.</param>
+            <param name="logger">Optional logger</param>
+            <returns>(DiscoveryRoot, BundledDefaultsPath) — either may be null if not found</returns>
+        </member>
+        <member name="M:Modulus.SDK.Utilities.ConfigurationHelper.IsWithinRoot(System.String,System.String)">
+            <summary>
+            Returns true if path is at or beneath root.
+            Accepts file or directory paths. Case-insensitive on all platforms.
+            </summary>
+        </member>
         <member name="M:Modulus.SDK.Utilities.ConfigurationHelper.WalkUpForValue(System.String,System.String,System.String,Microsoft.Extensions.Logging.ILogger)">
             <summary>
             Walks up from startDir looking for {configDir}/config.json and returns the resolved

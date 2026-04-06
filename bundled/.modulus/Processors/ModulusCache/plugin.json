@@ -264,6 +264,23 @@
       "requires": [ "smoke-data", "cache-config", "smoke-data.transformed" ],
       "provides": [],
       "ide-hidden": true
+    },
+	{
+      "id": "pr-scan-history-cache-loader",
+      "name": "PR Scan Hitory Cache Loader",
+      "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
+      "requires": [ "cache-config" ],
+      "provides": [ "pr-scan-history" ],
+      "ide-hidden": true
+    },
+    {
+      "id": "pr-scan-history-cache-saver",
+      "name": "PR Scan History Cache Saver",
+      "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
+      "requires": [ "pr-scan-history", "cache-config", "pr-scan-history.transformed" ],
+      "provides": [],
+      "ide-hidden": true
     }
+
   ]
 }
