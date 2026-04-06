@@ -3,15 +3,6 @@ name: IArchitecture Validation
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    paths:
-      - '**.cs'
-      - '**.java'
-      - '**.py'
-      - '**.js'
-      - '**.ts'
-      - '**.cpp'
-      - '**.cu'
-      - '**.cuh'
   push:
     branches:
       - main
