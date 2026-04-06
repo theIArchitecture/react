@@ -204,6 +204,12 @@ function Invoke-CommitMarkers {
     # Set token for authenticated push if ci-environment is available
     if ($ciEnv -and $ciEnv.token) { $env:GH_TOKEN = $ciEnv.token }
 
+    # Configure git identity for the commit
+    $botEmail = if ($cfg.'bot-email') { $cfg.'bot-email' } elseif ($env:BOT_EMAIL) { $env:BOT_EMAIL } else { 'iarch-bot@iarchitecture.com' }
+    $botName  = if ($cfg.'bot-name')  { $cfg.'bot-name' }  else { 'IArchitecture Bot' }
+    git config --global user.email $botEmail | Out-Null
+    git config --global user.name  $botName  | Out-Null
+
     $violationCount = $violations.Count
     # Files are already on disk — written by annotation-flush processor upstream
 
