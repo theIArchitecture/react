@@ -1,6 +1,8 @@
-/**
+﻿/**
  * Component validation utilities.
  */
+
+import formatProdErrorMessage from 'shared/formatProdErrorMessage';
 
 export function validateProps(props) {
   if (!props.children) {
@@ -8,6 +10,17 @@ export function validateProps(props) {
   }
 
   if (props.onClick && typeof props.onClick !== 'function') {
+    if (__DEV__) {
+      console.error('React component onClick prop must be a function');
+    } else {
+      console.error(formatProdErrorMessage(522));
+    }
+  }
+}code - breaks React bundle size optimization [CONSOLE_ERROR_LITERAL: console.error('React component onClick prop must be a function')]
+// SEVERITY: HEALED (was WARNING)
+// QUICK_FIX: Add error to codes.json and use formatProdErrorMessage() with assigned code for {{SILO:SECURITY_LEVEL}}
+// BUSINESS_IMPACT: Missing error codes prevent REACT_APPLICATION bundle optimization worth millions in performance - production errors become impossible to debug
+// DOCS: https://github.com/facebook/react/blob/main/scripts/error-codes/README.md
     console.error('React component onClick prop must be a function');
   }
 }
