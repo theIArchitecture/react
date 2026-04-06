@@ -229,7 +229,7 @@ function Invoke-CommitMarkers {
             return
         }
 
-        git commit -m "IArchitecture: update violation markers ($violationCount violation(s))" 2>&1 | Out-Null
+        git commit -m "IArchitecture: update violation markers ($violationCount violation(s)) [skip ci]" 2>&1 | Out-Null
         if ($LASTEXITCODE -ne 0) {
             $errors.Add("commit-markers: git commit failed (exit $LASTEXITCODE)")
         } else {
