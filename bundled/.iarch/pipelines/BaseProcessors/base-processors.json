@@ -3,6 +3,8 @@
   "description": "Universal pipeline foundation: initialize IArch context and parse source files. Include at the start of any full-scan pipeline.",
   "processors": [
     "iarch-init",
+    "file-filter",
+    "dependency-graph-evaluator",
     "file-parser"
   ],
   "config": {}
