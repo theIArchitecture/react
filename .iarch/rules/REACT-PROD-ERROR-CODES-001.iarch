@@ -63,29 +63,29 @@ RULE "REACT-PROD-ERROR-CODES-VIOLATION" : IHealerArchitecture
 
   FIXES:
     javascript:
-      - REPLACE: "throw new Error('${1}');"
-      - WITH: "throw new Error(__DEV__ ? '${1}' : formatProdErrorMessage(getErrorCode('${1}')));"
-      - TEACHING: "Use __DEV__ check for bundle optimization in {{SILO:COMPLIANCE_REQUIREMENTS}} - add '${1}' to codes.json"
+      - REPLACE: "throw new Error\\('([^']+)'\\);"
+      - WITH: "throw new Error(__DEV__ ? '$1' : formatProdErrorMessage(getErrorCode('$1')));"
+      - TEACHING: "Use __DEV__ check for bundle optimization in {{SILO:COMPLIANCE_REQUIREMENTS}} - add captured message to codes.json"
 
-      - REPLACE: "console.error('${1}');"
-      - WITH: "console.error(__DEV__ ? '${1}' : formatProdErrorMessage(getErrorCode('${1}')));"
+      - REPLACE: "console\\.error\\('([^']+)'\\);"
+      - WITH: "console.error(__DEV__ ? '$1' : formatProdErrorMessage(getErrorCode('$1')));"
       - TEACHING: "Wrap console.error with __DEV__ for {{SILO:PROJECT_TYPE}} bundle optimization"
 
-      - REPLACE: "invariant(condition, '${1}');"
-      - WITH: "invariant(condition, __DEV__ ? '${1}' : formatProdErrorMessage(getErrorCode('${1}')));"
+      - REPLACE: "invariant\\(([^,]+),\\s*'([^']+)'\\);"
+      - WITH: "invariant($1, __DEV__ ? '$2' : formatProdErrorMessage(getErrorCode('$2')));"
       - TEACHING: "Add __DEV__ check to invariant for {{SILO:COMPLIANCE_REQUIREMENTS}}"
 
-      - REPLACE: "warning('${1}');"
-      - WITH: "warning(__DEV__ ? '${1}' : formatProdErrorMessage(getErrorCode('${1}')));"
+      - REPLACE: "warning\\('([^']+)'\\);"
+      - WITH: "warning(__DEV__ ? '$1' : formatProdErrorMessage(getErrorCode('$1')));"
       - TEACHING: "Wrap warning with __DEV__ for {{SILO:PROJECT_TYPE}} production builds"
 
     typescript:
-      - REPLACE: "throw new Error('${1}');"
-      - WITH: "throw new Error(__DEV__ ? '${1}' : formatProdErrorMessage(getErrorCode('${1}')));"
+      - REPLACE: "throw new Error\\('([^']+)'\\);"
+      - WITH: "throw new Error(__DEV__ ? '$1' : formatProdErrorMessage(getErrorCode('$1')));"
       - TEACHING: "TypeScript errors need __DEV__ wrapping for {{SILO:COMPLIANCE_REQUIREMENTS}}"
 
-      - REPLACE: "console.error('${1}');"
-      - WITH: "console.error(__DEV__ ? '${1}' : formatProdErrorMessage(getErrorCode('${1}')));"
+      - REPLACE: "console\\.error\\('([^']+)'\\);"
+      - WITH: "console.error(__DEV__ ? '$1' : formatProdErrorMessage(getErrorCode('$1')));"
       - TEACHING: "TypeScript console.error needs __DEV__ for {{SILO:PROJECT_TYPE}}"
     META_ARCHITECTURE:
       HEALING_PRIORITY: 2
