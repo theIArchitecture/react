@@ -6,7 +6,7 @@
       "id": "annotation-flush",
       "name": "Annotation Flush",
       "entry-point": "IArchitecture.HealerFlush.RemedyFlushProcessor",
-      "requires": [ "remedies" ],
+      "requires": [ "annotations" ],
       "provides": [ "annotation-flush-written" ],
       "ide-hidden": true,
       "config": {
