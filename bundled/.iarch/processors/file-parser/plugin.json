@@ -40,7 +40,7 @@
     },
     {
       "id": "iarch-pattern-healer",
-      "name": "Pattern Healer",
+      "name": "IArch Pattern Healer",
       "entry-point": "IArchitecture.Processors.IArchPatternHealerProc.IArchPatternHealerProc",
       "requires": [ "violations", "parsed-config" ],
       "provides": [ "remedies" ],

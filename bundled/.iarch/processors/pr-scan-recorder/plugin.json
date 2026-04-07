@@ -6,8 +6,8 @@
       "id": "pr-scan-recorder",
       "name": "PR Scan Recorder",
       "entry-point": "IArchitecture.PrScanRecorder.PrScanRecorderProcessor",
-      "requires": [],
-      "optional-requires": ["annotation-summary", "pr-scan-history", "ci-environment"],
+      "requires": ["annotation-summary"],
+      "optional-requires": ["pr-scan-history", "ci-environment"],
       "provides": ["pr-scan-history", "pr-scan-history.transformed"],
       "ide-hidden": true
     }
