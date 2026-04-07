@@ -1,5 +1,6 @@
 // Test file for IArchitecture pattern healer validation
 // Contains known REACT-PROD-ERROR-CODES-001 violations
+// v2: trigger re-run after annotation-marker + healer chain fixes
 
 function handleError(condition, message) {
   if (!condition) {
