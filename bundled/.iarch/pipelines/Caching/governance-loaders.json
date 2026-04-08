@@ -4,7 +4,8 @@
   "processors": [
     "governance-ledger-cache-loader",
     "entropy-history-cache-loader",
-    "governance-stats-cache-loader"
+    "governance-stats-cache-loader",
+    "pr-scan-history-cache-loader"
   ],
   "config": {
     "ide-hidden": "true"
