@@ -19,7 +19,7 @@
     "cache.governance-stats.value-type": "IArchitecture.GovernanceIntelligence.Models.GovernanceCycleStats, IArchitecture.GovernanceIntelligence",
     "cache.pr-scan-history.cache-type": "raw",
     "cache.pr-scan-history.value-type": "System.Collections.Generic.List`1[[IArchitecture.Shared.Models.PrScanEntry, IArchitecture.Shared]]",
-    "cache.pr-scan-history.cache-name": "pr-scan-history.json",
+    "cache.pr-scan-history.cache-name": "pr-scan-history",
     "cache.dashboard-html.cache-type": "raw",
     "cache.dashboard-html.value-type": "System.Byte[], System.Private.CoreLib",
     "cache.dashboard-html.cache-name": "dashboard.html",
