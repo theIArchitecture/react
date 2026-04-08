@@ -1,0 +1,14 @@
+{
+  "name": "Loader only Scan Caches",
+  "description": "Cache load only scan pipelines: dependency graph, stats, violations, source metadata. Use in any pipeline that builds the DG and violation index. Does not include governance or dashboard caches.",
+  "processors": [
+    "@Caching/cache-config",
+    "cache-loader",
+    "stats-cache-loader",
+    "violation-cache-loader",
+    "source-metadata-cache-loader"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}
