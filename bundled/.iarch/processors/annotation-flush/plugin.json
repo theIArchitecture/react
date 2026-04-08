@@ -1,11 +1,11 @@
 {
   "version": "1.0.0",
-  "processor-path": "./IArchitecture.HealerFlush.dll",
+  "processor-path": "./IArchitecture.AnnotationFlush.dll",
   "processors": [
     {
       "id": "annotation-flush",
       "name": "Annotation Flush",
-      "entry-point": "IArchitecture.HealerFlush.RemedyFlushProcessor",
+      "entry-point": "IArchitecture.AnnotationFlush.AnnotationFlushProcessor",
       "requires": [ "annotations" ],
       "provides": [ "annotation-flush-written" ],
       "ide-hidden": true,
