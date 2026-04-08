@@ -420,9 +420,8 @@ function Invoke-AdoBotCommit {
         $targetPath = Join-Path ($ctx.'project-root') $targetPath
     }
 
-    # Resolve cache base path: --config cache.base-path > context cache-root-path > 'cache'
+    # Resolve cache base path: --config cache.base-path (set by workflow, same pattern as full-scan)
     $rawCachePath = if ($cfg.'cache.base-path') { $cfg.'cache.base-path' }
-                    elseif ($ctx.'cache-root-path') { $ctx.'cache-root-path' }
                     else { 'cache' }
     $cacheBasePath = if ([System.IO.Path]::IsPathRooted($rawCachePath)) {
         $rawCachePath.TrimEnd('/\')
