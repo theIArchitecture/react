@@ -1,0 +1,11 @@
+# All text files use LF. Prevents CRLF/LF mixing when Windows tools commit
+# and Linux CI runners read - consistent with IArchitecture platform standard.
+* text=auto eol=lf
+
+# Binaries - no line-ending translation
+*.dll binary
+*.exe binary
+*.so  binary
+*.png binary
+*.jpg binary
+*.zip binary
