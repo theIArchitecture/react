@@ -1,0 +1,41 @@
+# Consolidated Rule: SEMGREP-SEC-HTTPCLIE
+# Group: httpclient-instantiation
+# Languages: csharp
+
+RULE "Direct instantiation of HttpClient is discouraged. Creating HttpClient instances directly with 'new HttpClient()' can cause socket exhaustion under load and prevents proper DNS refresh. Use IHttpClientFactory (via dependency injection) or a static/shared HttpClient instance instead." : IValidationArchitecture
+  ID: "SEMGREP-SEC-HTTPCLIE"
+  DESCRIPTION: "Direct instantiation of HttpClient is discouraged. Creating HttpClient instances directly with 'new HttpClient()' can cause socket exhaustion under load and prevents proper DNS refresh. Use IHttpClientFactory (via dependency injection) or a static/shared HttpClient instance instead."
+  SEVERITY: Warning
+  CATEGORY: "Security"
+  APPLIES_TO: ["csharp"]
+
+  ARCHITECTURAL_CONTEXT:
+    CATEGORY: "Security"
+    LAYER: "Client"
+    SOURCE: "Semgrep Registry"
+    PACK: "owasp-top10"
+
+  PLUGIN:
+    ID: "semgrep-validator"
+    SCOPE: "file"
+    CONFIG:
+      semgrep_patterns: "{\"csharp\":[{\"Name\":\"DIRECT_HTTPCLIENT_INSTANTIATION\",\"Type\":0,\"Pattern\":\"new HttpClient()\n\"}]}"
+
+  VIOLATIONS:
+    - "Direct instantiation of HttpClient is discouraged. Creating HttpClient instances directly with 'new HttpClient()' can cause socket exhaustion under load and prevents proper DNS refresh. Use IHttpClientFactory (via dependency injection) or a static/shared HttpClient instance instead."
+
+  EDUCATION:
+    WHY_IT_MATTERS: "Each 'new HttpClient()' opens a new socket that may not be released immediately after disposal due to TIME_WAIT state. Under moderate load this exhausts available ports. Additionally, DNS changes are not picked up because HttpClient caches DNS for its lifetime. IHttpClientFactory manages pooled HttpMessageHandler instances, solving both problems."
+    BUSINESS_IMPACT: "Services under load can fail with SocketException due to port exhaustion. DNS-based failover and blue/green deployments may not work correctly."
+    QUICK_FIX: "Inject IHttpClientFactory and call CreateClient() instead of new HttpClient(). For simple cases a static readonly HttpClient field is acceptable."
+    DOCS_URL: "https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/http/httpclient-guidelines"
+
+  META_ARCHITECTURE:
+    HEALING_PRIORITY: 3
+    BREAKING_CHANGE: false
+    EXTRACTED_FROM: "Microsoft .NET Guidelines"
+    CONSOLIDATION_DATE: "2026-04-09"
+    INDIVIDUAL_RULES_COUNT: 1
+    SOURCE_GROUP: "httpclient-instantiation"
+
+END RULE
