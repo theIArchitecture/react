@@ -1,0 +1,30 @@
+RULE "DEBUG-LOG-PRODUCTION" : IHealerArchitecture
+  ID: "TEST-DEBUG-LOG-001"
+  DESCRIPTION: "console.log found in component - remove debug logging before production"
+  SEVERITY: Warning
+  CATEGORY: "Code_Quality"
+  APPLIES_TO: ["javascript", "typescript", "jsx", "tsx"]
+
+  DETECT:
+    PATTERNS:
+      javascript:
+        - DEBUG_LOG: "console\.log\("
+      typescript:
+        - DEBUG_LOG: "console\.log\("
+
+  VIOLATIONS:
+    - "Debug logging found - console.log should not appear in production components"
+
+  FILE_INCLUSIONS:
+    - "/src/.*\.(js|jsx|ts|tsx)$"
+
+  FILE_EXCLUSIONS:
+    - "/\.test\.(js|jsx|ts|tsx)$"
+    - "/__tests__/"
+
+  IDENTIFIER: "TEST-DEBUG-LOG-001"
+  IS_VALID: true
+  CODE_TYPE: "Quality"
+  CURRENT_STATE: "Active"
+
+END RULE
