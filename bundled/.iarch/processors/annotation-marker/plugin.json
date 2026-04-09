@@ -3,13 +3,29 @@
   "processor-path": "./IArchitecture.AnnotationMarker.dll",
   "processors": [
     {
-      "id": "annotation-marker",
-      "name": "Annotation Marker",
+      "id": "annotation-marker-partial",
+      "name": "Annotation Marker - Partial",
       "entry-point": "IArchitecture.AnnotationMarker.AnnotationMarkerProcessor",
-      "requires": ["violations", "parsed-config"],
-      "optional-requires": ["remedies", "parsed-files"],
-      "provides": ["annotations", "annotation-summary"],
-      "ide-hidden": true
+      "requires": [ "violations", "parsed-config" ],
+      "optional-requires": [ "remedies", "parsed-files" ],
+      "provides": [ "annotations.partially-marked", "annotation-summary" ],
+      "ide-hidden": true,
+      "config": {
+        "annotation-marker.annotations-key": "annotations.partially-marked"
+      }
+    },
+    {
+      "id": "annotation-marker-full",
+      "name": "Annotation Marker - Full",
+      "entry-point": "IArchitecture.AnnotationMarker.AnnotationMarkerProcessor",
+      "requires": [ "violations", "parsed-config", "annotations.partially-written", "remedies" ],
+      "optional-requires": [ "parsed-files" ],
+      "provides": [ "annotations.fully-marked", "annotation-summary" ],
+      "ide-hidden": true,
+      "config": {
+        "annotation-marker.annotations-key": "annotations.fully-marked"
+      }
     }
+
   ]
 }

@@ -3,14 +3,29 @@
   "processor-path": "./IArchitecture.AnnotationFlush.dll",
   "processors": [
     {
-      "id": "annotation-flush",
-      "name": "Annotation Flush",
+      "id": "annotation-flush-partial",
+      "name": "Annotation Flush - Partial",
       "entry-point": "IArchitecture.AnnotationFlush.AnnotationFlushProcessor",
-      "requires": [ "annotations" ],
-      "provides": [ "annotation-flush-written" ],
+      "requires": [ "annotations.partially-marked" ],
+      "provides": [ "annotations.partially-written" ],
       "ide-hidden": true,
       "config": {
-        "annotation-flush.backup": "true"
+        "annotation-flush.backup": "false",
+        "annotation-flush.input-key": "annotations.partially-marked",
+        "annotation-flush.output-key": "annotations.partially-written"
+      }
+    },
+    {
+      "id": "annotation-flush-full",
+      "name": "Annotation Flush - Full",
+      "entry-point": "IArchitecture.AnnotationFlush.AnnotationFlushProcessor",
+      "requires": [ "annotations.fully-marked", "annotations.partially-written" ],
+      "provides": [ "annotations.fully-written" ],
+      "ide-hidden": true,
+      "config": {
+        "annotation-flush.backup": "false",
+        "annotation-flush.input-key": "annotations.fully-marked",
+        "annotation-flush.output-key": "annotations.fully-written"
       }
     }
   ]
