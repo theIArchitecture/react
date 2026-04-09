@@ -19,7 +19,7 @@ RULE "Direct instantiation of HttpClient is discouraged. Creating HttpClient ins
     ID: "semgrep-validator"
     SCOPE: "file"
     CONFIG:
-      semgrep_patterns: "{\"csharp\":[{\"Name\":\"DIRECT_HTTPCLIENT_INSTANTIATION\",\"Type\":0,\"Pattern\":\"new HttpClient()\n\"}]}"
+      semgrep_patterns: "{\"csharp\":[{\"Name\":\"DIRECT_HTTPCLIENT_INSTANTIATION\",\"Type\":0,\"Pattern\":\"new HttpClient(...)\"}]}"
 
   VIOLATIONS:
     - "Direct instantiation of HttpClient is discouraged. Creating HttpClient instances directly with 'new HttpClient()' can cause socket exhaustion under load and prevents proper DNS refresh. Use IHttpClientFactory (via dependency injection) or a static/shared HttpClient instance instead."
