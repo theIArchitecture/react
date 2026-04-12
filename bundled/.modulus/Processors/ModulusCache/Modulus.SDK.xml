@@ -163,6 +163,51 @@
             Optional context key: bag for pipeline-level notifications (warnings, status). Any processor can add to it; sinks can read it. Never pruned.
             </summary>
         </member>
+        <member name="F:Modulus.SDK.Models.PipelineKeys.PipelineRun">
+            <summary>
+            Context key where the engine writes a PipelineRunRecord at pipeline start.
+            Carries run identity (RunId, PipelineName, StartedAt) so any processor
+            mid-run can read its own run context.
+            </summary>
+        </member>
+        <member name="F:Modulus.SDK.Models.PipelineKeys.PipelineRunContributions">
+            <summary>
+            Optional context key: open list of ProcessorRunContribution entries.
+            Any processor (DLL, PowerShell, Python) may append to it.
+            Collected by the domain-layer run-history processor at pipeline end.
+            </summary>
+        </member>
+        <member name="T:Modulus.SDK.Models.PipelineRunRecord">
+            <summary>
+            Run identity written to context["pipeline-run"] at the start of every pipeline execution.
+            Processors at any point in the pipeline can read this to know which run they belong to.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.PipelineRunRecord.RunId">
+            <summary>Unique identifier for this run (same value as ProcessingMetadata.RunId).</summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.PipelineRunRecord.PipelineName">
+            <summary>Name of the pipeline being executed (e.g. "full-scan", "pr-validation").</summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.PipelineRunRecord.StartedAt">
+            <summary>UTC timestamp when the pipeline started.</summary>
+        </member>
+        <member name="T:Modulus.SDK.Models.ProcessorRunContribution">
+            <summary>
+            An open-bag contribution written by a processor into context["pipeline-run-contributions"].
+            Domain-layer collectors (e.g. IArchitecture's pipeline-run-collector) aggregate these
+            into the persistent run history record.
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorRunContribution.ProcessorId">
+            <summary>ID of the processor that produced this contribution.</summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessorRunContribution.Notes">
+            <summary>
+            Arbitrary key-value data the processor wants surfaced in the run record.
+            Examples: files_staged, commit_sha, model, tokens_used, violations_produced.
+            </summary>
+        </member>
         <member name="T:Modulus.SDK.Models.ProcessingResult">
             <summary>
             Result of processing files through the Modulus pipeline
@@ -252,6 +297,11 @@
             Unique id for this pipeline run (for tracing and correlation).
             </summary>
         </member>
+        <member name="P:Modulus.SDK.Models.ProcessingMetadata.PipelineName">
+            <summary>
+            Name of the pipeline that ran (e.g. "full-scan", "pr-validation").
+            </summary>
+        </member>
         <member name="P:Modulus.SDK.Models.ProcessingMetadata.EngineVersion">
             <summary>
             Modulus engine version
@@ -259,7 +309,17 @@
         </member>
         <member name="P:Modulus.SDK.Models.ProcessingMetadata.Timestamp">
             <summary>
-            Timestamp when processing started
+            Timestamp when processing started (UTC).
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessingMetadata.CompletedAt">
+            <summary>
+            Timestamp when processing completed (UTC).
+            </summary>
+        </member>
+        <member name="P:Modulus.SDK.Models.ProcessingMetadata.DurationMs">
+            <summary>
+            Total pipeline wall-clock duration in milliseconds.
             </summary>
         </member>
         <member name="P:Modulus.SDK.Models.ProcessingMetadata.PipelineDiagnostics">

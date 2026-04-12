@@ -1,0 +1,14 @@
+{
+  "name": "scan — full",
+  "description": "Full scan bundle: foundation + full-directory intake + scan caches + graph build + file and tree validation + violation finalization. The starting point for all full-scan pipelines. Follow with @output/* and @publish/* chunks.",
+  "processors": [
+    "@core",
+    "@intake/directory",
+    "@data/scan",
+    "@parse/graph",
+    "@validate/files",
+    "@validate/tree",
+    "@violations/finalize"
+  ],
+  "config": {}
+}

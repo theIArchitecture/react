@@ -1,12 +1,8 @@
 {
-  "name": "System Full - Bootstrap and Save",
+  "name": "system-full",
+  "description": "Bootstrap and save: full scan with all validators. No dashboard, no CI. Use for cold-start or local full rebuilds.",
   "processors": [
-    "@BaseProcessors/base-processors",
-    "@Caching/scan-caches",
-    "@TreeValidators/tree-validators",
-    "@FileValidators/file-validators",
-    "violation-index-builder",
-    "violation-filter"
+    "@scan/full"
   ],
   "config": {
     "ide-hidden": "true"

@@ -6,9 +6,9 @@
       "id": "annotation-marker",
       "name": "Annotation Marker",
       "entry-point": "IArchitecture.AnnotationMarker.AnnotationMarkerProcessor",
-      "requires": ["violations", "parsed-config"],
-      "optional-requires": ["remedies", "parsed-files"],
-      "provides": ["annotations", "annotation-summary"],
+      "requires": [ "violations", "parsed-config" ],
+      "optional-requires": [ "remedies", "parsed-files" ],
+      "provides": [ "annotations", "annotation-summary" ],
       "ide-hidden": true
     }
   ]

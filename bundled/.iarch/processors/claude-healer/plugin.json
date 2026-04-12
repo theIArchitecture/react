@@ -6,8 +6,7 @@
       "id": "claude-healer",
       "name": "Claude AI Healer",
       "entry-point": "IArchitecture.ClaudeHealer.ClaudeHealerProcessor",
-      "requires": [ "violations" ],
-      "optional-requires": [ "remedies" ],
+      "requires": [ "violations", "remedies" ],
       "provides": [ "remedies" ],
       "ide-hidden": true,
       "config": {

@@ -1,9 +1,0 @@
-{
-  "name": "file-healers",
-  "description": "File-level healers: pattern-based and AI-based. Run after file validators; produces remedies consumed by annotation-marker.",
-  "processors": [
-    "iarch-pattern-healer",
-    "claude-healer"
-  ],
-  "config": {}
-}

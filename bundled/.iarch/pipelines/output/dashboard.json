@@ -1,0 +1,17 @@
+{
+  "name": "output — dashboard",
+  "description": "Render all dashboard HTML pages and save to cache. Requires source-metadata in context; governance and history keys are optional (renders partial dashboard if absent). Does not commit — pair with @platform/github-commit or @platform/ado-commit.",
+  "processors": [
+    "dashboard-renderer",
+    "dashboard-html-cache-saver",
+    "dashboard-json-cache-saver",
+    "governance-html-cache-saver",
+    "governance-efficacy-html-cache-saver",
+    "governance-voting-html-cache-saver",
+    "governance-ledger-html-cache-saver",
+    "pipeline-run-history-html-cache-saver"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

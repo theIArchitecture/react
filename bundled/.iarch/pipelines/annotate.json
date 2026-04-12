@@ -1,0 +1,6 @@
+{
+  "name": "annotate",
+  "description": "Annotate violations and remedies into source files. annotation-marker writes VIOLATION/HEALED blocks; annotation-flush writes them to disk.",
+  "processors": ["annotation-marker", "annotation-flush"],
+  "config": {}
+}

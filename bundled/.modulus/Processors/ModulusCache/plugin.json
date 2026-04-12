@@ -250,6 +250,22 @@
       "ide-hidden": true
     },
     {
+      "id": "pipeline-run-history-html-cache-loader",
+      "name": "Pipeline Run History HTML Cache Loader",
+      "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
+      "requires": [ "cache-config" ],
+      "provides": [ "pipeline-run-history-html" ],
+      "ide-hidden": true
+    },
+    {
+      "id": "pipeline-run-history-html-cache-saver",
+      "name": "Pipeline Run History HTML Cache Saver",
+      "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
+      "requires": [ "pipeline-run-history-html", "cache-config", "pipeline-run-history-html.transformed" ],
+      "provides": [],
+      "ide-hidden": true
+    },
+    {
       "id": "smoke-data-cache-loader",
       "name": "Smoke Test Data Cache Loader",
       "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
@@ -265,11 +281,12 @@
       "provides": [],
       "ide-hidden": true
     },
-	{
+    {
       "id": "pr-scan-history-cache-loader",
-      "name": "PR Scan Hitory Cache Loader",
+      "name": "PR Scan History Cache Loader",
       "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
       "requires": [ "cache-config" ],
+      "optional-requires": [ "clear-cache" ],
       "provides": [ "pr-scan-history" ],
       "ide-hidden": true
     },
@@ -278,6 +295,23 @@
       "name": "PR Scan History Cache Saver",
       "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
       "requires": [ "pr-scan-history", "cache-config", "pr-scan-history.transformed" ],
+      "provides": [],
+      "ide-hidden": true
+    },
+    {
+      "id": "pipeline-run-history-cache-loader",
+      "name": "Pipeline Run History Cache Loader",
+      "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
+      "requires": [ "cache-config" ],
+      "optional-requires": [ "clear-cache" ],
+      "provides": [ "pipeline-run-history" ],
+      "ide-hidden": true
+    },
+    {
+      "id": "pipeline-run-history-cache-saver",
+      "name": "Pipeline Run History Cache Saver",
+      "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
+      "requires": [ "pipeline-run-history", "cache-config", "pipeline-run-history.transformed" ],
       "provides": [],
       "ide-hidden": true
     }

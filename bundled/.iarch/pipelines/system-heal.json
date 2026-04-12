@@ -1,10 +1,13 @@
 {
-  "name": "Heal - LS Single File",
+  "name": "system-heal",
+  "description": "LS single-file heal: load cached state, validate, heal with pattern and AI, annotate.",
   "processors": [
-    "@system-lite",
-    "iarch-pattern-healer",
-    "claude-healer",
-    "annotation-marker"
+    "@core",
+    "@intake/pr-diff",
+    "@data/scan-readonly",
+    "@validate/files",
+    "@heal/all",
+    "@annotate"
   ],
   "config": {
     "ide-hidden": "true"

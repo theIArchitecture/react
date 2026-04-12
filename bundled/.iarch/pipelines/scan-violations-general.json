@@ -1,12 +1,8 @@
 {
-  "name": "Scan - All General Violations",
+  "name": "scan-violations-general",
+  "description": "Full violation scan with cache. No healing, no annotation, no CI.",
   "processors": [
-    "@BaseProcessors/base-processors",
-    "@Caching/scan-caches",
-    "@TreeValidators/tree-validators",
-    "@FileValidators/file-validators",
-    "violation-index-builder",
-    "violation-filter"
+    "@scan/full"
   ],
   "config": {}
 }

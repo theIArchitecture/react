@@ -1,0 +1,6 @@
+{
+  "name": "intake — full directory",
+  "description": "Full-codebase file intake: filter all repository files, evaluate dependency graph cache staleness, parse. Use in full-scan and governance pipelines.",
+  "processors": ["file-filter", "dependency-graph-evaluator", "file-parser"],
+  "config": {}
+}

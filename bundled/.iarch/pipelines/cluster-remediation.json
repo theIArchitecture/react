@@ -1,21 +1,14 @@
 {
-  "name": "Cluster Remediation",
-  "description": "Triggered per approved CA* proposal: loads context data, generates a ca-*-processor via LLM, heals violations, commits to a remediation branch, opens a GitHub PR, updates the governance ledger to pr_created, refreshes dashboard.",
+  "name": "cluster-remediation",
+  "description": "Triggered per approved CA* proposal: load governance data, generate CA processor via LLM, heal violations, commit to remediation branch, open GitHub PR, update governance ledger to pr_created, refresh dashboard.",
   "processors": [
-    "@Caching/governance-caches",
-    "ci-environment-provider",
-    "governance-ledger-reader",
-    "governance-proposal-resolver",
-    "ca-processor-generator",
-    "ca-processor-runner",
-    "claude-healer",
-    "annotation-flush",
-    "governance-remediation-commit",
+    "@core",
+    "@data/governance",
+    "@platform/github",
+    "@governance/remediation",
     "github-create-pr",
-    "governance-ledger-pr-created",
-    "governance-ledger-cache-saver",
-    "github-bot-commit",
-    "@DashboardRefresh/dashboard-refresh"
+    "@output/dashboard",
+    "@platform/github-commit"
   ],
   "config": {
     "pr-title": "IArchitecture: cluster-remediation",

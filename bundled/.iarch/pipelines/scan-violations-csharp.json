@@ -1,7 +1,8 @@
 {
-  "name": "Scan - All Violations (C# + Roslyn)",
+  "name": "scan-violations-csharp",
+  "description": "Full violation scan with C# Roslyn validators: @scan/full plus configure-await, immutability, interface segregation, public API surface, temporal coupling.",
   "processors": [
-    "@scan-violations-general",
+    "@scan/full",
     "configure-await-validator",
     "immutability-validator",
     "interface-segregation-validator",

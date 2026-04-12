@@ -1,0 +1,6 @@
+{
+  "name": "heal — all",
+  "description": "Pattern healing followed by AI healing. Pattern healer runs first (deterministic); AI healer applies prior remedies in-memory, sends adjusted buffer to Claude, receives full file back.",
+  "processors": ["iarch-pattern-healer", "claude-healer"],
+  "config": {}
+}

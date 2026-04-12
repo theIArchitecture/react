@@ -1,0 +1,20 @@
+{
+  "name": "governance — intelligence cycle",
+  "description": "Full governance intelligence cycle: topology health, co-change velocity, graph embedding, anomaly detection, entropy scoring, voting, rule generation, ledger writing, efficacy scoring, pressure, coordination, reporting. Requires dependency-graph in context. Cache I/O for governance data is handled by @data/governance.",
+  "processors": [
+    "topology-health-check",
+    "co-change-velocity",
+    "codebase-embedding",
+    "topology-analysis",
+    "entropy-score",
+    "voting-aggregator",
+    "anomaly-rule-generator",
+    "governance-ledger-writer",
+    "rule-efficacy",
+    "governance-pressure",
+    "rule-coordination",
+    "entropy-dashboard-output",
+    "governance-reporter"
+  ],
+  "config": {}
+}

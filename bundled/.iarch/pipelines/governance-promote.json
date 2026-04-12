@@ -1,18 +1,20 @@
 {
   "name": "governance-promote",
-  "description": "Promotes an approved CA* cluster to a formal architectural rule: loads context, resolves proposal, generalizes cluster pattern to .iarch rule via LLM, commits rule file to spoke, opens PR, updates ledger to rule_promoted, refreshes dashboard.",
+  "description": "Promotes an approved CA* cluster to a formal architectural rule: load governance data, resolve proposal, generalize cluster pattern to .iarch rule via LLM, commit rule file to spoke, open PR, update ledger to rule_promoted, refresh dashboard.",
   "processors": [
-    "@Caching/governance-caches",
-    "ci-environment-provider",
+    "@core",
+    "@data/governance",
+    "@platform/github",
     "governance-ledger-reader",
     "governance-proposal-resolver",
     "governance-rule-promoter",
     "governance-remediation-commit",
+    "branch-creator",
     "github-create-pr",
     "governance-ledger-rule-promoted",
     "governance-ledger-cache-saver",
-    "github-bot-commit",
-    "@DashboardRefresh/dashboard-refresh"
+    "@output/dashboard",
+    "@platform/github-commit"
   ],
   "config": {
     "pr-title": "IArchitecture: promote cluster rule",

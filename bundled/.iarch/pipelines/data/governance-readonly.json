@@ -1,0 +1,14 @@
+{
+  "name": "data — governance (read-only)",
+  "description": "Cache loaders for dashboard display: governance ledger, entropy history, stats, pr-scan history, pipeline-run history. Use in pipelines that render the dashboard but do not run the governance intelligence cycle.",
+  "processors": [
+    "governance-ledger-cache-loader",
+    "entropy-history-cache-loader",
+    "governance-stats-cache-loader",
+    "pr-scan-history-cache-loader",
+    "pipeline-run-history-cache-loader"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

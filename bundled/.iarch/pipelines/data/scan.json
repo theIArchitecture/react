@@ -1,0 +1,17 @@
+{
+  "name": "data — scan (read/write)",
+  "description": "Cache I/O for all scan data: dependency graph, stats, violation index, source metadata. Include in full-scan pipelines. The DAG ensures savers run after the processors that produce each key.",
+  "processors": [
+    "cache-loader",
+    "cache-saver",
+    "stats-cache-loader",
+    "stats-cache-saver",
+    "violation-cache-loader",
+    "violation-cache-saver",
+    "source-metadata-cache-loader",
+    "source-metadata-cache-saver"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

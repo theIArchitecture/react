@@ -1,0 +1,21 @@
+{
+  "name": "validate — tree-level",
+  "description": "Dependency graph validators: stats, then all 13 structural architecture rules. Requires @parse/graph to have run first.",
+  "processors": [
+    "dependency-graph-stats",
+    "circular-dependency-validator",
+    "layer-violation-validator",
+    "coupling-metrics-validator",
+    "dependency-direction-validator",
+    "aggregate-boundary-validator",
+    "cross-boundary-type-validator",
+    "shared-kernel-validator",
+    "test-structure-validator",
+    "dependency-stability-validator",
+    "directory-depth-limits-validator",
+    "file-count-limits-validator",
+    "test-directory-colocation-validator",
+    "abstract-metrics-validator"
+  ],
+  "config": {}
+}

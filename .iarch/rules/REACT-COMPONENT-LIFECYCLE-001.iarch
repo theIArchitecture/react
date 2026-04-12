@@ -56,8 +56,8 @@ RULE "REACT-LIFECYCLE-APPLICATION" : IHealerArchitecture
       - WITH: "componentDidMount() {"
       - TEACHING: "componentDidMount is safe for {{SILO:COMPLIANCE_REQUIREMENTS}}"
 
-      - REPLACE: "componentWillReceiveProps(nextProps) {"
-      - WITH: "componentDidUpdate(prevProps, prevState) {\n  if (this.props !== prevProps) {"
+      - REPLACE: "componentWillReceiveProps(nextProps)"
+      - WITH: "componentDidUpdate(prevProps)"
       - TEACHING: "componentDidUpdate safe for React 18+ concurrent mode"
 
       - REPLACE: "UNSAFE_componentWillMount"

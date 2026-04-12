@@ -1,0 +1,6 @@
+{
+  "name": "platform — GitHub bot commit",
+  "description": "Commit updated data files (caches, history, dashboard HTML) back to the repo via the IArch bot. Configure bot-target-path, bot-commit-message, and commit-caches in the parent pipeline.",
+  "processors": ["github-bot-commit"],
+  "config": {}
+}

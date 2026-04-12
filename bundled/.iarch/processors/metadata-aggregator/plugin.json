@@ -10,6 +10,15 @@
       "optional-requires": ["violation-index", "remedies", "source-metadata", "project-root", "init-config"],
       "provides": ["source-metadata", "source-metadata.transformed"],
       "ide-hidden": true
+    },
+    {
+      "id": "pipeline-run-collector",
+      "name": "Pipeline Run Collector",
+      "entry-point": "IArchitecture.Processors.MetadataAggregator.PipelineRunCollectorProcessor",
+      "requires": ["pipeline-run", "pipeline-sink"],
+      "optional-requires": ["annotation-summary", "ci-environment", "pipeline-run-contributions", "pipeline-run-history"],
+      "provides": ["pipeline-run-history", "pipeline-run-history.transformed"],
+      "ide-hidden": true
     }
   ]
 }

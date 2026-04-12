@@ -1,0 +1,6 @@
+{
+  "name": "parse — dependency graph",
+  "description": "Build the dependency graph from parsed files. Required before @validate/tree. Do not include in PR pipelines — file validators run without the graph.",
+  "processors": ["dependency-graph-builder"],
+  "config": {}
+}

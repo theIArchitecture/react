@@ -1,12 +1,12 @@
 {
-  "name": "System Prime - Cold Start",
+  "name": "system-prime",
+  "description": "Cold start: build and cache the dependency graph and violation index. No validators — just primes the caches so subsequent IDE runs are fast.",
   "processors": [
-    "@BaseProcessors/base-processors",
-    "@Caching/scan-caches",
-    "@Graphing/dependency-graph-processors",
-    "dependency-graph-stats",
-    "violation-index-builder",
-    "violation-filter"
+    "@core",
+    "@intake/directory",
+    "@data/scan",
+    "@parse/graph",
+    "@violations/finalize"
   ],
   "config": {
     "ide-hidden": "true"

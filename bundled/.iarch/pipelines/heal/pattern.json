@@ -1,0 +1,6 @@
+{
+  "name": "heal — pattern",
+  "description": "Pattern-based auto-healing. Applies deterministic regex/replacement remedies to violations. Fast, no AI required.",
+  "processors": ["iarch-pattern-healer"],
+  "config": {}
+}

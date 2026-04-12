@@ -1,0 +1,9 @@
+{
+  "name": "validate — file-level",
+  "description": "File-level validators: regex rule detection and semgrep pattern scanning. Does not require the dependency graph. Use in PR pipelines and full-scan pipelines.",
+  "processors": [
+    "iarch-regex-rule-detector",
+    "semgrep-validator"
+  ],
+  "config": {}
+}

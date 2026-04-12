@@ -1,0 +1,6 @@
+{
+  "name": "heal — AI",
+  "description": "AI-assisted healing via claude-healer. Handles violations that pattern healing cannot resolve. Consumes remedies already in context from prior healers.",
+  "processors": ["claude-healer"],
+  "config": {}
+}

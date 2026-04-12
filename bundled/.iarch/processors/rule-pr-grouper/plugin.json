@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./IArchitecture.RulePrGrouper.dll",
+  "processors": [
+    {
+      "id": "rule-pr-grouper",
+      "name": "Rule PR Grouper",
+      "entry-point": "IArchitecture.RulePrGrouper.RulePrGrouperProcessor",
+      "type": "Processor",
+      "requires": [ "violations" ],
+      "optional-requires": [ "ci-environment" ],
+      "provides": [ "branch-list" ],
+      "ide-hidden": true
+    }
+  ]
+}

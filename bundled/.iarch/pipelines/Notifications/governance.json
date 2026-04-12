@@ -1,0 +1,11 @@
+{
+  "name": "notifications — governance",
+  "description": "Governance cycle notifications: Jira ticketing and Slack messaging for governance proposals and entropy signals.",
+  "processors": [
+    "@ticketing/governance-jira-processors",
+    "@messaging/slack-processors"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

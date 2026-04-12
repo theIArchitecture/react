@@ -1,0 +1,6 @@
+{
+  "name": "intake — PR diff",
+  "description": "PR-scoped file intake: filter changed files from file-list-path, evaluate cache, parse. The file list is supplied by the CI workflow via --file-list-path. Same processors as intake/directory — the scope difference is in how the CI caller invokes the engine.",
+  "processors": ["file-filter", "dependency-graph-evaluator", "file-parser"],
+  "config": {}
+}

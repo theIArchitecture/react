@@ -7,11 +7,8 @@
       "name": "Annotation Flush",
       "entry-point": "IArchitecture.AnnotationFlush.AnnotationFlushProcessor",
       "requires": [ "annotations" ],
-      "provides": [ "annotation-flush-written" ],
-      "ide-hidden": true,
-      "config": {
-        "annotation-flush.backup": "true"
-      }
+      "provides": [ "annotations.written" ],
+      "ide-hidden": true
     }
   ]
 }

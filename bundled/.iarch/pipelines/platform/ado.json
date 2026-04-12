@@ -1,0 +1,6 @@
+{
+  "name": "platform — Azure DevOps",
+  "description": "Azure DevOps CI environment provider. Always include before any other ADO processors. Provides ci-environment consumed by all downstream ADO processors.",
+  "processors": ["ado-environment-provider"],
+  "config": {}
+}

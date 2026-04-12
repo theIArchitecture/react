@@ -1,0 +1,17 @@
+{
+  "name": "governance — cluster remediation",
+  "description": "Remediate an approved governance proposal: load ledger, resolve proposal, generate and run a CA processor, heal violations, commit to remediation branch, create PR, update ledger to pr_created. Platform-specific processors (github-create-pr) are added by the parent pipeline.",
+  "processors": [
+    "governance-ledger-reader",
+    "governance-proposal-resolver",
+    "ca-processor-generator",
+    "ca-processor-runner",
+    "claude-healer",
+    "annotation-flush",
+    "governance-remediation-commit",
+    "branch-creator",
+    "governance-ledger-pr-created",
+    "governance-ledger-cache-saver"
+  ],
+  "config": {}
+}

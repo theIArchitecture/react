@@ -1,0 +1,10 @@
+{
+  "name": "scan — PR",
+  "description": "PR scan bundle: foundation + PR-scoped intake + file-level validation. The starting point for all PR pipelines. Follow with @heal/all, @annotate, and a @pr/* chunk.",
+  "processors": [
+    "@core",
+    "@intake/pr-diff",
+    "@validate/files"
+  ],
+  "config": {}
+}

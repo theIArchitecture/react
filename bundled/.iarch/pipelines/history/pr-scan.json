@@ -1,0 +1,12 @@
+{
+  "name": "history — PR scan",
+  "description": "Record a PR scan history entry: load existing history, record this scan, save. Drop into any PR validation pipeline. Requires annotation-summary in context.",
+  "processors": [
+    "pr-scan-history-cache-loader",
+    "pr-scan-recorder",
+    "pr-scan-history-cache-saver"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

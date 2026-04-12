@@ -51,9 +51,9 @@
       "id": "ado-create-pr",
       "name": "Azure DevOps Create Pull Request",
       "entry-point": "Invoke-AdoCreatePR",
-      "requires": ["ci-environment"],
-      "optional-requires": ["violations"],
-      "provides": ["pr-url"],
+      "requires": ["ci-environment", "branch-list.created"],
+      "optional-requires": [],
+      "provides": ["branch-list.pr-created"],
       "ide-hidden": true
     },
     {
@@ -71,7 +71,7 @@
       "entry-point": "Invoke-AdoGovernanceRemediationCommit",
       "requires": ["init-config", "ca-processor-path"],
       "optional-requires": ["ci-environment"],
-      "provides": ["remediation-branch"],
+      "provides": ["branch-list"],
       "ide-hidden": true
     },
     {

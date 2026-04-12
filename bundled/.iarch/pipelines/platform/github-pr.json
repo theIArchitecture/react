@@ -1,0 +1,10 @@
+{
+  "name": "platform — GitHub PR reporting",
+  "description": "GitHub PR feedback: post check run status, post PR summary comment, mark violation lines as commit annotations. Include after @annotate in PR validation pipelines.",
+  "processors": [
+    "github-create-check",
+    "github-post-pr-comment",
+    "github-commit-markers"
+  ],
+  "config": {}
+}

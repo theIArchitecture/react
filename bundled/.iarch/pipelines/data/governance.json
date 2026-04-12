@@ -1,0 +1,17 @@
+{
+  "name": "data — governance (read/write)",
+  "description": "Cache I/O for governance intelligence data: ledger, entropy history, governance stats, co-change matrix. Include in the governance cycle pipeline. Savers run after the intelligence processors via DAG ordering.",
+  "processors": [
+    "governance-ledger-cache-loader",
+    "governance-ledger-cache-saver",
+    "entropy-history-cache-loader",
+    "entropy-history-cache-saver",
+    "governance-stats-cache-loader",
+    "governance-stats-cache-saver",
+    "cochange-cache-loader",
+    "cochange-cache-saver"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

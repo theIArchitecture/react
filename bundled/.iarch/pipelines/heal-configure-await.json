@@ -1,12 +1,19 @@
 {
-  "name": "Heal - ConfigureAwait",
+  "name": "heal-configure-await",
+  "description": "Heal ConfigureAwait violations: full C# scan, then Roslyn-based configure-await healing, annotate and flush with backup.",
   "processors": [
-    "@scan-violations-csharp",
+    "@core",
+    "@intake/directory",
+    "@data/scan",
+    "@parse/graph",
+    "@validate/files",
+    "@validate/tree",
+    "@violations/finalize",
+    "configure-await-validator",
     "configure-await-healer",
     "annotation-flush"
   ],
   "config": {
-    "iarch-json-output.output-file": "./violations-before-heal.json",
     "annotation-flush.backup": "true"
   }
 }

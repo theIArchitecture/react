@@ -1,0 +1,12 @@
+{
+  "name": "history — pipeline run",
+  "description": "Record a pipeline run history entry: load existing history, collect this run (timings, violations, contributions), save. Drop at the end of any tracked pipeline. Requires pipeline-run in context (seeded by Modulus engine).",
+  "processors": [
+    "pipeline-run-history-cache-loader",
+    "pipeline-run-collector",
+    "pipeline-run-history-cache-saver"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

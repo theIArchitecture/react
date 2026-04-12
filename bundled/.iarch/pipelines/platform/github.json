@@ -1,0 +1,6 @@
+{
+  "name": "platform — GitHub",
+  "description": "GitHub CI environment provider. Always include before any other GitHub processors. Provides ci-environment consumed by all downstream GitHub processors.",
+  "processors": ["ci-environment-provider"],
+  "config": {}
+}

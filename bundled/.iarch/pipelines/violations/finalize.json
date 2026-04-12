@@ -1,0 +1,6 @@
+{
+  "name": "violations — finalize",
+  "description": "Post-validation violation processing for full-scan pipelines: build the consolidated violation index and filter violations per pipeline config. Not needed in PR pipelines.",
+  "processors": ["violation-index-builder", "violation-filter"],
+  "config": {}
+}

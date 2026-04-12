@@ -1,0 +1,11 @@
+{
+  "name": "notifications — general",
+  "description": "General user notifications: Jira ticketing and Slack messaging for violation findings.",
+  "processors": [
+    "@ticketing/general-jira-processors",
+    "@messaging/slack-processors"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

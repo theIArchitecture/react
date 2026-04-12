@@ -1,0 +1,13 @@
+{
+  "name": "data — scan (read-only)",
+  "description": "Cache loaders for scan data: dependency graph, stats, violation index, source metadata. Use in pipelines that read existing scan data without rebuilding (e.g. dashboard rebuild, governance cycle).",
+  "processors": [
+    "cache-loader",
+    "stats-cache-loader",
+    "violation-cache-loader",
+    "source-metadata-cache-loader"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

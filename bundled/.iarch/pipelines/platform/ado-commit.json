@@ -1,0 +1,6 @@
+{
+  "name": "platform — ADO bot commit",
+  "description": "Commit updated data files back to the repo via the IArch bot (ADO). Swap @platform/github-commit for this when moving to ADO. Configure bot-target-path, bot-commit-message, and commit-caches in the parent pipeline.",
+  "processors": ["ado-bot-commit"],
+  "config": {}
+}
