@@ -8,7 +8,8 @@
       "entry-point": "IArchitecture.Processors.DashboardRenderer.DashboardRendererProcessor",
       "requires": ["source-metadata"],
       "optional-requires": ["governance-stats", "entropy-history", "governance-ledger", "pr-scan-history", "pipeline-run-history"],
-      "provides": ["dashboard-html", "dashboard-json", "governance-html", "governance-efficacy-html", "governance-voting-html", "governance-ledger-html", "pipeline-run-history-html", "dashboard-html.transformed", "dashboard-json.transformed", "governance-html.transformed", "governance-efficacy-html.transformed", "governance-voting-html.transformed", "governance-ledger-html.transformed", "pipeline-run-history-html.transformed"]
+      "provides": ["dashboard-html", "dashboard-json", "governance-executive-html", "governance-html", "governance-efficacy-html", "governance-voting-html", "governance-ledger-html", "pipeline-run-history-html", "dashboard-html.transformed", "dashboard-json.transformed", "governance-executive-html.transformed", "governance-html.transformed", "governance-efficacy-html.transformed", "governance-voting-html.transformed", "governance-ledger-html.transformed", "pipeline-run-history-html.transformed"],
+      "committable": ["dashboard-html.transformed", "dashboard-json.transformed", "governance-executive-html.transformed", "governance-html.transformed", "governance-efficacy-html.transformed", "governance-voting-html.transformed", "governance-ledger-html.transformed", "pipeline-run-history-html.transformed"]
     }
   ]
 }

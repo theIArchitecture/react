@@ -18,6 +18,7 @@
       "requires": ["pipeline-run", "pipeline-sink"],
       "optional-requires": ["annotation-summary", "ci-environment", "pipeline-run-contributions", "pipeline-run-history"],
       "provides": ["pipeline-run-history", "pipeline-run-history.transformed"],
+      "committable": ["pipeline-run-history.transformed"],
       "ide-hidden": true
     }
   ]

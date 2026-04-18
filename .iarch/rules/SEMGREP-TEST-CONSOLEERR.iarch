@@ -1,0 +1,36 @@
+RULE "console.error() usage detected" : IValidationArchitecture
+  ID: "SEMGREP-TEST-CONSOLEERR"
+  DESCRIPTION: "console.error() usage detected - use structured logging instead."
+  SEVERITY: Warning
+  CATEGORY: "CodeQuality"
+  APPLIES_TO: ["javascript", "typescript", "jsx", "tsx"]
+
+  ARCHITECTURAL_CONTEXT:
+    CATEGORY: "CodeQuality"
+    LAYER: "Base"
+    SOURCE: "Test"
+    PACK: "test"
+
+  PLUGIN:
+    ID: "semgrep-validator"
+    SCOPE: "file"
+    CONFIG:
+      semgrep_patterns: "{\"javascript\":[{\"Name\":\"CONSOLE_ERROR\",\"Type\":0,\"Pattern\":\"console.error(...)\"}],\"typescript\":[{\"Name\":\"CONSOLE_ERROR\",\"Type\":0,\"Pattern\":\"console.error(...)\"}],\"jsx\":[{\"Name\":\"CONSOLE_ERROR\",\"Type\":0,\"Pattern\":\"console.error(...)\"}],\"tsx\":[{\"Name\":\"CONSOLE_ERROR\",\"Type\":0,\"Pattern\":\"console.error(...)\"}]}"
+
+  VIOLATIONS:
+    - "console.error() usage detected - use structured logging instead."
+
+  EDUCATION:
+    WHY_IT_MATTERS: "console.error() goes to stdout unstructured and cannot be aggregated or filtered by severity."
+    BUSINESS_IMPACT: "Unstructured logging makes production debugging harder."
+    QUICK_FIX: "Replace with a structured logger."
+
+  META_ARCHITECTURE:
+    HEALING_PRIORITY: 5
+    BREAKING_CHANGE: false
+    EXTRACTED_FROM: "Test"
+    CONSOLIDATION_DATE: "2026-04-13"
+    INDIVIDUAL_RULES_COUNT: 1
+    SOURCE_GROUP: "test"
+
+END RULE

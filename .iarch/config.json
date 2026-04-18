@@ -1,5 +1,4 @@
 {
-  "discovery-root": ".",
   "bundled-defaults-path": "bundled",
   "version": "1.0",
   "default-layer": "Base",

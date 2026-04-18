@@ -9,7 +9,8 @@
     "governance-stats-cache-loader",
     "governance-stats-cache-saver",
     "cochange-cache-loader",
-    "cochange-cache-saver"
+    "cochange-cache-saver",
+    "anomaly-clusters-cache-loader"
   ],
   "config": {
     "ide-hidden": "true"

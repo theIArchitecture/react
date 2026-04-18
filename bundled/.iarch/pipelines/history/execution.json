@@ -1,0 +1,12 @@
+{
+  "name": "history — execution",
+  "description": "Record this pipeline execution to run history: load existing history, collect timings and processor contributions, save. Include at the end of any pipeline that tracks execution history.",
+  "processors": [
+    "pipeline-run-history-cache-loader",
+    "pipeline-run-collector",
+    "pipeline-run-history-cache-saver"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

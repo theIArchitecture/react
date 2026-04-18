@@ -460,6 +460,15 @@ function Invoke-AdoBotCommit {
         }
     }
 
+    # commit-file-paths: absolute paths resolved by cache-file-resolver processor.
+    # Each path is ready to stage - no filename logic needed here.
+    $commitFilePaths = $ctx.'commit-file-paths'
+    if ($commitFilePaths) {
+        $commitFilePaths | ForEach-Object {
+            $f = "$_".Trim(); if ($f) { $filesToAdd.Add($f) }
+        }
+    }
+
     # Diagnostics: log resolved paths
     $warnings.Add("ado-bot-commit: targetPath=$targetPath")
     $warnings.Add("ado-bot-commit: cacheBasePath=$cacheBasePath")
@@ -469,7 +478,7 @@ function Invoke-AdoBotCommit {
             $warnings.Add("ado-bot-commit: file-to-add [exists=$exists] $_")
         }
     } else {
-        $warnings.Add("ado-bot-commit: no specific files configured — will use git add -A")
+        $warnings.Add("ado-bot-commit: no specific files configured -- will use git add -A")
     }
 
     if ($ciEnv -and $ciEnv.token) { Set-AdoGitAuth -Token $ciEnv.token }

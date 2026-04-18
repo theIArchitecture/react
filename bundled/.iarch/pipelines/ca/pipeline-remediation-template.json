@@ -1,0 +1,16 @@
+{
+  "name": "ca-remediation-{CA-PROCESSOR}",
+  "processors": [
+    "@core",
+    "@data/governance-remediation",
+    "@ci/environment",
+    "governance-proposal-resolver",
+    "{CA-PROCESSOR}",
+    "claude-healer",
+    "@source-control/remediation-commit",
+    "governance-ledger-pr-created",
+    "governance-ledger-cache-saver",
+    "@output/dashboard-cached",
+    "@deploy/commit"
+  ]
+}

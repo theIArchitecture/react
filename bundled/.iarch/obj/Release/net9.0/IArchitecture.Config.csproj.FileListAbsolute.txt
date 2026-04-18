@@ -1,0 +1,12 @@
+E:\Protected\IArchitecture-DotNet\src\config\bin\Release\net9.0\IArchitecture.Config.deps.json
+E:\Protected\IArchitecture-DotNet\src\config\bin\Release\net9.0\IArchitecture.Config.dll
+E:\Protected\IArchitecture-DotNet\src\config\bin\Release\net9.0\IArchitecture.Config.pdb
+E:\Protected\IArchitecture-DotNet\src\config\obj\Release\net9.0\IArchitecture.Config.GeneratedMSBuildEditorConfig.editorconfig
+E:\Protected\IArchitecture-DotNet\src\config\obj\Release\net9.0\IArchitecture.Config.AssemblyInfoInputs.cache
+E:\Protected\IArchitecture-DotNet\src\config\obj\Release\net9.0\IArchitecture.Config.AssemblyInfo.cs
+E:\Protected\IArchitecture-DotNet\src\config\obj\Release\net9.0\IArchitecture.Config.csproj.CoreCompileInputs.cache
+E:\Protected\IArchitecture-DotNet\src\config\obj\Release\net9.0\IArchitecture.Config.sourcelink.json
+E:\Protected\IArchitecture-DotNet\src\config\obj\Release\net9.0\IArchitecture.Config.dll
+E:\Protected\IArchitecture-DotNet\src\config\obj\Release\net9.0\refint\IArchitecture.Config.dll
+E:\Protected\IArchitecture-DotNet\src\config\obj\Release\net9.0\IArchitecture.Config.pdb
+E:\Protected\IArchitecture-DotNet\src\config\obj\Release\net9.0\ref\IArchitecture.Config.dll

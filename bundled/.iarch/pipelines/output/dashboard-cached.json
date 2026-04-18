@@ -1,0 +1,19 @@
+{
+  "name": "output — dashboard (cached metadata)",
+  "description": "Render all dashboard HTML pages using previously cached source-metadata. Use in pipelines that do not run a full file scan (e.g. jira-poll, cluster-remediation). metadata-aggregator is skipped — source-metadata-cache-loader provides the data instead.",
+  "processors": [
+    "source-metadata-cache-loader",
+    "dashboard-renderer",
+    "dashboard-html-cache-saver",
+    "dashboard-json-cache-saver",
+    "governance-executive-html-cache-saver",
+    "governance-html-cache-saver",
+    "governance-efficacy-html-cache-saver",
+    "governance-voting-html-cache-saver",
+    "governance-ledger-html-cache-saver",
+    "pipeline-run-history-html-cache-saver"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

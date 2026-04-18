@@ -1,0 +1,11 @@
+{
+  "name": "Jira Tickets - Governance Proposals",
+  "processors": [
+    "write-governance-ticket-requests",
+    "jira-processor",
+    "governance-ledger-jira-link"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

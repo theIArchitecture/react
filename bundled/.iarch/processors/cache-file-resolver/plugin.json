@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+  "processor-path": "./IArchitecture.CacheFileResolver.dll",
+  "processors": [
+    {
+      "id": "cache-file-resolver",
+      "name": "Cache File Resolver",
+      "entry-point": "IArchitecture.Processors.CacheFileResolver.CacheFileResolverProcessor",
+      "requires": ["pipeline-commit-targets"],
+      "optional-requires": ["cache-config"],
+      "provides": ["commit-file-paths"],
+      "ide-hidden": true
+    }
+  ]
+}

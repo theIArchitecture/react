@@ -74,6 +74,7 @@
       "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
       "requires": [ "cochange-matrix", "cache-config", "cochange-matrix.transformed" ],
       "provides": [],
+      "committable": [ "cochange-matrix.transformed" ],
       "ide-hidden": true,
       "ide-required": true
     },
@@ -112,6 +113,7 @@
       "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
       "requires": [ "governance-ledger", "cache-config", "governance-ledger.transformed" ],
       "provides": [],
+      "committable": [ "governance-ledger.transformed" ],
       "ide-hidden": true,
       "ide-required": true
     },
@@ -131,6 +133,7 @@
       "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
       "requires": [ "entropy-history", "cache-config", "entropy-history.transformed" ],
       "provides": [],
+      "committable": [ "entropy-history.transformed" ],
       "ide-hidden": true,
       "ide-required": true
     },
@@ -150,6 +153,27 @@
       "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
       "requires": [ "governance-stats", "cache-config", "governance-stats.transformed" ],
       "provides": [],
+      "committable": [ "governance-stats.transformed" ],
+      "ide-hidden": true,
+      "ide-required": true
+    },
+    {
+      "id": "anomaly-clusters-cache-loader",
+      "name": "Anomaly Clusters Cache Loader",
+      "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
+      "requires": [ "cache-config" ],
+      "optional-requires": [ "clear-cache" ],
+      "provides": [ "anomaly-clusters" ],
+      "ide-hidden": true,
+      "ide-required": true
+    },
+    {
+      "id": "anomaly-clusters-cache-saver",
+      "name": "Anomaly Clusters Cache Saver",
+      "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
+      "requires": [ "anomaly-clusters", "cache-config", "anomaly-clusters.transformed" ],
+      "provides": [],
+      "committable": [ "anomaly-clusters.transformed" ],
       "ide-hidden": true,
       "ide-required": true
     },
@@ -250,6 +274,22 @@
       "ide-hidden": true
     },
     {
+      "id": "governance-executive-html-cache-loader",
+      "name": "Governance Executive Summary Page Cache Loader",
+      "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
+      "requires": [ "cache-config" ],
+      "provides": [ "governance-executive-html" ],
+      "ide-hidden": true
+    },
+    {
+      "id": "governance-executive-html-cache-saver",
+      "name": "Governance Executive Summary Page Cache Saver",
+      "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
+      "requires": [ "governance-executive-html", "cache-config", "governance-executive-html.transformed" ],
+      "provides": [],
+      "ide-hidden": true
+    },
+    {
       "id": "pipeline-run-history-html-cache-loader",
       "name": "Pipeline Run History HTML Cache Loader",
       "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
@@ -296,6 +336,7 @@
       "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
       "requires": [ "pr-scan-history", "cache-config", "pr-scan-history.transformed" ],
       "provides": [],
+      "committable": [ "pr-scan-history.transformed" ],
       "ide-hidden": true
     },
     {
@@ -313,6 +354,23 @@
       "entry-point": "Modulus.Bundled.Processors.CacheSaverProcessor",
       "requires": [ "pipeline-run-history", "cache-config", "pipeline-run-history.transformed" ],
       "provides": [],
+      "ide-hidden": true
+    },
+    {
+      "id": "ca-pipeline-template-loader",
+      "name": "CA* Pipeline Template Loader",
+      "entry-point": "Modulus.Bundled.Processors.CacheLoaderProcessor",
+      "requires": [ "cache-config" ],
+      "provides": [ "ca-pipeline-template" ],
+      "ide-hidden": true
+    },
+    {
+      "id": "dynamic-file-writer",
+      "name": "Dynamic File Writer",
+      "entry-point": "Modulus.Bundled.Processors.DynamicFileWriterProcessor",
+      "requires": [ "dynamic-files" ],
+      "provides": [ "dynamic-files.written" ],
+      "committable": [ "dynamic-files.written" ],
       "ide-hidden": true
     }
 

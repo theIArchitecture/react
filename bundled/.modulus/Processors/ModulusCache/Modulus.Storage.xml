@@ -56,6 +56,24 @@
         <member name="M:Modulus.Bundled.Processors.CacheSaverProcessor.ProcessAsync(Modulus.SDK.Plugins.ProcessorInput)">
             <inheritdoc />
         </member>
+        <member name="T:Modulus.Bundled.Processors.DynamicFileWriterProcessor">
+             <summary>
+             Flushes the "dynamic-files" list from context to disk.
+            
+             Reads context["dynamic-files"] (List&lt;DynamicFileEntry&gt;) and writes each entry to disk
+             via FileDataStore. Path values are relative; resolved against the base directory which
+             defaults to context["project-root"] and can be overridden with config["base-path"].
+            
+             Pipeline position: end of pipeline, after all appenders have run.
+             Pass-through if dynamic-files is absent or empty.
+             </summary>
+        </member>
+        <member name="M:Modulus.Bundled.Processors.DynamicFileWriterProcessor.#ctor(Microsoft.Extensions.Logging.ILogger{Modulus.Bundled.Processors.DynamicFileWriterProcessor})">
+            <summary>Creates a new DynamicFileWriterProcessor.</summary>
+        </member>
+        <member name="M:Modulus.Bundled.Processors.DynamicFileWriterProcessor.ProcessAsync(Modulus.SDK.Plugins.ProcessorInput)">
+            <inheritdoc />
+        </member>
         <member name="T:Modulus.Storage.Cache.CacheConfig">
              <summary>
              Binds a pipeline context tag to a named cache store.
@@ -113,6 +131,12 @@
             InitialContext key that holds the List&lt;CacheConfig&gt;.
             </summary>
         </member>
+        <member name="M:Modulus.Storage.Cache.CacheContextKeys.Find(System.Collections.Generic.Dictionary{System.String,System.Object},System.String)">
+            <summary>
+            Finds the <see cref="F:Modulus.Storage.Cache.CacheContextKeys.CacheConfig"/> entry for the given context tag.
+            Returns null if <c>cache-config</c> is not in context or no entry matches.
+            </summary>
+        </member>
         <member name="T:Modulus.Storage.Cache.CacheMetadata">
             <summary>
             Metadata for tracking file changes in cached builds.
@@ -156,6 +180,14 @@
             <param name="key">Cache key</param>
             <param name="metadata">Metadata to save</param>
         </member>
+        <member name="M:Modulus.Storage.Cache.ICacheStore.ResolveCacheFilename(System.String)">
+            <summary>
+            Resolves the on-disk file path for the given cache key, using the same logic the store
+            uses internally when saving. Returns null for stores that have no file representation
+            (e.g. <see cref="T:Modulus.Storage.MemoryCacheStore"/>).
+            </summary>
+            <param name="key">Cache key (e.g. "governance-ledger", "dashboard.html")</param>
+        </member>
         <member name="T:Modulus.Storage.FileCacheStore">
              <summary>
              File-based cache storage implementation.
@@ -193,6 +225,38 @@
         <member name="M:Modulus.Storage.FileCacheStore.DeleteAsync(System.String)">
             <inheritdoc />
         </member>
+        <member name="M:Modulus.Storage.FileCacheStore.ResolveCacheFilename(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:Modulus.Storage.FileDataStore">
+             <summary>
+             Plain file-write DataStore. Implements IDataStore where the key is the file path
+             (relative paths are resolved against the configured base directory).
+            
+             Used by dynamic-file-writer to flush DynamicFileEntry lists to disk.
+             No cache metadata — this is not a cache store, do NOT layer ICacheStore on top.
+             </summary>
+        </member>
+        <member name="M:Modulus.Storage.FileDataStore.#ctor(System.String,Microsoft.Extensions.Logging.ILogger{Modulus.Storage.FileDataStore})">
+            <param name="basePath">Base directory for relative path resolution (e.g. project-root).</param>
+            <param name="logger">Optional logger.</param>
+        </member>
+        <member name="M:Modulus.Storage.FileDataStore.SaveAsync(System.String,System.Object)">
+            <summary>
+            Writes <paramref name="data"/> to the path specified by <paramref name="key"/>.
+            Key is treated as a file path; relative paths are resolved against the base directory.
+            Accepts string or byte[] content; any other type is JSON-serialized.
+            </summary>
+        </member>
+        <member name="M:Modulus.Storage.FileDataStore.LoadAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.FileDataStore.ExistsAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.FileDataStore.DeleteAsync(System.String)">
+            <inheritdoc />
+        </member>
         <member name="T:Modulus.Storage.GzippedCacheStore">
              <summary>
              Decorator for ICacheStore that adds gzip compression/decompression.
@@ -227,6 +291,9 @@
             <inheritdoc />
         </member>
         <member name="M:Modulus.Storage.GzippedCacheStore.DeleteAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Modulus.Storage.GzippedCacheStore.ResolveCacheFilename(System.String)">
             <inheritdoc />
         </member>
         <member name="T:Modulus.Storage.HybridCacheStore">
@@ -282,6 +349,9 @@
             Useful for test assertions and debugging.
             </summary>
         </member>
+        <member name="M:Modulus.Storage.HybridCacheStore.ResolveCacheFilename(System.String)">
+            <inheritdoc />
+        </member>
         <member name="T:Modulus.Storage.MemoryCacheStore">
             <summary>
             In-memory cache storage implementation.
@@ -324,6 +394,9 @@
             Gets the total number of cached entries.
             Useful for test assertions and debugging.
             </summary>
+        </member>
+        <member name="M:Modulus.Storage.MemoryCacheStore.ResolveCacheFilename(System.String)">
+            <inheritdoc />
         </member>
         <member name="M:Modulus.Storage.MemoryCacheStore.GetCacheTypes">
             <summary>
@@ -379,6 +452,9 @@
         </member>
         <member name="M:Modulus.Storage.RawCacheStore.SaveMetadataAsync(System.String,Modulus.Storage.Cache.CacheMetadata)">
             <summary>No-op — raw files are self-describing.</summary>
+        </member>
+        <member name="M:Modulus.Storage.RawCacheStore.ResolveCacheFilename(System.String)">
+            <inheritdoc />
         </member>
         <member name="T:Modulus.Storage.StorageHelpers">
             <summary>

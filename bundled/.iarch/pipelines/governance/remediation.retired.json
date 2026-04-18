@@ -1,0 +1,18 @@
+{
+  "name": "governance — cluster remediation (RETIRED)",
+  "description": "RETIRED: superseded by ca-processor-generation (Pipeline 1) + ca-remediation-{id} (Pipeline 2, generated). Used inline ca-processor-runner and ca-processor-path which are replaced by the dynamic-files / FileDataStore pattern. Do not include in new pipelines.",
+  "processors": [
+    "governance-ledger-reader",
+    "governance-proposal-resolver",
+    "ca-processor-generator",
+    "ca-processor-runner",
+    "claude-healer",
+    "annotation-marker",
+    "annotation-flush",
+    "governance-remediation-commit",
+    "branch-creator",
+    "governance-ledger-pr-created",
+    "governance-ledger-cache-saver"
+  ],
+  "config": {}
+}

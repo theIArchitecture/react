@@ -1,0 +1,14 @@
+{
+  "name": "system-lite",
+  "description": "LS per-file pipeline: foundation + file intake + cached scan data + file-level validation + violation filtering. Used by the language server on every open/change event. Fast — reads violation cache, no graph rebuild.",
+  "processors": [
+    "@core",
+    "@intake/pr-diff",
+    "@data/scan-readonly",
+    "@validate/files",
+    "violation-filter"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}

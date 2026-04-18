@@ -67,6 +67,22 @@
             Consumer with 'pipeline-sink' tag in requires, indicating it should run in the last batch and not be assigned to a DAG group.
             </summary>
         </member>
+        <member name="T:Modulus.SDK.Models.DynamicFileEntry">
+            <summary>
+            A file write request accumulated in the "dynamic-files" context key.
+            Processors append entries as transformers; dynamic-file-writer (FileDataStore) flushes
+            them to disk at end of pipeline. Path values are relative; the DataStore resolves them
+            against a configured base directory (default: project-root from context).
+            </summary>
+        </member>
+        <member name="M:Modulus.SDK.Models.DynamicFileEntry.#ctor(System.String,System.String)">
+            <summary>
+            A file write request accumulated in the "dynamic-files" context key.
+            Processors append entries as transformers; dynamic-file-writer (FileDataStore) flushes
+            them to disk at end of pipeline. Path values are relative; the DataStore resolves them
+            against a configured base directory (default: project-root from context).
+            </summary>
+        </member>
         <member name="T:Modulus.SDK.Models.ExecutionPlan">
             <summary>
             The result of GetExecutionPlan: DAG structure and execution batches for a given set of processor IDs.
@@ -857,7 +873,7 @@
             <param name="path">File or directory path to start walking up from</param>
             <param name="customConfigDir">Custom config directory name (e.g. ".iarch"). Also checks ".modulus" at each level.</param>
             <param name="logger">Optional logger</param>
-            <returns>(DiscoveryRoot, BundledDefaultsPath) — either may be null if not found</returns>
+            <returns>(DiscoveryRoot, BundledDefaultsPath)</returns>
         </member>
         <member name="M:Modulus.SDK.Utilities.ConfigurationHelper.IsWithinRoot(System.String,System.String)">
             <summary>

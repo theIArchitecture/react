@@ -1,8 +1,0 @@
-{
-  "name": "scan-violations-general",
-  "description": "Full violation scan with cache. No healing, no annotation, no CI.",
-  "processors": [
-    "@scan/full"
-  ],
-  "config": {}
-}

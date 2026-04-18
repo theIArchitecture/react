@@ -1,8 +1,0 @@
-{
-  "name": "output — metadata",
-  "description": "Compute and persist source metadata (DashboardData) from the current scan context. metadata-aggregator aggregates violations, remedies, and file stats into source-metadata. The cache saver (in @data/scan) persists it via the source-metadata.transformed key.",
-  "processors": ["metadata-aggregator"],
-  "config": {
-    "ide-hidden": "true"
-  }
-}

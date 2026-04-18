@@ -1,0 +1,12 @@
+{
+  "name": "scan — CloudFormation",
+  "description": "Extends full scan with cross-domain CloudFormation validation: environment variable mismatches, IAM permission gaps, and layer boundary violations across application source and infrastructure definitions.",
+  "processors": [
+    "@scan/full",
+    "neighborhood-builder",
+    "cloudformation-env-validator",
+    "cloudformation-iam-validator",
+    "cloudformation-layer-validator"
+  ],
+  "config": {}
+}

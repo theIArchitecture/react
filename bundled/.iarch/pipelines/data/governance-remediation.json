@@ -1,0 +1,12 @@
+{
+  "name": "data — governance (remediation)",
+  "description": "Cache loaders for cluster-remediation: governance ledger (for proposal resolver and reader) and anomaly clusters (for proposal resolver). The governance-ledger-cache-saver lives in @governance/remediation and fires after governance-ledger-pr-created sets the .transformed signal.",
+  "processors": [
+    "governance-ledger-cache-loader",
+    "anomaly-clusters-cache-loader",
+    "cache-loader"
+  ],
+  "config": {
+    "ide-hidden": "true"
+  }
+}
